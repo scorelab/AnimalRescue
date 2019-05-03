@@ -19,8 +19,10 @@ class NewPost extends React.Component {
             region: null,
             currentPlace: null,
             markers: [],
-            latitude:5.9744652,
-            longitude:80.421526,
+            latitude:null,
+            longitude:null,
+            latitudeDelta:  0.00922*1.5,
+            longitudeDelta: 0.00421*1.5
 
         }
 
@@ -120,16 +122,24 @@ class NewPost extends React.Component {
                                     loadingEnabled={true}
                                     zoomControlEnabled={true}
                                     showsMyLocationButton={true}
-
+                                    onPress={(e) => this.setState({
+                                        longitude:e.nativeEvent.coordinate.longitude,
+                                        latitude:e.nativeEvent.coordinate.latitude
+                                    })}
                                 >
+                                {this.state.latitude !=null && this.state.latitude != null?(
                                     <Marker draggable
                                         coordinate={{
                                             latitude: this.state.latitude,
                                             longitude: this.state.longitude
                                         }}
-                                        title={"Here is the Animal"}                                        
-                                        onPress={(e) => alert(JSON.stringify(e.nativeEvent.coordinate))}
+                                        title={"Here is the Animal"}                                     
+                                        
                                     />
+                                ):(
+                                    <View></View>
+                                )}
+                                    
                                 </MapView>
 
                             </View>
