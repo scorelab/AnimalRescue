@@ -10,6 +10,7 @@
     "react": "16.6.3",
     "react-native": "0.58.6",
     "react-native-gesture-handler": "^1.2.1",
+    "react-native-image-picker": "^0.28.1",
     "react-native-progress-steps": "^1.2.7",
     "react-native-vector-icons": "^6.1.0",
     "react-navigation": "^3.2.3"
