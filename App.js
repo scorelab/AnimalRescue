@@ -22,8 +22,8 @@ const AppStack = createBottomTabNavigator(
         let iconName;
         if (routeName === "Home") {
           iconName = "home";
-        } else if (routeName === "NewPost") {
-          iconName = "plus";
+        } else if (routeName === "New") {
+          iconName = "plus-square";
         }  else if (routeName === "Profile") {
           iconName = "user";
         }       
@@ -31,7 +31,7 @@ const AppStack = createBottomTabNavigator(
       },
     }),
     tabBarOptions: {
-      activeTintColor: "#00649d",
+      activeTintColor: "#4885ed",
       inactiveTintColor: "white",
       style: {
         backgroundColor: '#192f6a',

@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import {Text, View } from 'react-native';
-
+import { Text, View } from 'react-native';
+import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 export default class Home extends Component {
 
     constructor() {
         super()
-        
+
     }
 
     componentDidMount() {
@@ -16,8 +16,13 @@ export default class Home extends Component {
     render() {
 
         return (
-            <View style={{ flex: 1, justifyContent:'center', alignItems:'center' }}>
-                <Text>Home Page</Text>
+
+
+            <View style={{ flex: 1 }}>
+                <Header title="Home" />
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text>Home Page</Text>
+                </View>
             </View>
 
         )
@@ -27,4 +32,3 @@ export default class Home extends Component {
 
 }
 
- 
