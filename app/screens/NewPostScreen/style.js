@@ -47,6 +47,17 @@ export default StyleSheet.create({
         minHeight: deviceHeight*0.4
 
     },
+    mapContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: COLOR_GRAY,
+        borderWidth: 0.8,
+        borderStyle: 'dashed',
+        width: '100%',
+        minHeight: deviceHeight*0.42,
+        
+    },
     rightIconContainer: {
         marginLeft: 10,
         marginTop: 5,
