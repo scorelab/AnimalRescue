@@ -8,9 +8,10 @@ import SimplePicker from 'react-native-simple-picker';
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { COLOR_PRIMARY, COLOR_BLACK, COLOR_SECONDARY } from "../../config/styles";
 import styles from "./style";
-
+import Snackbar from 'react-native-snackbar';
+import style from '../ProfileScreen/style';
 const options = ['Cat', 'Dog', 'Monkey'];
-
+import DropdownAlert from 'react-native-dropdownalert';
 // Labels is optional
 const labels = ['Cat', 'Dog', 'Monkey'];
 class NewPost extends React.Component {
@@ -100,6 +101,30 @@ class NewPost extends React.Component {
 
     };
 
+    checkPhoto = () => {
+        if(this.state.photoError == true){
+            this.dropdown.alertWithType('error', 'Error', 'Please Select An Image');
+            
+        }
+    }
+
+    checkLocation = () => {
+        if(this.state.longitude == null && this.state.latitude == null){
+            this.dropdown.alertWithType('error', 'Error', 'Please Select The Location');
+            
+        }
+    }
+
+    submit = () => {
+        if(this.state.selectedAnimal == ''){
+            this.dropdown.alertWithType('error', 'Error', 'Please Select An Animal');
+        }else if(this.state.description == '' ) {
+            this.dropdown.alertWithType('error', 'Error', 'Please Add The Description');
+        }else{
+            alert(this.state.selectedAnimal+"\n "+ this.state.description + "\n "+ this.state.longitude+" \n"+this.state.latitude+"\n " +this.state.pickedImage)
+        }
+    }
+
     render() {
         return (
 
@@ -107,7 +132,7 @@ class NewPost extends React.Component {
                 <Header title="New Post" />
                 <View style={styles.container}>
                     <ProgressSteps activeStepIconBorderColor={COLOR_PRIMARY} completedProgressBarColor={COLOR_PRIMARY} completedStepIconColor={COLOR_PRIMARY} activeLabelColor={COLOR_PRIMARY} labelColor={COLOR_BLACK}>
-                        <ProgressStep label="Photo" errors={this.state.photoError} previousBtnDisabled={true} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
+                        <ProgressStep label="Photo" onNext={()=>this.checkPhoto()} errors={this.state.photoError} previousBtnDisabled={true} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
                             <View style={styles.stepContainer}>
                                 {this.state.photoError == true ? (
                                     <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
@@ -125,7 +150,7 @@ class NewPost extends React.Component {
                             </View>
                         </ProgressStep>
 
-                        <ProgressStep label="Location" error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
+                        <ProgressStep label="Location" onNext={()=>this.checkLocation()} error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
                             <View style={styles.stepContainer}>
                                 <MapView
                                     style={styles.mapContainer}
@@ -158,7 +183,7 @@ class NewPost extends React.Component {
                                
                             </View>
                         </ProgressStep>
-                        <ProgressStep label="Information" previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
+                        <ProgressStep label="Information" onSubmit={ ()=> this.submit()} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
                             <View style={styles.stepContainer}>
                                 {this.state.selectedAnimal == '' ? (
                                     <Text
@@ -208,6 +233,7 @@ class NewPost extends React.Component {
                         </ProgressStep>
                     </ProgressSteps>
                 </View>
+                <DropdownAlert ref={ref => this.dropdown = ref} />
             </View>
 
 
