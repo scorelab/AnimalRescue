@@ -25,14 +25,16 @@ export default class HomePostComponent extends Component {
           </View>
         </View>
         <View style={style.cardViewBody}>
-          <Text style={style.postContentFont}>
+          <Text style={style.postContentFont} numberOfLines={3} ellipsizeMode ={'tail'}>
             Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500sLorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s
           </Text>
           <View style={style.postImageArea}>
             <Image
-              source={require("../../images/post_01.jpg")}
+              source={require("../../images/dog.jpg")}
               style={style.postImage}
             />
           </View>

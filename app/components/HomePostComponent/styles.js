@@ -4,7 +4,7 @@ import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_LIGHT } from "../../config/styles
 var {height, width} = Dimensions.get("window");
 
 let cardViewHeight = height * 0.7;
-let cardViewWidth = width * 0.9;
+let cardViewWidth = width * 0.95;
 let cardTitleBarHeight = height * 0.1;
 let userAvatarImageHeight = height * 0.1;
 let userAvatarImageWidth = height * 0.1;
@@ -60,19 +60,21 @@ dateTimeLine: {
 },
 cardViewBody: {
     backgroundColor: COLOR_LIGHT,
-    paddingLeft:10,
-    paddingRight:10
+    // paddingLeft:10,
+    // paddingRight:10,
+    width:'100%'
     // marginRight:10
 },
 postImageArea: {
-    width:cardViewWidth-20,
+    width:'100%',
     marginTop: 5,
     
 },
 postImage: {
-    width:cardViewWidth-20,
+    width:'100%',
     height:220,
-    resizeMode:"center"
+    marginVertical:10
+    // resizeMode:"center"
 },
 
 // Font Styles
@@ -83,6 +85,7 @@ nameFont: {
 },
 postContentFont: {
     textAlign:"justify"
+    
 }
 
 });
