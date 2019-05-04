@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
+import Post from "../../components/HomePostComponent/HomePostComponent";
+import styles from "./style";
 export default class Home extends Component {
 
     constructor() {
@@ -18,11 +20,14 @@ export default class Home extends Component {
         return (
 
 
-            <View style={{ flex: 1 }}>
+            <View style={styles.container}>
                 <Header title="Home" />
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text>Home Page</Text>
-                </View>
+                <ScrollView>
+                    <Post />
+                    <Post />
+                    <Post />
+                    <Post />
+                </ScrollView>
             </View>
 
         )
