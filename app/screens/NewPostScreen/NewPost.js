@@ -1,29 +1,37 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity, PermissionsAndroid, KeyboardAvoidingView } from 'react-native';
+import { Text, View, Image, TouchableOpacity, PermissionsAndroid, TextInput, KeyboardAvoidingView } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import ImagePicker from "react-native-image-picker";
 import Search from "../../components/SearchAndFixLocation/searchView.js";
+import SimplePicker from 'react-native-simple-picker';
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import { COLOR_PRIMARY, COLOR_BLACK } from "../../config/styles";
+import { COLOR_PRIMARY, COLOR_BLACK, COLOR_SECONDARY } from "../../config/styles";
 import styles from "./style";
+
+const options = ['Cat', 'Dog', 'Monkey'];
+
+// Labels is optional
+const labels = ['Cat', 'Dog', 'Monkey'];
 class NewPost extends React.Component {
 
     constructor() {
         super()
         this.state = {
             photoError: true,
+            locationError: true,
             Location: false,
             Information: false,
             pickedImage: null,
             region: null,
             currentPlace: null,
             markers: [],
-            latitude:null,
-            longitude:null,
-            latitudeDelta:  0.00922*1.5,
-            longitudeDelta: 0.00421*1.5
-
+            latitude: null,
+            longitude: null,
+            latitudeDelta: 0.00922 * 1.5,
+            longitudeDelta: 0.00421 * 1.5,
+            selectedAnimal: '',
+            description:''
         }
 
     }
@@ -33,19 +41,24 @@ class NewPost extends React.Component {
         this.watchID = navigator.geolocation.watchPosition((position) => {
             // Create the object to update this.state.mapRegion through the onRegionChange function
             let region = {
-              latitude:       position.coords.latitude,
-              longitude:      position.coords.longitude,
-              latitudeDelta:  0.00922*1.5,
-              longitudeDelta: 0.00421*1.5
-            }           
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                latitudeDelta: 0.00922 * 1.5,
+                longitudeDelta: 0.00421 * 1.5
+            }
             this.setState({
-                region:region,
-                latitude:position.coords.latitude,
-                longitude:position.coords.longitude,
+                region: region,
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
             })
+            if (this.state.longitude != null && this.state.latitude != null) {
+                this.setState({
+                    locationError: false
+                })
+            }
 
-            
-          }, (error)=>console.log(error));
+
+        }, (error) => console.log(error));
     }
     requestCameraPermission = async () => {
         try {
@@ -112,7 +125,7 @@ class NewPost extends React.Component {
                             </View>
                         </ProgressStep>
 
-                        <ProgressStep label="Location" previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
+                        <ProgressStep label="Location" error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
                             <View style={styles.stepContainer}>
                                 <MapView
                                     style={styles.mapContainer}
@@ -123,30 +136,74 @@ class NewPost extends React.Component {
                                     zoomControlEnabled={true}
                                     showsMyLocationButton={true}
                                     onPress={(e) => this.setState({
-                                        longitude:e.nativeEvent.coordinate.longitude,
-                                        latitude:e.nativeEvent.coordinate.latitude
+                                        longitude: e.nativeEvent.coordinate.longitude,
+                                        latitude: e.nativeEvent.coordinate.latitude,
+                                        locationError: false
                                     })}
                                 >
-                                {this.state.latitude !=null && this.state.latitude != null?(
-                                    <Marker draggable
-                                        coordinate={{
-                                            latitude: this.state.latitude,
-                                            longitude: this.state.longitude
-                                        }}
-                                        title={"Here is the Animal"}                                     
-                                        
-                                    />
-                                ):(
-                                    <View></View>
-                                )}
-                                    
-                                </MapView>
+                                    {this.state.latitude != null && this.state.latitude != null ? (
+                                        <Marker draggable
+                                            coordinate={{
+                                                latitude: this.state.latitude,
+                                                longitude: this.state.longitude
+                                            }}
+                                            title={"Here is the Animal"}
 
+                                        />
+                                    ) : (
+                                            <View></View>
+                                        )}                                     
+
+                                </MapView>
+                               
                             </View>
                         </ProgressStep>
                         <ProgressStep label="Information" previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
                             <View style={styles.stepContainer}>
-                                <Text>This is the content within step 3!</Text>
+                                {this.state.selectedAnimal == '' ? (
+                                    <Text
+                                        style={styles.textStyle}
+                                        onPress={() => {
+                                            this.refs.picker.show();
+                                        }}
+                                    >
+                                        Click here to select Animal Type
+                                </Text>
+                                ) : (
+                                        <Text
+                                            style={styles.textStyle}
+                                            onPress={() => {
+                                                this.refs.picker.show();
+                                            }}
+                                        >
+                                            {this.state.selectedAnimal}
+                                        </Text>
+                                    )}
+                                <KeyboardAvoidingView behavior="padding" enabled={true}>
+                                    <TextInput
+                                        style={styles.descriptiontStyle}
+                                        placeholder={'Enter Description Here'}
+                                        editable={true}
+                                        multiline={true}
+                                        numberOfLines={5}
+                                        maxlength={750}
+                                        onChangeText={(text) => this.setState({ description: text })}
+                                    />
+
+                                </KeyboardAvoidingView>
+
+                                <SimplePicker
+                                    ref={'picker'}
+                                    options={options}
+                                    confirmTextStyle={{color:COLOR_PRIMARY,fontSize:16}}
+                                    cancelTextStyle={{color:'red'}}
+                                    itemStyle={styles.textStyle}
+                                    onSubmit={(option) => {
+                                        this.setState({
+                                            selectedAnimal: option,
+                                        });
+                                    }}
+                                />
                             </View>
                         </ProgressStep>
                     </ProgressSteps>

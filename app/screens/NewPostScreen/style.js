@@ -13,8 +13,8 @@ export default StyleSheet.create({
 
     stepContainer: {
         flex: 1,
-        height:'100%',
-        alignItems: 'center'        
+        height: '100%',
+        alignItems: 'center'
     },
     nextBtn: {
         backgroundColor: '#192f6a',
@@ -44,8 +44,26 @@ export default StyleSheet.create({
         borderWidth: 0.8,
         borderStyle: 'dashed',
         width: '90%',
-        minHeight: deviceHeight*0.4
+        minHeight: deviceHeight * 0.4
 
+    },
+    textStyle: {
+        color: '#006381',
+        marginTop: 20,
+        fontSize: 20,
+
+    },
+
+    descriptiontStyle: {
+        alignSelf: 'flex-start',
+        flexWrap: 'wrap',
+        textAlignVertical: 'top',
+        textAlign: 'left',
+        fontSize: 14,
+        marginHorizontal: 12,
+        marginVertical: 10,
+        padding: 5,
+        height: 'auto'
     },
     mapContainer: {
         flex: 1,
@@ -55,8 +73,8 @@ export default StyleSheet.create({
         borderWidth: 0.8,
         borderStyle: 'dashed',
         width: '100%',
-        minHeight: deviceHeight*0.42,
-        
+        minHeight: deviceHeight * 0.42,
+
     },
     rightIconContainer: {
         marginLeft: 10,

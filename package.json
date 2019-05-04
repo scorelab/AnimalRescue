@@ -14,6 +14,7 @@
     "react-native-image-picker": "^0.28.1",
     "react-native-maps": "^0.24.2",
     "react-native-progress-steps": "^1.2.7",
+    "react-native-simple-picker": "^3.1.1",
     "react-native-vector-icons": "^6.1.0",
     "react-navigation": "^3.2.3"
   },
