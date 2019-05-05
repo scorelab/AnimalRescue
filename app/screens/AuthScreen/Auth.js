@@ -4,6 +4,7 @@ import Carousel from 'react-native-looped-carousel';
 import { SocialIcon } from 'react-native-elements';
 const { width, height } = Dimensions.get('window');
 import styles from "./style";
+import PreLoader from "../../components/PreLoader/PreLoader"
 class Auth extends React.Component {
 
     constructor(props) {
@@ -28,9 +29,10 @@ class Auth extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
+            // <PreLoader/>
             <View style={styles.scrollContainer}>
                 <View style={styles.container}>
-                    <Image style={styles.logo} source={{ uri: 'https://s3.amazonaws.com/petfinder-us-east-1-petimages-prod/organization-photos/45145/45145-1.jpg?bust=2017-11-29+22%3A33%3A55' }} />
+                    <Image style={styles.logo} source={require("../../images/ara.png")} />
                     <Text style={styles.companyName}>Animal Rescue App</Text>
                     <Text style={styles.slogan}>All life is important, no matter how small.</Text>
                     <View style={styles.descriptionContent}>
