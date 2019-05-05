@@ -45,10 +45,7 @@ const Stack = createStackNavigator(
   {
       Auth:{
           screen:Auth
-      },
-      NewPost:{
-        screen: NewPost
-      },
+      },      
       Post:{
         screen:Post
       },       

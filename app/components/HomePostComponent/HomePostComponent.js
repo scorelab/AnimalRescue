@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/EvilIcons";
 
 import style from "./styles";
@@ -7,6 +7,7 @@ import style from "./styles";
 export default class HomePostComponent extends Component {
   render() {
     return (
+
       <View style={style.cardView}>
         <View style={style.cardTitleBar}>
           <View style={style.userAvatarArea}>
@@ -24,48 +25,51 @@ export default class HomePostComponent extends Component {
             </View>
           </View>
         </View>
-        <View style={style.cardViewBody}>
-          <Text style={style.postContentFont} numberOfLines={3} ellipsizeMode ={'tail'}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500sLorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s
+        <TouchableOpacity style={style.cardViewBody} onPress={()=> this.props.press}>
+          <View style={style.cardViewBody}>
+            <Text style={style.postContentFont} numberOfLines={3} ellipsizeMode={'tail'}>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500sLorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s
           </Text>
-          <View style={style.postImageArea}>
-            <Image
-              source={require("../../images/dog.jpg")}
-              style={style.postImage}
+            <View style={style.postImageArea}>
+              <Image
+                source={require("../../images/dog.jpg")}
+                style={style.postImage}
+              />
+            </View>
+            <View
+              style={{
+                borderBottomColor: "black",
+                borderBottomWidth: 1
+              }}
             />
-          </View>
-          <View
-            style={{
-              borderBottomColor: "black",
-              borderBottomWidth: 1
-            }}
-          />
 
-          <View style={{ flexDirection: "row" }}>
-            <View
-              style={{ width: 100, height: 30, paddingLeft: 50, marginTop: 10 }}
-            >
-              <Icon name="like" size={30} color="blue" />
-            </View>
+            <View style={{ flexDirection: "row" }}>
+              <View
+                style={{ width: 100, height: 30, paddingLeft: 50, marginTop: 10 }}
+              >
+                <Icon name="like" size={30} color="blue" />
+              </View>
 
-            <View
-              style={{ width: 100, height: 30, paddingLeft: 50, marginTop: 10 }}
-            >
-              <Icon name="comment" size={30} color="blue" />
-            </View>
-            
-            <View
-              style={{ width: 100, height: 30, paddingLeft: 50, marginTop: 10 }}
-            >
-              <Icon name="share-google" size={30} color="blue" />
+              <View
+                style={{ width: 100, height: 30, paddingLeft: 50, marginTop: 10 }}
+              >
+                <Icon name="comment" size={30} color="blue" />
+              </View>
+
+              <View
+                style={{ width: 100, height: 30, paddingLeft: 50, marginTop: 10 }}
+              >
+                <Icon name="share-google" size={30} color="blue" />
+              </View>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
+
     );
   }
 }

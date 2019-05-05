@@ -32,7 +32,7 @@ class Auth extends React.Component {
                 <View style={styles.container}>
                     <Image style={styles.logo} source={{ uri: 'https://s3.amazonaws.com/petfinder-us-east-1-petimages-prod/organization-photos/45145/45145-1.jpg?bust=2017-11-29+22%3A33%3A55' }} />
                     <Text style={styles.companyName}>Animal Rescue App</Text>
-                    <Text style={styles.slogan}>We Care About Animals!</Text>
+                    <Text style={styles.slogan}>All life is important, no matter how small.</Text>
                     <View style={styles.descriptionContent}>
                         <Text style={styles.description}>
                         A common sight on today’s streets is the number of abandoned animals languishing on the streets suffering with 
@@ -40,7 +40,7 @@ class Auth extends React.Component {
                         </Text>
                     </View>
                     <TouchableOpacity onPress={() => navigate('App')} style={[styles.buttonContainer]}>
-                        <SocialIcon style={{ width: 200,alignSelf:'center' }} title='Sign Up With Facebook' button type='facebook' />
+                        <SocialIcon style={{ width: 200,alignSelf:'center' }} title='Continue With Facebook' button type='facebook' />
                     </TouchableOpacity>                   
                 </View>
             </View>

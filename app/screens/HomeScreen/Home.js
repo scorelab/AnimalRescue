@@ -16,14 +16,12 @@ export default class Home extends Component {
 
 
     render() {
-
+        const {navigate} = this.props.navigation;
         return (
-
-
             <View style={styles.container}>
                 <Header title="Home" />
                 <ScrollView>
-                    <Post />
+                    <Post  press={navigate('Post')}/>
                     <Post />
                     <Post />
                     <Post />
