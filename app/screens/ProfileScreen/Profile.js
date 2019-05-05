@@ -27,6 +27,7 @@ class Profile extends React.Component {
 
 
     render() {
+        const {navigate} = this.props.navigation;
         return (
             <View style={styles.container}>
                 <Header title="Profile" />
@@ -41,7 +42,7 @@ class Profile extends React.Component {
                             <Text style={styles.info}>UX Designer / Mobile developer</Text>
                             <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text>
 
-                            <TouchableOpacity style={styles.buttonContainer} onPress={() => this.openMap()}>
+                            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigate('Post')}>
                                 <Text>Opcion 1</Text>
                             </TouchableOpacity>
 
