@@ -17,7 +17,7 @@ class Auth extends React.Component {
         const {navigate} = this.props.navigation;
         return (
             <View style={{ flex: 1, justifyContent:'center', alignItems:'center' }}>
-                 <TouchableOpacity onPress={() => navigate('App')}>
+                 <TouchableOpacity onPress={() => navigate('Post')}>
                     <Text>Auth Page</Text>
                 </TouchableOpacity> 
             </View>

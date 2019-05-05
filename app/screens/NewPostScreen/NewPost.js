@@ -9,7 +9,6 @@ import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { COLOR_PRIMARY, COLOR_BLACK, COLOR_SECONDARY } from "../../config/styles";
 import styles from "./style";
 import Snackbar from 'react-native-snackbar';
-import style from '../ProfileScreen/style';
 const options = ['Cat', 'Dog', 'Monkey'];
 import DropdownAlert from 'react-native-dropdownalert';
 // Labels is optional
@@ -121,7 +120,16 @@ class NewPost extends React.Component {
         }else if(this.state.description == '' ) {
             this.dropdown.alertWithType('error', 'Error', 'Please Add The Description');
         }else{
+            const {navigate} = this.props.navigation;
             alert(this.state.selectedAnimal+"\n "+ this.state.description + "\n "+ this.state.longitude+" \n"+this.state.latitude+"\n " +this.state.pickedImage)
+            this.setState({
+                photoError:true,
+                selectedAnimal:'',
+                description:''
+            })
+            navigate.goBack();
+
+
         }
     }
 

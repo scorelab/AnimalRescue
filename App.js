@@ -6,6 +6,7 @@ import Home from "./app/screens/HomeScreen/Home";
 import Auth from "./app/screens/AuthScreen/Auth";
 import Profile from "./app/screens/ProfileScreen/Profile";
 import NewPost from "./app/screens/NewPostScreen/NewPost";
+import Post from "./app/screens/PostScreen/Post";
 
 console.disableYellowBox = true;
 const AppStack = createBottomTabNavigator(
@@ -28,7 +29,7 @@ const AppStack = createBottomTabNavigator(
           iconName = "user";
         }       
         return <Ionicons name={iconName} size={25} color={tintColor} />;
-      },
+      }      
     }),
     tabBarOptions: {
       activeTintColor: "#4885ed",
@@ -44,7 +45,13 @@ const Stack = createStackNavigator(
   {
       Auth:{
           screen:Auth
-      },        
+      },
+      NewPost:{
+        screen: NewPost
+      },
+      Post:{
+        screen:Post
+      },       
       App:{
         screen:AppStack
       }        
