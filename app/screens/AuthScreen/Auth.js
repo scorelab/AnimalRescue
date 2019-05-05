@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Dimensions, ImageBackground,ScrollView,Image } from 'react-native';
+import { Text, View, TouchableOpacity, Dimensions, ImageBackground,ScrollView,Image,StatusBar } from 'react-native';
 import Carousel from 'react-native-looped-carousel';
 import { SocialIcon } from 'react-native-elements';
 const { width, height } = Dimensions.get('window');
@@ -31,6 +31,7 @@ class Auth extends React.Component {
         return (
             // <PreLoader/>
             <View style={styles.scrollContainer}>
+            <StatusBar backgroundColor="#192222" barStyle="default"/>    
                 <View style={styles.container}>
                     <Image style={styles.logo} source={require("../../images/ara.png")} />
                     <Text style={styles.companyName}>Animal Rescue App</Text>

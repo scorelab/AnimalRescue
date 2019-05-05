@@ -62,7 +62,8 @@ const AppContainer = createAppContainer(Stack);
 
 export default class App extends React.Component {  
   render() {
-    return (         
+    return ( 
+          
       <AppContainer/>
     );
   }
