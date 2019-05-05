@@ -21,7 +21,7 @@ export default class Home extends Component {
             <View style={styles.container}>
                 <Header title="Home" />
                 <ScrollView>
-                    <Post  press={navigate('Post')}/>
+                    <Post  press={()=>navigate('Post')}/>
                     <Post />
                     <Post />
                     <Post />

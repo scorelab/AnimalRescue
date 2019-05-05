@@ -25,7 +25,7 @@ export default class HomePostComponent extends Component {
             </View>
           </View>
         </View>
-        <TouchableOpacity style={style.cardViewBody} onPress={()=> this.props.press}>
+        <TouchableOpacity style={style.cardViewBody} onPress={this.props.press}>
           <View style={style.cardViewBody}>
             <Text style={style.postContentFont} numberOfLines={3} ellipsizeMode={'tail'}>
               Lorem Ipsum is simply dummy text of the printing and typesetting

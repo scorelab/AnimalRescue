@@ -10,7 +10,7 @@ import {
     FlatList,
     Button,
 } from 'react-native';
-import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
+import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";
 import styles from "./style";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 export default class Post extends Component {
@@ -47,7 +47,7 @@ export default class Post extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Header title="Post" />
+                <ModalHeader title="Post" onPress={() => this.props.navigation.goBack()}/>
                 <ScrollView style={styles.scroll}>
                     <View style={styles.topView}>
                         <Image style={styles.Img} source={require("../../images/dog.jpg")} />
