@@ -31,7 +31,7 @@ class NewPost extends React.Component {
             latitudeDelta: 0.00922 * 1.5,
             longitudeDelta: 0.00421 * 1.5,
             selectedAnimal: '',
-            description:''
+            description: ''
         }
 
     }
@@ -101,35 +101,34 @@ class NewPost extends React.Component {
     };
 
     checkPhoto = () => {
-        if(this.state.photoError == true){
+        if (this.state.photoError == true) {
             this.dropdown.alertWithType('error', 'Error', 'Please Select An Image');
-            
+
         }
     }
 
     checkLocation = () => {
-        if(this.state.longitude == null && this.state.latitude == null){
+        if (this.state.longitude == null && this.state.latitude == null) {
             this.dropdown.alertWithType('error', 'Error', 'Please Select The Location');
-            
+
         }
     }
 
     submit = () => {
-        if(this.state.selectedAnimal == ''){
+        if (this.state.selectedAnimal == '') {
             this.dropdown.alertWithType('error', 'Error', 'Please Select An Animal');
-        }else if(this.state.description == '' ) {
+        } else if (this.state.description == '') {
             this.dropdown.alertWithType('error', 'Error', 'Please Add The Description');
-        }else{
-            const {navigate} = this.props.navigation;
-            alert(this.state.selectedAnimal+"\n "+ this.state.description + "\n "+ this.state.longitude+" \n"+this.state.latitude+"\n " +this.state.pickedImage)
+        } else {
+            const { navigate } = this.props.navigation;
+            alert(this.state.selectedAnimal + "\n " + this.state.description + "\n " + this.state.longitude + " \n" + this.state.latitude + "\n " + this.state.pickedImage)
             this.setState({
-                photoError:true,
-                selectedAnimal:'',
-                description:''
+                photoError: true,
+                selectedAnimal: '',
+                description: '',
+                pickedImage:null
             })
-            navigate.goBack();
-
-
+            this.dropdown.alertWithType('success', 'Success', 'Post Creted Successfully');
         }
     }
 
@@ -140,7 +139,7 @@ class NewPost extends React.Component {
                 <Header title="New Post" />
                 <View style={styles.container}>
                     <ProgressSteps activeStepIconBorderColor={COLOR_PRIMARY} completedProgressBarColor={COLOR_PRIMARY} completedStepIconColor={COLOR_PRIMARY} activeLabelColor={COLOR_PRIMARY} labelColor={COLOR_BLACK}>
-                        <ProgressStep label="Photo" onNext={()=>this.checkPhoto()} errors={this.state.photoError} previousBtnDisabled={true} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
+                        <ProgressStep label="Photo" onNext={() => this.checkPhoto()} errors={this.state.photoError} previousBtnDisabled={true} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
                             <View style={styles.stepContainer}>
                                 {this.state.photoError == true ? (
                                     <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
@@ -158,7 +157,7 @@ class NewPost extends React.Component {
                             </View>
                         </ProgressStep>
 
-                        <ProgressStep label="Location" onNext={()=>this.checkLocation()} error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
+                        <ProgressStep label="Location" onNext={() => this.checkLocation()} error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
                             <View style={styles.stepContainer}>
                                 <MapView
                                     style={styles.mapContainer}
@@ -185,13 +184,13 @@ class NewPost extends React.Component {
                                         />
                                     ) : (
                                             <View></View>
-                                        )}                                     
+                                        )}
 
                                 </MapView>
-                               
+
                             </View>
                         </ProgressStep>
-                        <ProgressStep label="Information" onSubmit={ ()=> this.submit()} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
+                        <ProgressStep label="Information" onSubmit={() => this.submit()} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
                             <View style={styles.stepContainer}>
                                 {this.state.selectedAnimal == '' ? (
                                     <Text
@@ -228,8 +227,8 @@ class NewPost extends React.Component {
                                 <SimplePicker
                                     ref={'picker'}
                                     options={options}
-                                    confirmTextStyle={{color:COLOR_PRIMARY,fontSize:16}}
-                                    cancelTextStyle={{color:'red'}}
+                                    confirmTextStyle={{ color: COLOR_PRIMARY, fontSize: 16 }}
+                                    cancelTextStyle={{ color: 'red' }}
                                     itemStyle={styles.textStyle}
                                     onSubmit={(option) => {
                                         this.setState({
