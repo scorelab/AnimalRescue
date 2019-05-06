@@ -163,14 +163,7 @@ class Profile extends React.Component {
                     </TouchableOpacity>
                     <View style={styles.body}>
                         <View style={styles.bodyContent}>
-                            <Text style={styles.name}>John Doe</Text>
-                            <Text style={styles.info}>UX Designer / Mobile developer</Text>
-                            {/* <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text> */}
-                            {/* 
-                            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigate('Post')}>
-                                <Text>Opcion 1</Text>
-                            </TouchableOpacity> */}
-
+                            <Text style={styles.name}>John Doe</Text>                        
                         </View>
                         <View style={{ flexDirection: 'row', borderWidth: 1.5, borderColor: COLOR_GRAY, height: 50, width: '100%' }}>
                             {this.state.active == 1 ? (
