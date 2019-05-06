@@ -134,6 +134,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-reanimated')
     implementation project(':react-native-snackbar')
     implementation(project(':react-native-maps')){
         exclude group: 'com.google.android.gms', module: 'play-services-base'
