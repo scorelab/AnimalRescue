@@ -31,7 +31,8 @@ class NewPost extends React.Component {
             latitudeDelta: 0.00922 * 1.5,
             longitudeDelta: 0.00421 * 1.5,
             selectedAnimal: '',
-            description: ''
+            description: '',
+            animationState: 'rest',
         }
 
     }

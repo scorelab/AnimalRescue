@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity , ActivityIndicator } from "react-native";
 import Icon from "react-native-vector-icons/EvilIcons";
-
+import { Image } from 'react-native-elements';
 import style from "./styles";
-
+import { BallIndicator } from 'react-native-indicators';
 export default class HomePostComponent extends Component {
   render() {
     return (
@@ -38,6 +38,7 @@ export default class HomePostComponent extends Component {
               <Image
                 source={require("../../images/dog.jpg")}
                 style={style.postImage}
+                PlaceholderContent={<BallIndicator color='#192f6a' />}
               />
             </View>
             <View

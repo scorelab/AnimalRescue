@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_LIGHT } from "../../config/styles";
+import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_LIGHT, COLOR_GRAY } from "../../config/styles";
 
 var {height, width} = Dimensions.get("window");
 
@@ -68,12 +68,14 @@ cardViewBody: {
 postImageArea: {
     width:'100%',
     marginTop: 5,
+    backgroundColor:COLOR_GRAY
     
 },
 postImage: {
     width:'100%',
     height:220,
-    marginVertical:10
+    marginVertical:10,    
+    backgroundColor:COLOR_GRAY
     // resizeMode:"center"
 },
 
