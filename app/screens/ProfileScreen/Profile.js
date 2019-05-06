@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image, ScrollView , Linking} from 'react-native';
+import { Text, View, TouchableOpacity, Image, ScrollView, Linking } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import styles from "./style";
-
+import Ionicons from "react-native-vector-icons/FontAwesome";
+import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_LIGHT, COLOR_GRAY } from "../../config/styles";
 class Profile extends React.Component {
 
     constructor() {
@@ -11,7 +12,7 @@ class Profile extends React.Component {
     }
 
     componentDidMount() {
-        
+
     }
 
     openMap = () => {
@@ -27,15 +28,22 @@ class Profile extends React.Component {
 
 
     render() {
-        const {navigate} = this.props.navigation;
+        const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
                 <Header title="Profile" />
                 <ScrollView>
                     <View style={styles.header}>
                         <Image style={{ width: '100%', height: '100%' }} source={require("../../images/dog.jpg")} />
+                        <TouchableOpacity style={styles.editCover}>
+                            <Ionicons name={'camera'} size={20} color={'#000'} />
+                            <Text> EDIT</Text>
+                        </TouchableOpacity>
                     </View>
                     <Image style={styles.avatar} source={require("../../images/user_image_1.jpg")} />
+                    <TouchableOpacity style={{ alignSelf: 'center', marginLeft: 80, marginTop: 20 ,backgroundColor:COLOR_GRAY}}>
+                        <Ionicons name={'edit'} size={20} color={'#000'} />
+                    </TouchableOpacity>
                     <View style={styles.body}>
                         <View style={styles.bodyContent}>
                             <Text style={styles.name}>John Doe</Text>
