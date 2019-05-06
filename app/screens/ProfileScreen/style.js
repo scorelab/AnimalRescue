@@ -20,7 +20,7 @@ export default StyleSheet.create({
   },
   editCover: {
     flexDirection: 'row',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center',
     marginRight: 15,
     alignSelf: 'flex-end',
@@ -30,13 +30,24 @@ export default StyleSheet.create({
     borderRadius: 15,
     backgroundColor: COLOR_GRAY
   },
+  editProfilePic: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginLeft: 75,
+    marginTop: 20,
+    backgroundColor: COLOR_GRAY,
+    height: 30,
+    width: 30,
+    borderRadius: 15
+  },
   name: {
     fontSize: 22,
     color: "#FFFFFF",
     fontWeight: '600',
   },
   body: {
-    marginTop: 20,
+    marginTop: -20,
     marginBottom: 20
   },
   bodyContent: {

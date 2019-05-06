@@ -41,8 +41,8 @@ class Profile extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <Image style={styles.avatar} source={require("../../images/user_image_1.jpg")} />
-                    <TouchableOpacity style={{ alignSelf: 'center', marginLeft: 80, marginTop: 20 ,backgroundColor:COLOR_GRAY}}>
-                        <Ionicons name={'edit'} size={20} color={'#000'} />
+                    <TouchableOpacity style={styles.editProfilePic}>
+                        <Ionicons name={'camera'} size={20} color={'#000'} />
                     </TouchableOpacity>
                     <View style={styles.body}>
                         <View style={styles.bodyContent}>
