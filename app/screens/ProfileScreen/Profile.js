@@ -13,7 +13,7 @@ class Profile extends React.Component {
         this.state = {
             newProfileImage: null,
             newCoverPhoto: null,
-            active:1,
+            active: 1,
             data1: [
                 { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png" },
                 { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar2.png" },
@@ -30,9 +30,9 @@ class Profile extends React.Component {
                 { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png" },
                 { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar2.png" },
                 { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar3.png" },
-                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar4.png" },                
+                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar4.png" },
             ],
-            data3: [                
+            data3: [
                 { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar5.png" },
                 { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar6.png" },
                 { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar7.png" },
@@ -99,7 +99,7 @@ class Profile extends React.Component {
     }
 
     renderSection = () => {
-        if(this.state.active ==1){
+        if (this.state.active == 1) {
             return this.state.data1.map((data, index) => {
                 return (
                     <TouchableOpacity>
@@ -109,7 +109,7 @@ class Profile extends React.Component {
                     </TouchableOpacity>
                 )
             });
-        }else if(this.state.active == 2){
+        } else if (this.state.active == 2) {
             return this.state.data2.map((data, index) => {
                 return (
                     <TouchableOpacity>
@@ -119,7 +119,7 @@ class Profile extends React.Component {
                     </TouchableOpacity>
                 )
             });
-        }else if(this.state.active == 3){
+        } else if (this.state.active == 3) {
             return this.state.data3.map((data, index) => {
                 return (
                     <TouchableOpacity>
@@ -130,7 +130,7 @@ class Profile extends React.Component {
                 )
             });
         }
-       
+
     }
     openMap = () => {
         var url = "https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=5.95492,80.554956"
@@ -173,18 +173,44 @@ class Profile extends React.Component {
 
                         </View>
                         <View style={{ flexDirection: 'row', borderWidth: 1.5, borderColor: COLOR_GRAY, height: 50, width: '100%' }}>
-                            <TouchableOpacity onPress={()=>this.setState({active:1})} style={{ width: '33%', backgroundColor: '#192f6a', borderRightWidth: 1.5, borderColor: COLOR_GRAY, justifyContent: 'center', alignItems: 'center' }}>
-                                <Ionicons name={'camera'} size={15} color={'#fff'} />
-                                <Text style={{ color: '#fff' }}>Post</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>this.setState({active:2})} style={{ width: '33%', borderRightWidth: 1.5, borderColor: COLOR_GRAY, justifyContent: 'center', alignItems: 'center' }}>
-                                <Ionicons name={'photo'} size={15} color={'#000'} />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>this.setState({active:3})} style={{ width: '33%', justifyContent: 'center', alignItems: 'center' }}>
-                                <Text>Opcion 1</Text>
-                            </TouchableOpacity>
+                            {this.state.active == 1 ? (
+                                <TouchableOpacity onPress={() => this.setState({ active: 1 })} style={{ width: '33%', backgroundColor: '#192f6a', borderRightWidth: 1.5, borderColor: COLOR_GRAY, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Ionicons name={'camera'} size={15} color={'#fff'} />
+                                    <Text style={{ color: '#fff' }}>Post</Text>
+                                </TouchableOpacity>
+                            ) : (
+                                    <TouchableOpacity onPress={() => this.setState({ active: 1 })} style={{ width: '33%', borderRightWidth: 1.5, borderColor: COLOR_GRAY, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Ionicons name={'camera'} size={15} color={'#000'} />
+                                        <Text style={{ color: '#000' }}>Post</Text>
+                                    </TouchableOpacity>
+                                )}
+
+                            {this.state.active == 2 ? (
+                                <TouchableOpacity onPress={() => this.setState({ active: 2 })} style={{ width: '33%', backgroundColor: '#192f6a', borderRightWidth: 1.5, borderColor: COLOR_GRAY, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Ionicons name={'photo'} size={15} color={'#fff'} />
+                                    <Text style={{ color: '#fff' }}>Mentoring</Text>
+                                </TouchableOpacity>
+                            ) : (
+                                    <TouchableOpacity onPress={() => this.setState({ active: 2 })} style={{ width: '33%', borderRightWidth: 1.5, borderColor: COLOR_GRAY, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Ionicons name={'photo'} size={15} color={'#000'} />
+                                        <Text style={{ color: '#000' }}>Mentoring</Text>
+                                    </TouchableOpacity>
+                                )}
+
+                            {this.state.active == 3 ? (
+                                <TouchableOpacity onPress={() => this.setState({ active: 3 })} style={{ width: '33%', backgroundColor: '#192f6a', borderRightWidth: 1.5, borderColor: COLOR_GRAY, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Ionicons name={'home'} size={15} color={'#fff'} />
+                                    <Text style={{ color: '#fff' }}>More</Text>
+                                </TouchableOpacity>
+                            ) : (
+                                    <TouchableOpacity onPress={() => this.setState({ active: 3 })} style={{ width: '33%', borderRightWidth: 1.5, borderColor: COLOR_GRAY, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Ionicons name={'home'} size={15} color={'#000'} />
+                                        <Text style={{ color: '#000' }}>More</Text>
+                                    </TouchableOpacity>
+                                )}
+                           
                         </View>
-                        <View style={{ flexDirection: 'row', flexWrap:'wrap'}}>
+                        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                             {this.renderSection()}
                         </View>
 
