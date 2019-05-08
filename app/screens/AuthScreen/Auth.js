@@ -14,71 +14,81 @@ class Auth extends React.Component {
 
         this.state = {
             size: { width, height },
+            loggedin:"checking"
         };
     }
-    onPressLogin = async() => {
+    onPressLogin = async () => {
         LoginManager.logInWithReadPermissions([
             "public_profile",
             "user_birthday",
             "email",
             "user_photos"
-          ]).then(result => this._handleCallBack(result), function(error) {
+        ]).then(result => this._handleCallBack(result), function (error) {
             alert("Login fail with error: " + error);
-          });
+        });
     }
     _handleCallBack(result) {
         let _this = this;
         if (result.isCancelled) {
-          alert("Login cancelled");
+            alert("Login cancelled");
         } else {
-          AccessToken.getCurrentAccessToken().then(data => {
-            const token = data.accessToken;
-            fetch(
-              "https://graph.facebook.com/v2.8/me?fields=id,first_name,last_name,gender,birthday&access_token=" +
-                token
-            )
-              .then(response => response.json())
-              .then(json => {
-                const imageSize = 120;
-                const facebookID = json.id;
-                const fbImage = `https://graph.facebook.com/${facebookID}/picture?height=${imageSize}`;
-                this.authenticate(data.accessToken).then(function(result) {
-                  const { uid } = result;
-                  _this.createUser(uid, json, token, fbImage);
-                });
-              })
-              .catch(function(err) {
-                console.log(err);
-              });
-          });
+            AccessToken.getCurrentAccessToken().then(data => {
+                const token = data.accessToken;
+                fetch(
+                    "https://graph.facebook.com/v2.8/me?fields=id,first_name,last_name,gender,birthday&access_token=" +
+                    token
+                )
+                    .then(response => response.json())
+                    .then(json => {
+                        const imageSize = 120;
+                        const facebookID = json.id;
+                        const fbImage = `https://graph.facebook.com/${facebookID}/picture?height=${imageSize}`;
+                        this.authenticate(data.accessToken).then(function (result) {
+                            const { uid } = result;
+                            _this.createUser(uid, json, token, fbImage);
+                        });
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    });
+            });
         }
-      }
-    
-      authenticate = token => {
+    }
+
+    authenticate = token => {
         const provider = f.auth.FacebookAuthProvider;
         const credential = provider.credential(token);
         let ret = f.auth().signInWithCredential(credential);
         return ret;
-      };
-    
-      createUser = (uid, userData, token, dp) => {
+    };
+
+    createUser = (uid, userData, token, dp) => {
         const defaults = {
-          uid,
-          token,
-          dp,
-          ageRange: [20, 30],
-          ratings: 5,
-          numOfChcances: 1
+            uid,
+            token,
+            dp,
+            ageRange: [20, 30],
+            ratings: 5,
+            numOfChcances: 1
         };
         f.database()
-          .ref("users")
-          .child(uid)
-          .update({ ...userData, ...defaults });
-      };
+            .ref("users")
+            .child(uid)
+            .update({ ...userData, ...defaults });
+    };
 
 
     componentDidMount() {
-
+        var that = this;
+        f.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                that.props.navigation.navigate('App')
+            } else {
+                that.setState({
+                    loggedin: false
+                })
+            }
+        });
     }
 
 
