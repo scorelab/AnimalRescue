@@ -14,8 +14,21 @@ class Auth extends React.Component {
 
         this.state = {
             size: { width, height },
-            loggedin:"checking"
+            loggedin: "checking"
         };
+    }
+
+    componentDidMount() {
+        var that = this;
+        f.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                that.props.navigation.navigate('App')
+            } else {
+                that.setState({
+                    loggedin: false
+                })
+            }
+        });
     }
     onPressLogin = async () => {
         LoginManager.logInWithReadPermissions([
@@ -76,47 +89,39 @@ class Auth extends React.Component {
             .child(uid)
             .update({ ...userData, ...defaults });
     };
-
-
-    componentDidMount() {
-        var that = this;
-        f.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                that.props.navigation.navigate('App')
-            } else {
-                that.setState({
-                    loggedin: false
-                })
-            }
-        });
-    }
+    
 
 
     render() {
         const { navigate } = this.props.navigation;
-        return (
-            // <PreLoader/>
-            <View style={styles.scrollContainer}>
-                <StatusBar backgroundColor="#192222" barStyle="default" />
-                <View style={styles.container}>
-                    <Image style={styles.logo} source={require("../../images/ara.png")} />
-                    <Text style={styles.companyName}>Animal Rescue App</Text>
-                    <Text style={styles.slogan}>All life is important, no matter how small.</Text>
-                    <View style={styles.descriptionContent}>
-                        <Text style={styles.description}>
-                            A common sight on today’s streets is the number of abandoned animals languishing on the streets suffering with
-                            injuries and disease. Animal Rescue App Connect animal lovers, vets, and other NGOs in real time with the Animals That Actually Need the Help
+        if (this.state.loggedin == "checking") {
+            return (
+                <PreLoader />
+            )
+        } else if (this.state.loggedin == false) {
+            return (
+                // <PreLoader/>
+                <View style={styles.scrollContainer}>
+                    <StatusBar backgroundColor="#192222" barStyle="default" />
+                    <View style={styles.container}>
+                        <Image style={styles.logo} source={require("../../images/ara.png")} />
+                        <Text style={styles.companyName}>Animal Rescue App</Text>
+                        <Text style={styles.slogan}>All life is important, no matter how small.</Text>
+                        <View style={styles.descriptionContent}>
+                            <Text style={styles.description}>
+                                A common sight on today’s streets is the number of abandoned animals languishing on the streets suffering with
+                                injuries and disease. Animal Rescue App Connect animal lovers, vets, and other NGOs in real time with the Animals That Actually Need the Help
                         </Text>
+                        </View>
+                        <TouchableOpacity onPress={() => this.onPressLogin()} style={[styles.buttonContainer]}>
+                            <SocialIcon style={{ width: 200, alignSelf: 'center' }} title='Continue With Facebook' button type='facebook' />
+                        </TouchableOpacity>
                     </View>
-                    <TouchableOpacity onPress={() => this.onPressLogin()} style={[styles.buttonContainer]}>
-                        <SocialIcon style={{ width: 200, alignSelf: 'center' }} title='Continue With Facebook' button type='facebook' />
-                    </TouchableOpacity>
                 </View>
-            </View>
 
 
-        )
-
+            )
+        }
 
     }
 
