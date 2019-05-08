@@ -57,8 +57,8 @@ class Auth extends React.Component {
                         const facebookID = json.id;
                         const fbImage = `https://graph.facebook.com/${facebookID}/picture?height=${imageSize}`;
                         this.authenticate(data.accessToken).then(function (result) {
-                            const { uid } = result;
-                            _this.createUser(uid, json, token, fbImage);
+                            const { uid } = result;                           
+                            _this.createUser(uid, json, token, fbImage);                            
                         });
                     })
                     .catch(function (err) {
@@ -76,21 +76,23 @@ class Auth extends React.Component {
     };
 
     createUser = (uid, userData, token, dp) => {
+        this.setState({
+            loggedin:"checking"
+        })
         const defaults = {
             uid,
             token,
-            dp,
-            ageRange: [20, 30],
-            ratings: 5,
-            numOfChcances: 1
+            dp
+
         };
         f.database()
             .ref("users")
             .child(uid)
             .update({ ...userData, ...defaults });
-    };
-    
 
+        this.props.navigation.navigate('App')
+
+    };
 
     render() {
         const { navigate } = this.props.navigation;
