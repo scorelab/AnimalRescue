@@ -134,6 +134,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.facebook.android:facebook-android-sdk:4.34.0'
+    implementation project(':react-native-fbsdk')
     implementation project(':react-native-reanimated')
     implementation project(':react-native-snackbar')
     implementation(project(':react-native-maps')){
