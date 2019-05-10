@@ -73,8 +73,7 @@ postImageArea: {
 },
 postImage: {
     width:'100%',
-    height:220,
-    marginVertical:10,    
+    height:225,        
     backgroundColor:COLOR_GRAY
     // resizeMode:"center"
 },
@@ -88,6 +87,23 @@ nameFont: {
 postContentFont: {
     textAlign:"justify"
     
+},
+likeCommentArea: {
+    width: "50%",
+    height: 25,
+    paddingLeft: 50,
+    marginTop: 10
+},
+likeCommentDisplayArea:{ 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    marginTop: 10 
+},
+row:{ 
+    flexDirection: 'row' 
+},
+fontColor:{
+    color:"#000000"
 }
 
 });

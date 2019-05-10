@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity , ActivityIndicator } from "react-native";
-import Icon from "react-native-vector-icons/EvilIcons";
+import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { Image } from 'react-native-elements';
 import style from "./styles";
 import { BallIndicator } from 'react-native-indicators';
+import { COLOR_PRIMARY } from "../../config/styles";
 export default class HomePostComponent extends Component {
   render() {
     return (
@@ -25,8 +26,9 @@ export default class HomePostComponent extends Component {
             </View>
           </View>
         </View>
-        <TouchableOpacity style={style.cardViewBody} onPress={this.props.press}>
-          <View style={style.cardViewBody}>
+
+        <View style={style.cardViewBody}>
+          <TouchableOpacity style={style.cardViewBody} onPress={this.props.press}>
             <Text style={style.postContentFont} numberOfLines={3} ellipsizeMode={'tail'}>
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy text
@@ -43,32 +45,44 @@ export default class HomePostComponent extends Component {
             </View>
             <View
               style={{
-                borderBottomColor: "black",
+                borderBottomColor: {COLOR_PRIMARY},
                 borderBottomWidth: 1
               }}
             />
+          </TouchableOpacity>
+          <View style={style.likeCommentDisplayArea}>
+            <View style={style.row}>
+              <Icon name="thumbs-up" size={14} color={COLOR_PRIMARY} />
+              <Text style={style.fontColor}> 150</Text>
+            </View>
+            <Text style={style.fontColor}>10 comments</Text>
+          </View>
+          <View
+            style={{
+              borderBottomColor: {COLOR_PRIMARY},
+              borderBottomWidth: 0.5
+            }}
+          />
 
-            <View style={{ flexDirection: "row" }}>
-              <View
-                style={{ width: 100, height: 30, paddingLeft: 50, marginTop: 10 }}
-              >
-                <Icon name="like" size={30} color="blue" />
-              </View>
+          <View style={style.row}>
+            <View
+              style={style.likeCommentArea}
+            >
+              <TouchableOpacity>
+                <Icon name="thumbs-up" size={25} color={COLOR_PRIMARY}/>
+              </TouchableOpacity>
+            </View>
 
-              <View
-                style={{ width: 100, height: 30, paddingLeft: 50, marginTop: 10 }}
-              >
-                <Icon name="comment" size={30} color="blue" />
-              </View>
-
-              <View
-                style={{ width: 100, height: 30, paddingLeft: 50, marginTop: 10 }}
-              >
-                <Icon name="share-google" size={30} color="blue" />
-              </View>
+            <View
+              style={style.likeCommentArea}
+            >
+              <TouchableOpacity>
+                <Icon name="comment" size={25} color={COLOR_PRIMARY} />
+              </TouchableOpacity>
             </View>
           </View>
-        </TouchableOpacity>
+        </View>
+
       </View>
 
     );
