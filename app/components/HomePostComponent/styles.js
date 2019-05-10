@@ -92,7 +92,8 @@ likeCommentArea: {
     width: "50%",
     height: 25,
     paddingLeft: 50,
-    marginTop: 10
+    marginTop: 10,
+    
 },
 likeCommentDisplayArea:{ 
     flexDirection: 'row', 

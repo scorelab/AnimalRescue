@@ -11,12 +11,12 @@ export default class HomePostComponent extends Component {
 
       <View style={style.cardView}>
         <View style={style.cardTitleBar}>
-          <View style={style.userAvatarArea}>
+          <TouchableOpacity style={style.userAvatarArea} onPress={this.props.profile}>
             <Image
               source={require("../../images/user_image_1.jpg")}
               style={style.userAvatarImage}
             />
-          </View>
+          </TouchableOpacity>
           <View style={style.cardTitleArea}>
             <View style={style.nameLine}>
               <Text style={style.nameFont}>John Doe</Text>
@@ -45,7 +45,7 @@ export default class HomePostComponent extends Component {
             </View>
             <View
               style={{
-                borderBottomColor: {COLOR_PRIMARY},
+                borderBottomColor: { COLOR_PRIMARY },
                 borderBottomWidth: 1
               }}
             />
@@ -59,7 +59,7 @@ export default class HomePostComponent extends Component {
           </View>
           <View
             style={{
-              borderBottomColor: {COLOR_PRIMARY},
+              borderBottomColor: { COLOR_PRIMARY },
               borderBottomWidth: 0.5
             }}
           />
@@ -68,16 +68,28 @@ export default class HomePostComponent extends Component {
             <View
               style={style.likeCommentArea}
             >
-              <TouchableOpacity>
-                <Icon name="thumbs-up" size={25} color={COLOR_PRIMARY}/>
-              </TouchableOpacity>
+
+              {this.props.liked == false ? (
+                <TouchableOpacity style={style.row} onPress={this.props.like}>
+                  <Icon name="thumbs-up" size={18} />
+                  <Text style={{ fontSize: 18 }}> Like</Text>
+                </TouchableOpacity>
+              ) : (
+                  <TouchableOpacity style={style.row} onPress={this.props.like}>
+                    <Icon name="thumbs-up" size={18} color={COLOR_PRIMARY}/>
+                    <Text style={{ fontSize: 18 , color:COLOR_PRIMARY}}> Like</Text>
+                  </TouchableOpacity>
+                )}
+
+
             </View>
 
             <View
               style={style.likeCommentArea}
             >
-              <TouchableOpacity>
-                <Icon name="comment" size={25} color={COLOR_PRIMARY} />
+              <TouchableOpacity style={style.row} onPress={this.props.comment}>
+                <Icon name="comment" size={18} />
+                <Text style={{ fontSize: 18 }}> Comment</Text>
               </TouchableOpacity>
             </View>
           </View>
