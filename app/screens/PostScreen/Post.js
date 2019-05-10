@@ -9,6 +9,7 @@ import {
     ScrollView,
     FlatList,
     Button,
+    BackHandler
 } from 'react-native';
 import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";
 import styles from "./style";
@@ -20,10 +21,11 @@ export default class Post extends Component {
         this.state = {
             latitude: null,
             longitude: null,
-            region:null
+            region: null
         }
     }
     componentDidMount = async () => {
+        
         this.watchID = navigator.geolocation.watchPosition((position) => {
             // Create the object to update this.state.mapRegion through the onRegionChange function           
             let region = {
@@ -40,14 +42,17 @@ export default class Post extends Component {
 
         }, (error) => console.log(error));
     }
+    
     clickEventListener() {
-        Alert.alert("Success", "Product has beed added to cart")
+        // Alert.alert("Success", "Product has beed added to cart")
+        const {navigate} = this.props.navigation;
+        navigate('Comment')
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <ModalHeader title="Post" onPress={() => this.props.navigation.goBack()}/>
+                <ModalHeader title="Post" onPress={() => this.props.navigation.goBack()} />
                 <ScrollView style={styles.scroll}>
                     <View style={styles.topView}>
                         <Image style={styles.Img} source={require("../../images/dog.jpg")} />

@@ -6,6 +6,7 @@ import Ionicons from "react-native-vector-icons/FontAwesome";
 import ImagePicker from "react-native-image-picker";
 import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_GRAY } from "../../config/styles";
 const { width, height } = Dimensions.get('window');
+
 class Profile extends React.Component {
 
     constructor() {
@@ -68,6 +69,7 @@ class Profile extends React.Component {
     }
     componentDidMount() {
         this.requestCameraPermission();
+        
     }
 
     editProfilePicture = () => {

@@ -11,10 +11,10 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-
+        
     }
 
-
+  
     render() {
         const {navigate} = this.props.navigation;
         return (
