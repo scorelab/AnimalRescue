@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity, PermissionsAndroid, TextInput, KeyboardAvoidingView } from 'react-native';
+import { Text, View, Image, TouchableOpacity, PermissionsAndroid, TextInput, KeyboardAvoidingView,ScrollView } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import ImagePicker from "react-native-image-picker";
@@ -11,6 +11,7 @@ import styles from "./style";
 import Snackbar from 'react-native-snackbar';
 const options = ['Cat', 'Dog', 'Monkey'];
 import DropdownAlert from 'react-native-dropdownalert';
+
 // Labels is optional
 const labels = ['Cat', 'Dog', 'Monkey'];
 class NewPost extends React.Component {
@@ -136,7 +137,7 @@ class NewPost extends React.Component {
     render() {
         return (
 
-            <View style={{ flex: 1 }}>
+            <ScrollView style={{ flex: 1 }}>
                 <Header title="New Post" />
                 <View style={styles.container}>
                     <ProgressSteps activeStepIconBorderColor={COLOR_PRIMARY} completedProgressBarColor={COLOR_PRIMARY} completedStepIconColor={COLOR_PRIMARY} activeLabelColor={COLOR_PRIMARY} labelColor={COLOR_BLACK}>
@@ -219,7 +220,7 @@ class NewPost extends React.Component {
                                         editable={true}
                                         multiline={true}
                                         numberOfLines={5}
-                                        maxlength={750}
+                                        maxlength={750}                                        
                                         onChangeText={(text) => this.setState({ description: text })}
                                     />
 
@@ -242,7 +243,7 @@ class NewPost extends React.Component {
                     </ProgressSteps>
                 </View>
                 <DropdownAlert ref={ref => this.dropdown = ref} />
-            </View>
+            </ScrollView>
 
 
         )

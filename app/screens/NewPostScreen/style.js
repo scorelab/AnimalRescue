@@ -44,7 +44,7 @@ export default StyleSheet.create({
         borderWidth: 0.8,
         borderStyle: 'dashed',
         width: '90%',
-        minHeight: deviceHeight * 0.4
+        minHeight: deviceHeight * 0.45
 
     },
     textStyle: {
@@ -63,7 +63,7 @@ export default StyleSheet.create({
         marginHorizontal: 12,
         marginVertical: 10,
         padding: 5,
-        height: 'auto'
+        height: deviceHeight * 0.35
     },
     mapContainer: {
         flex: 1,
@@ -73,7 +73,7 @@ export default StyleSheet.create({
         borderWidth: 0.8,
         borderStyle: 'dashed',
         width: '100%',
-        minHeight: deviceHeight * 0.42,
+        minHeight: deviceHeight * 0.45,
 
     },
     rightIconContainer: {
