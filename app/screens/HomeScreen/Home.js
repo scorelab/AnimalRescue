@@ -29,6 +29,8 @@ export default class Home extends Component {
                         liked={this.state.liked}
                         comment={() => navigate('Comment')}
                         like={() => this.setState({ liked: true })}
+                        numberOfLikes={10}
+                        numberOfComments={1}
                     />
                     <Post />
                     <Post />

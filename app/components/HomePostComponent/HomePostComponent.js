@@ -6,6 +6,13 @@ import style from "./styles";
 import { BallIndicator } from 'react-native-indicators';
 import { COLOR_PRIMARY } from "../../config/styles";
 export default class HomePostComponent extends Component {
+
+  plural = (number) => {
+    if(number > 1){
+      return "s"
+    }
+  }
+
   render() {
     return (
 
@@ -51,11 +58,23 @@ export default class HomePostComponent extends Component {
             />
           </TouchableOpacity>
           <View style={style.likeCommentDisplayArea}>
-            <View style={style.row}>
-              <Icon name="thumbs-up" size={14} color={COLOR_PRIMARY} />
-              <Text style={style.fontColor}> 150</Text>
-            </View>
-            <Text style={style.fontColor}>10 comments</Text>
+            {this.props.numberOfLikes >= 1 ? (
+              <View style={style.row}>
+                <Icon name="thumbs-up" size={14} color={COLOR_PRIMARY} />
+                <Text style={style.fontColor}> {this.props.numberOfLikes}</Text>
+              </View>
+            ) : (
+                <View style={style.row}>
+
+                </View>
+              )}
+
+            {this.props.numberOfComments > 0 ? (
+              <Text style={style.fontColor}>{this.props.numberOfComments} comment{this.plural(this.props.numberOfComments)}</Text>
+            ) : (
+                <Text style={style.fontColor}></Text>
+              )}
+
           </View>
           <View
             style={{
@@ -76,8 +95,8 @@ export default class HomePostComponent extends Component {
                 </TouchableOpacity>
               ) : (
                   <TouchableOpacity style={style.row} onPress={this.props.like}>
-                    <Icon name="thumbs-up" size={18} color={COLOR_PRIMARY}/>
-                    <Text style={{ fontSize: 18 , color:COLOR_PRIMARY}}> Like</Text>
+                    <Icon name="thumbs-up" size={18} color={COLOR_PRIMARY} />
+                    <Text style={{ fontSize: 18, color: COLOR_PRIMARY }}> Like</Text>
                   </TouchableOpacity>
                 )}
 
