@@ -8,9 +8,10 @@ import {
     FlatList,
     TextInput,
     KeyboardAvoidingView,
-    ScrollView    
+    ScrollView
 } from 'react-native';
 import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";
+import styles from "./style";
 export default class Comment extends Component {
 
     constructor(props) {
@@ -56,7 +57,7 @@ export default class Comment extends Component {
                                         <Text style={styles.name}>{Notification.name}</Text>
                                         <Text style={styles.time}>
                                             9:58 am
-                  </Text>
+                                        </Text>
                                     </View>
                                     <Text rkType='primary3 mediumLine'>{Notification.comment}</Text>
                                 </View>
@@ -64,7 +65,7 @@ export default class Comment extends Component {
                         );
                     }} />
                 <View style={styles.footer}>
-                    <KeyboardAvoidingView  style={styles.inputContainer} behavior='padding' enabled>
+                    <KeyboardAvoidingView style={styles.inputContainer} behavior='padding' enabled>
                         <TextInput style={styles.inputs}
                             placeholder="Write a Comment..."
                             underlineColorAndroid='transparent'
@@ -76,85 +77,8 @@ export default class Comment extends Component {
                     </TouchableOpacity>
                 </View>
             </View>
-            
+
         );
     }
 }
 
-const styles = StyleSheet.create({
-    root: {
-        backgroundColor: "#ffffff",
-        marginTop: 10,
-    },
-    container: {
-        paddingLeft: 19,
-        paddingRight: 16,
-        paddingVertical: 12,
-        flexDirection: 'row',
-        alignItems: 'flex-start'
-    },
-    content: {
-        marginLeft: 16,
-        flex: 1,
-    },
-    contentHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 6
-    },
-    separator: {
-        height: 1,
-        backgroundColor: "#CCCCCC"
-    },
-    image: {
-        width: 45,
-        height: 45,
-        borderRadius: 20,
-        marginLeft: 20
-    },
-    time: {
-        fontSize: 11,
-        color: "#808080",
-    },
-    name: {
-        fontSize: 16,
-        fontWeight: "bold",
-    },
-    footer:{
-        flexDirection: 'row',
-        height:60,
-        backgroundColor: '#eeeeee',
-        paddingHorizontal:10,
-        padding:5,
-      },
-      btnSend:{
-        backgroundColor:"#00BFFF",
-        width:40,
-        height:40,
-        borderRadius:360,
-        alignItems:'center',
-        justifyContent:'center',
-      },
-      iconSend:{
-        width:30,
-        height:30,
-        alignSelf:'center',
-      },
-      inputContainer: {
-        borderBottomColor: '#F5FCFF',
-        backgroundColor: '#FFFFFF',
-        borderRadius:30,
-        borderBottomWidth: 1,
-        height:40,
-        flexDirection: 'row',
-        alignItems:'center',
-        flex:1,
-        marginRight:10,
-      },
-      inputs:{
-        height:40,
-        marginLeft:16,
-        borderBottomColor: '#FFFFFF',
-        flex:1,
-      },
-});  
