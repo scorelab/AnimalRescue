@@ -82,4 +82,30 @@ export default StyleSheet.create({
     borderRadius: 30,
     backgroundColor: "#00BFFF",
   },
+  tabBarContainer:{ 
+    flexDirection: 'row', 
+    borderWidth: 1.5, 
+    borderColor: COLOR_GRAY, 
+    height: 50, 
+    width: '100%' 
+  },
+  tabBarActive: {
+    width: '25%',
+    backgroundColor: '#192f6a',
+    borderRightWidth: 1.5,
+    borderColor: COLOR_GRAY,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  tabBar: {
+    width: '25%',
+    // backgroundColor: '#192f6a',
+    borderRightWidth: 1.5,
+    borderColor: COLOR_GRAY,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+
+
 });
