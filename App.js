@@ -6,6 +6,7 @@ import Home from "./app/screens/HomeScreen/Home";
 import Auth from "./app/screens/AuthScreen/Auth";
 import Profile from "./app/screens/ProfileScreen/Profile";
 import NewPost from "./app/screens/NewPostScreen/NewPost";
+import Notification from "./app/screens/NotificationScreen/notificationScreen";
 import Post from "./app/screens/PostScreen/Post";
 import Comment from "./app/screens/CommentScreen/Comment";
 
@@ -14,7 +15,8 @@ const AppStack = createBottomTabNavigator(
   {
     Home: { screen: Home },
     New: { screen: NewPost },
-    Profile: { screen: Profile }
+    Profile: { screen: Profile },
+    Notification : {screen : Notification}
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -28,6 +30,8 @@ const AppStack = createBottomTabNavigator(
           iconName = "plus-square";
         } else if (routeName === "Profile") {
           iconName = "user";
+        }else if (routeName === "Notification"){
+          iconName = "bell"
         }
         return <Ionicons name={iconName} size={25} color={tintColor} />;
       }

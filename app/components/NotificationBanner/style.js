@@ -14,8 +14,7 @@ export default StyleSheet.create({
     },
     scrollView:{
         width:'100%',
-        backgroundColor:COLOR_GRAY,
-       
+        backgroundColor:COLOR_GRAY,  
         
     },
     scrollViewContent:{
@@ -24,22 +23,24 @@ export default StyleSheet.create({
     },
     cardContainer: {
         flex:1,
-        width:'90%',
+        width:'100%',
         backgroundColor:'#fff',
-        borderRadius:5,
-        // height:200,
+        borderRadius:5,        
         alignItems:'center',
         justifyContent:'flex-start',
+        borderBottomWidth:0.7,
+        borderColor:"#192f6a"
         // marginBottom:20,
-        marginTop:10
+        // marginTop:10
     },
     cardHedear:{
         marginLeft:10,
-        marginTop:5,
-        marginRight:10,
+        marginVertical:20,
+        marginRight:20,
+        marginLeft:20,
         // marginBottom:10,
         // width:deviceWidth,
-        height:80,
+        height:'auto',
         flexDirection:'row'
     },
     profilePicArea:{        
@@ -47,7 +48,7 @@ export default StyleSheet.create({
         // width:deviceWidth * 0.2,
         // backgroundColor:'red',
         alignItems:'center',
-        justifyContent:'center'
+        // justifyContent:'center'
     },
     userDetailArea:{
         flex:0.75,
@@ -68,9 +69,9 @@ export default StyleSheet.create({
         // backgroundColor:'blue'
     },
     userImage:{
-        height:60,
-        width:60,
-        borderRadius:30
+        width: 45,
+        height: 45,
+        borderRadius: 20,
     },
     badgeCount:{
         backgroundColor:'#3d9bf9',
@@ -84,9 +85,9 @@ export default StyleSheet.create({
         right:10
     },
     imageThumbnails:{
-        height:70,
-        width:70,
-        borderRadius:35,
+        width: 45,
+        height: 45,
+        borderRadius: 20,
     },
     detailRow:{
         width:'100%',
@@ -116,7 +117,7 @@ export default StyleSheet.create({
     },
     meaasageText:{
         fontSize:16,
-        color:'#95a3ad'
+        // color:'#95a3ad'
     },
     paraText:{
         fontSize:16,
@@ -126,6 +127,14 @@ export default StyleSheet.create({
         color:'#fff',
         fontSize:12,
         fontWeight:'bold'
-    }
+    },
+    time: {
+        fontSize: 11,
+        color: "#808080",
+    },
+    name: {
+        fontSize: 16,
+        fontWeight: "bold",
+    },
     
 });
