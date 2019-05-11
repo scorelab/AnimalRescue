@@ -25,8 +25,8 @@ export default class Post extends Component {
         }
     }
     componentDidMount = async () => {
-        
-        this.watchID = navigator.geolocation.watchPosition((position) => {
+
+        this.watchID = navigator.geolocation.getCurrentPosition((position) => {
             // Create the object to update this.state.mapRegion through the onRegionChange function           
             let region = {
                 latitude: position.coords.latitude,
@@ -42,10 +42,11 @@ export default class Post extends Component {
 
         }, (error) => console.log(error));
     }
-    
+
+
     clickEventListener() {
         // Alert.alert("Success", "Product has beed added to cart")
-        const {navigate} = this.props.navigation;
+        const { navigate } = this.props.navigation;
         navigate('Comment')
     }
 
@@ -54,6 +55,17 @@ export default class Post extends Component {
             <View style={styles.container}>
                 <ModalHeader title="Post" onPress={() => this.props.navigation.goBack()} />
                 <ScrollView style={styles.scroll}>
+                    <View style={styles.profile}>
+                        <Image style={styles.avatar}
+                            source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar1.png' }} />
+
+                        <Text style={styles.profileName}>
+                            Johan Wathsara
+                         </Text>
+                         <Text style={{marginLeft:20}}>
+                            5 hours ago 
+                         </Text>
+                    </View>
                     <View style={styles.topView}>
                         <Image style={styles.Img} source={require("../../images/dog.jpg")} />
                         <View style={styles.informationArea}>
@@ -88,6 +100,7 @@ export default class Post extends Component {
                                     title={"Here is the Animal"}
 
                                 />
+
                             ) : (
                                     <View></View>
                                 )}

@@ -18,22 +18,22 @@ export default StyleSheet.create({
         alignItems: 'center',
         marginTop: 10,
         marginHorizontal: 10,
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     informationArea: {
         alignItems: 'center',
         marginTop: 10,
         marginHorizontal: 30,
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     mapContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',        
+        alignItems: 'center',
         borderWidth: 0.8,
         borderStyle: 'dashed',
         width: '100%',
-        minHeight:200,
+        minHeight: 200,
     },
     name: {
         fontSize: 28,
@@ -113,5 +113,27 @@ export default StyleSheet.create({
     },
     addToCarContainer: {
         marginHorizontal: 30
-    }
+    },
+    avatar: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        borderWidth: 2,
+        borderColor: "#192f6a",
+    },
+    profile: {
+        flexDirection: 'row',
+        marginTop: 20,
+        marginVertical:20,
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    profileName: {
+        fontSize: 18,
+        color: "#696969",
+        fontWeight: '600',
+        alignSelf: 'center',
+        marginLeft: 10
+    },
+    
 });
