@@ -25,8 +25,8 @@ const AppStack = createBottomTabNavigator(
           <View>
             {1 != 0 ? (
               <View>
-                <Ionicons name="bell" size={25} color={tintColor}/>
-                <Badge status="error" value="15" containerStyle={{ position: 'absolute', top: -4, right: -4 }} />
+                <Ionicons name="bell" size={25} color={tintColor} />
+                <Badge status="error" value="10" containerStyle={{ position: 'absolute', top: -4, right: -4 }} />
               </View>
             ) : (
                 <View>
@@ -92,11 +92,16 @@ const AppContainer = createAppContainer(Stack);
 
 export default class App extends React.Component {
 
-  
+  constructor(props) {
+    super(props);
+    this.state = {
+      count:10
+    }
+  }  
   render() {
     return (
 
-      <AppContainer />
+      <AppContainer/>
     );
   }
 }

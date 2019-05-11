@@ -10,6 +10,30 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor:COLOR_GRAY
-    },   
+    },  
+    tabBarContainer:{ 
+        flexDirection: 'row', 
+        borderWidth: 1.5, 
+        borderColor: "#fff", 
+        height: 50, 
+        width: '100%',
+        marginVertical:5
+      },
+      tabBarActive: {
+        width: '33.3%',
+        borderColor: '#192f6a',        
+        borderBottomWidth: 4.5,        
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+      },
+      tabBar: {
+        width: '33.3%',
+        backgroundColor: '#fff',
+        borderRightWidth: 1.5,
+        borderColor: "#fff",
+        justifyContent: 'center',
+        alignItems: 'center'
+      }, 
 
 });
