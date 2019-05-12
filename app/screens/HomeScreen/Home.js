@@ -50,11 +50,11 @@ export default class Home extends Component {
         }
     }
     renderSection = () => {
-        
+
         const { navigate } = this.props.navigation;
         if (this.state.active == 0) {
             return (
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <Post
                         press={() => navigate('Post')}
                         liked={this.state.liked}
@@ -69,7 +69,7 @@ export default class Home extends Component {
 
         } else if (this.state.active == 1) {
             return (
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <Post
                         press={() => navigate('Post')}
                         liked={this.state.liked}
@@ -83,7 +83,7 @@ export default class Home extends Component {
             )
         } else if (this.state.active == 2) {
             return (
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <Post
                         press={() => navigate('Post')}
                         liked={this.state.liked}
@@ -101,49 +101,43 @@ export default class Home extends Component {
     }
 
     render() {
-      
+
         return (
-            <View style={styles.container}>                
+            <View style={styles.container}>
                 <Header title="Home" />
                 <View style={styles.tabBarContainer}>
                     {this.state.active == 0 ? (
                         <TouchableOpacity onPress={() => this.setState({ active: 0 })} style={styles.tabBarActive}>
-                            <Ionicons name={'camera'} size={15} color={'#fff'} />
-                            <Text style={{ color: '#fff' }}>Badges</Text>
+                            <Text style={{ color: '#fff' }}>Active</Text>
                         </TouchableOpacity>
                     ) : (
                             <TouchableOpacity onPress={() => this.setState({ active: 0 })} style={styles.tabBar}>
-                                <Ionicons name={'camera'} size={15} color={'#a0a0a0'} />
-                                <Text style={{ color: '#a0a0a0' }}>Badges</Text>
+                                <Text style={{ color: '#a0a0a0' }}>Active</Text>
                             </TouchableOpacity>
                         )}
 
 
                     {this.state.active == 1 ? (
                         <TouchableOpacity onPress={() => this.setState({ active: 1 })} style={styles.tabBarActive}>
-                            <Ionicons name={'camera'} size={15} color={'#fff'} />
-                            <Text style={{ color: '#fff' }}>Post</Text>
+                            <Text style={{ color: '#fff' }}>Pending</Text>
                         </TouchableOpacity>
                     ) : (
                             <TouchableOpacity onPress={() => this.setState({ active: 1 })} style={styles.tabBar}>
-                                <Ionicons name={'camera'} size={15} color={'#a0a0a0'} />
-                                <Text style={{ color: '#a0a0a0' }}>Post</Text>
+                                <Text style={{ color: '#a0a0a0' }}>Pending</Text>
                             </TouchableOpacity>
                         )}
 
                     {this.state.active == 2 ? (
                         <TouchableOpacity onPress={() => this.setState({ active: 2 })} style={styles.tabBarActive}>
-                            <Ionicons name={'photo'} size={15} color={'#fff'} />
-                            <Text style={{ color: '#fff' }}>Mentoring</Text>
+                            <Text style={{ color: '#fff' }}>Finished</Text>
                         </TouchableOpacity>
                     ) : (
                             <TouchableOpacity onPress={() => this.setState({ active: 2 })} style={styles.tabBar}>
-                                <Ionicons name={'photo'} size={15} color={'#a0a0a0'} />
-                                <Text style={{ color: '#a0a0a0' }}>Mentoring</Text>
+                                <Text style={{ color: '#a0a0a0' }}>Finished</Text>
                             </TouchableOpacity>
                         )}
                 </View>
-                <View style={{flex: 1, backgroundColor: 'transparent'}}>
+                <View style={{ flex: 1, backgroundColor: 'transparent' }}>
                     {this.renderSection()}
                 </View>
             </View >

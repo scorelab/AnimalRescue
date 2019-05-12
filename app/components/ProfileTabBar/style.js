@@ -6,8 +6,8 @@ let deviceHeight = Dimensions.get('window').height;
 export default StyleSheet.create({
     tabBarContainer: {
         flexDirection: 'row',
-        borderWidth: 1.5,
-        borderColor: COLOR_GRAY,
+        // borderWidth: 1.5,
+        // borderColor: COLOR_GRAY,
         height: 50,
         backgroundColor: '#192f6a', 
         width: '100%'

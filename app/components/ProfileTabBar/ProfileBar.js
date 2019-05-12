@@ -4,7 +4,7 @@ import Ionicons from "react-native-vector-icons/FontAwesome";
 import styles from "./style";
 import { BallIndicator } from 'react-native-indicators';
 import { COLOR_PRIMARY } from "../../config/styles";
-export default class HomePostComponent extends Component {
+export default class ProfileBar extends Component {
    
 
     render() {

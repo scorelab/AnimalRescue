@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { createStackNavigator, createBottomTabNavigator, createAppContainer } from "react-navigation";
+import { createStackNavigator, createBottomTabNavigator, createAppContainer,createMaterialTopTabNavigator  } from "react-navigation";
 import { StyleSheet, TouchableOpacity, View, Container } from 'react-native';
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import Home from "./app/screens/HomeScreen/Home";
@@ -31,7 +31,7 @@ export default class App extends React.Component {
     
   }
   render() {
-    const AppStack = createBottomTabNavigator(
+    const AppStack = createMaterialTopTabNavigator (
       {
         Home: { screen: Home },
         New: { screen: NewPost },
@@ -44,12 +44,12 @@ export default class App extends React.Component {
               <View>
                 {this.state.count > 0 ? (
                   <View>
-                    <Ionicons name="bell" size={25} color={tintColor} />
+                    <Ionicons name="bell" size={20} color={tintColor} />
                     <Badge status="error" value={this.state.count} containerStyle={{ position: 'absolute', top: -4, right: -4 }} />
                   </View>
                 ) : (
                     <View>
-                      <Ionicons name="bell" size={25} color={tintColor} />
+                      <Ionicons name="bell" size={20} color={tintColor} />
                     </View>
                   )}
               </View>
@@ -60,8 +60,8 @@ export default class App extends React.Component {
       },
       {
         defaultNavigationOptions: ({ navigation }) => ({
-          tabBarIcon: ({ focused, tintColor }) => {
-    
+          tabBarPosition :'bottom',
+          tabBarIcon: ({ focused, tintColor }) => {    
             const { routeName } = navigation.state;
             let iconName;
             if (routeName === "Home") {
@@ -71,14 +71,21 @@ export default class App extends React.Component {
             } else if (routeName === "Profile") {
               iconName = "user";
             }
-            return <Ionicons name={iconName} size={25} color={tintColor} />;
+            return <Ionicons name={iconName} size={20} color={tintColor} />;
           }
         }),
         tabBarOptions: {
+          tabBarPosition:'bottom',
           activeTintColor: "#4885ed",
           inactiveTintColor: "white",
+          showIcon :true,
+          labelStyle: {
+            fontSize: 9,            
+          },
           style: {
             backgroundColor: '#192f6a',
+            color:'#fff',
+            height:55
           }
         },
       }
