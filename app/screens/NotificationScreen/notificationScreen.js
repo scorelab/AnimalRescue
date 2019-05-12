@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Text, View, TouchableHighlight, Image, ScrollView } from "react-native";
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import NotificationBanner from '../../components/NotificationBanner/notificationBanner';
-import styles from './style'
-
+import styles from './style';
 export default class NotificationScreen extends Component {
 
         render() {
