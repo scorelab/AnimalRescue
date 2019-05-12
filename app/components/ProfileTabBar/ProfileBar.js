@@ -1,0 +1,67 @@
+import React, { Component } from "react";
+import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import Ionicons from "react-native-vector-icons/FontAwesome";
+import styles from "./style";
+import { BallIndicator } from 'react-native-indicators';
+import { COLOR_PRIMARY } from "../../config/styles";
+export default class HomePostComponent extends Component {
+   
+
+    render() {
+        return (
+            <View style={styles.tabBarContainer}>
+                {this.props.active == 0 ? (
+                    <TouchableOpacity onPress={this.props.onPress0} style={styles.tabBarActive}>
+                        <Ionicons name={'camera'} size={15} color={'#fff'} />
+                        <Text style={{ color: '#fff' }}>Badges</Text>
+                    </TouchableOpacity>
+                ) : (
+                        <TouchableOpacity onPress={this.props.onPress0} style={styles.tabBar}>
+                            <Ionicons name={'camera'} size={15} color={'#a0a0a0'} />
+                            <Text style={{ color: '#a0a0a0' }}>Badges</Text>
+                        </TouchableOpacity>
+                    )}
+
+
+                {this.props.active == 1 ? (
+                    <TouchableOpacity onPress={this.props.onPress1} style={styles.tabBarActive}>
+                        <Ionicons name={'camera'} size={15} color={'#fff'} />
+                        <Text style={{ color: '#fff' }}>Post</Text>
+                    </TouchableOpacity>
+                ) : (
+                        <TouchableOpacity onPress={this.props.onPress1} style={styles.tabBar}>
+                            <Ionicons name={'camera'} size={15} color={'#a0a0a0'} />
+                            <Text style={{ color: '#a0a0a0' }}>Post</Text>
+                        </TouchableOpacity>
+                    )}
+
+                {this.props.active == 2 ? (
+                    <TouchableOpacity onPress={this.props.onPress2} style={styles.tabBarActive}>
+                        <Ionicons name={'photo'} size={15} color={'#fff'} />
+                        <Text style={{ color: '#fff' }}>Mentoring</Text>
+                    </TouchableOpacity>
+                ) : (
+                        <TouchableOpacity onPress={this.props.onPress2} style={styles.tabBar}>
+                            <Ionicons name={'photo'} size={15} color={'#a0a0a0'} />
+                            <Text style={{ color: '#a0a0a0' }}>Mentoring</Text>
+                        </TouchableOpacity>
+                    )}
+
+                {this.props.active == 3 ? (
+                    <TouchableOpacity onPress={this.props.onPress3} style={styles.tabBarActive}>
+                        <Ionicons name={'home'} size={15} color={'#fff'} />
+                        <Text style={{ color: '#fff' }}>More</Text>
+                    </TouchableOpacity>
+                ) : (
+                        <TouchableOpacity onPress={this.props.onPress3} style={styles.tabBar}>
+                            <Ionicons name={'home'} size={15} color={'#a0a0a0'} />
+                            <Text style={{ color: '#a0a0a0' }}>More</Text>
+                        </TouchableOpacity>
+                    )}
+
+            </View>
+
+
+        );
+    }
+}

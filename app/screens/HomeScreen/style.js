@@ -16,6 +16,8 @@ export default StyleSheet.create({
         height: 50, 
         width: '100%',
         marginBottom:5,
+        borderWidth: 1.5,
+        borderColor: COLOR_GRAY,
         backgroundColor: '#192f6a', 
       },
       tabBarActive: {

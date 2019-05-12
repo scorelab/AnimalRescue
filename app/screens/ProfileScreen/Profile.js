@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Image, ScrollView, Linking, Dimensions } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
+import ProfileTabBar from "../../components/ProfileTabBar/ProfileBar";
 import styles from "./style";
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import ImagePicker from "react-native-image-picker";
@@ -114,7 +115,7 @@ class Profile extends React.Component {
                 )
             });
         } else if (this.state.active == 2) {
-            return this.state.data2.map((data, index) => {
+            return this.state.data1.map((data, index) => {
                 return (
                     <TouchableOpacity>
                         <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
@@ -153,7 +154,7 @@ class Profile extends React.Component {
         return (
             <View style={styles.container}>
                 <Header title="Profile" />
-                <ScrollView style={{ marginBottom: 50 }}>
+                <ScrollView style={{ marginBottom: 60 }} stickyHeaderIndices={[4]}  showsVerticalScrollIndicator={false}>
                     <View style={styles.header}>
                         <Image style={{ width: '100%', height: '100%' }} source={require("../../images/dog.jpg")} />
                         <TouchableOpacity style={styles.editCover} onPress={() => this.editCoverPicture()}>
@@ -169,61 +170,18 @@ class Profile extends React.Component {
                         <View style={styles.bodyContent}>
                             <Text style={styles.name}>John Doe</Text>
                         </View>
-                        <View style={styles.tabBarContainer}>
-                            {this.state.active == 0 ? (
-                                <TouchableOpacity onPress={() => this.setState({ active: 0 })} style={styles.tabBarActive}>
-                                    <Ionicons name={'camera'} size={15} color={'#fff'} />
-                                    <Text style={{ color: '#fff' }}>Badges</Text>
-                                </TouchableOpacity>
-                            ) : (
-                                    <TouchableOpacity onPress={() => this.setState({ active: 0 })} style={styles.tabBar}>
-                                        <Ionicons name={'camera'} size={15} color={'#000'} />
-                                        <Text style={{ color: '#000' }}>Badges</Text>
-                                    </TouchableOpacity>
-                                )}
 
-
-                            {this.state.active == 1 ? (
-                                <TouchableOpacity onPress={() => this.setState({ active: 1 })} style={styles.tabBarActive}>
-                                    <Ionicons name={'camera'} size={15} color={'#fff'} />
-                                    <Text style={{ color: '#fff' }}>Post</Text>
-                                </TouchableOpacity>
-                            ) : (
-                                    <TouchableOpacity onPress={() => this.setState({ active: 1 })} style={styles.tabBar}>
-                                        <Ionicons name={'camera'} size={15} color={'#000'} />
-                                        <Text style={{ color: '#000' }}>Post</Text>
-                                    </TouchableOpacity>
-                                )}
-
-                            {this.state.active == 2 ? (
-                                <TouchableOpacity onPress={() => this.setState({ active: 2 })} style={styles.tabBarActive}>
-                                    <Ionicons name={'photo'} size={15} color={'#fff'} />
-                                    <Text style={{ color: '#fff' }}>Mentoring</Text>
-                                </TouchableOpacity>
-                            ) : (
-                                    <TouchableOpacity onPress={() => this.setState({ active: 2 })} style={styles.tabBar}>
-                                        <Ionicons name={'photo'} size={15} color={'#000'} />
-                                        <Text style={{ color: '#000' }}>Mentoring</Text>
-                                    </TouchableOpacity>
-                                )}
-
-                            {this.state.active == 3 ? (
-                                <TouchableOpacity onPress={() => this.setState({ active: 3 })} style={styles.tabBarActive}>
-                                    <Ionicons name={'home'} size={15} color={'#fff'} />
-                                    <Text style={{ color: '#fff' }}>More</Text>
-                                </TouchableOpacity>
-                            ) : (
-                                    <TouchableOpacity onPress={() => this.setState({ active: 3 })} style={styles.tabBar}>
-                                        <Ionicons name={'home'} size={15} color={'#000'} />
-                                        <Text style={{ color: '#000' }}>More</Text>
-                                    </TouchableOpacity>
-                                )}
-
-                        </View>
-                        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                            {this.renderSection()}
-                        </View>
-
+                    </View>
+                    <ProfileTabBar 
+                        active={this.state.active} 
+                        onPress0={()=>this.setState({active:0})}
+                        onPress1={()=>this.setState({active:1})}
+                        onPress2={()=>this.setState({active:2})}
+                        onPress3={()=>this.setState({active:3})}
+                    />
+                    
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                        {this.renderSection()}
                     </View>
                 </ScrollView>
 
