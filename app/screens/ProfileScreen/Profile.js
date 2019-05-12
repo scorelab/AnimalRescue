@@ -103,6 +103,11 @@ class Profile extends React.Component {
 
     renderSection = () => {
         if (this.state.active == 0) {
+            return (
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <Image source={require('../../images/level4.png')} style={{ width: 'auto', height: 'auto' }} />
+                </View>
+            )
 
         } else if (this.state.active == 1) {
             return this.state.data1.map((data, index) => {
@@ -154,7 +159,7 @@ class Profile extends React.Component {
         return (
             <View style={styles.container}>
                 <Header title="Profile" />
-                <ScrollView style={{ marginBottom: 60 }} stickyHeaderIndices={[4]}  showsVerticalScrollIndicator={false}>
+                <ScrollView style={{ marginBottom: 60 }} stickyHeaderIndices={[4]} showsVerticalScrollIndicator={false}>
                     <View style={styles.header}>
                         <Image style={{ width: '100%', height: '100%' }} source={require("../../images/dog.jpg")} />
                         <TouchableOpacity style={styles.editCover} onPress={() => this.editCoverPicture()}>
@@ -172,17 +177,25 @@ class Profile extends React.Component {
                         </View>
 
                     </View>
-                    <ProfileTabBar 
-                        active={this.state.active} 
-                        onPress0={()=>this.setState({active:0})}
-                        onPress1={()=>this.setState({active:1})}
-                        onPress2={()=>this.setState({active:2})}
-                        onPress3={()=>this.setState({active:3})}
+                    <ProfileTabBar
+                        active={this.state.active}
+                        onPress0={() => this.setState({ active: 0 })}
+                        onPress1={() => this.setState({ active: 1 })}
+                        onPress2={() => this.setState({ active: 2 })}
+                        onPress3={() => this.setState({ active: 3 })}
                     />
-                    
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                        {this.renderSection()}
-                    </View>
+                    {this.state.active == 0 ? (
+                        <View style={{ justifyContent: 'center', alignItems: 'center',marginVertical:10 }}>
+                            <Image source={require('../../images/level10.png')} style={{ width: 120, height: 120 }} />
+                            <Text style={{fontSize:15}}>Animal Helper Level 10</Text>
+                        </View>
+                    ) : (
+                            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                                {this.renderSection()}
+                            </View>
+                        )}
+
+
                 </ScrollView>
 
             </View>
