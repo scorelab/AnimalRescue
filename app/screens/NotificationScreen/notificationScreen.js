@@ -1,93 +1,74 @@
 import React, { Component } from "react";
-import { Text, View, TouchableHighlight, Image, ScrollView } from "react-native";
+import { Text, View, TouchableHighlight, FlatList, ScrollView } from "react-native";
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import NotificationBanner from '../../components/NotificationBanner/notificationBanner';
 import styles from './style';
 import Swipeout from 'react-native-swipeout';
+import Ionicons from "react-native-vector-icons/FontAwesome";
 export default class NotificationScreen extends Component {
+        constructor(props) {
+                super(props);
+                this.state = {
+                        data: [
+                                { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name: "Frank Odalthh", text: "Lorem ipsum dolor sit amet, ", posted: "2 hours Ago" },
+                                { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name: "John DoeLink", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", posted: "2 hours Ago" },
+                                { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar7.png", name: "March SoulLaComa", text: "Lorem ipsum dolor sit amet, consectetget dolor.", posted: "2 hours Ago" },
+                                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar2.png", name: "Finn DoRemiFaso", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing eli eget dolr.", posted: "2 hours Ago" },
+                                { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar3.png", name: "Maria More More", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", posted: "2 hours Ago" },
+                                { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name: "Clark June Boom!", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", posted: "2 hours Ago" },
+                                { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name: "The googler", text: "Lorem ipsum dolor sit amet, et dolor.", posted: "2 hours Ago" },
+                        ],
+                        comment: ''
+                }
+        }
 
-
-        render() {
-                let swipeBtns = [
-                        {
-                                text: 'Delete',
-                                backgroundColor: '#d9534f',
-                                authoClose: true,
-                                buttonWidth:300,
-                                sensitivity:100,
-                                stye:{width:500},
-                                underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-                                onPress: () => { alert("Delete") }
-                        }
-                        
-                ];
+        render() {                
 
                 return (
                         <View style={{ flex: 1, flexDirection: 'column', }}>
                                 <Header title={"Notifications"} />
                                 <View style={styles.container}>
-                                        <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
-                                                <Swipeout style={{ width: '100%' }} right={swipeBtns}>
-                                                        <NotificationBanner
-                                                                image={require('../../images/user_image_1.jpg')}
-                                                                name="Wathsara Daluwatta"
-                                                                posted="5 hours Ago"
-                                                                text="Lorem Ipsum is simply dummy  ... "
-                                                        />
-                                                </Swipeout>
-                                                <Swipeout style={{ width: '100%' }} right={swipeBtns}>
-                                                        <NotificationBanner
-                                                                image={require('../../images/user_image_1.jpg')}
-                                                                name="Thuhini Lourdes"
-                                                                posted="5 hours Ago"
-                                                                text="Lorem Ipsum is simply dummy  ... "
-                                                        />
-                                                </Swipeout>
-                                                <Swipeout style={{ width: '100%' }} right={swipeBtns}>
-                                                        <NotificationBanner
-                                                                image={require('../../images/user_image_1.jpg')}
-                                                                name="Kasun Kavinda"
-                                                                posted="5 hours Ago"
-                                                                text="Lorem Ipsum is simply dummy  ... "
-                                                        />
-                                                </Swipeout>
-                                                <NotificationBanner
-                                                        image={require('../../images/user_image_1.jpg')}
-                                                        text="Lorem Ipsum is simply dummy text of the printing and typesetting industry ... "
-                                                />
-                                                <NotificationBanner
-                                                        image={require('../../images/user_image_1.jpg')}
-                                                        text="Lorem Ipsum is simply dummy text of the printing and typesetting industry ... "
-                                                />
-                                                <NotificationBanner
-                                                        image={require('../../images/user_image_1.jpg')}
-                                                        text="Lorem Ipsum is simply dummy text of the printing and typesetting industry ... "
-                                                />
-                                                <NotificationBanner
-                                                        image={require('../../images/user_image_1.jpg')}
-                                                        text="Lorem Ipsum is simply dummy text of the printing and typesetting industry ... "
-                                                />
-                                                <NotificationBanner
-                                                        image={require('../../images/user_image_1.jpg')}
-                                                        text="Lorem Ipsum is simply dummy text of the printing and typesetting industry ... "
-                                                />
-                                                <NotificationBanner
-                                                        image={require('../../images/user_image_1.jpg')}
-                                                        text="Lorem Ipsum is simply dummy text of the printing and typesetting industry ... "
-                                                />
-                                                <NotificationBanner
-                                                        image={require('../../images/user_image_1.jpg')}
-                                                        text="Lorem Ipsum is simply dummy text of the printing and typesetting industry ... "
-                                                />
-                                                <NotificationBanner
-                                                        image={require('../../images/user_image_1.jpg')}
-                                                        text="Lorem Ipsum is simply dummy text of the printing and typesetting industry ... "
-                                                />
-                                                <NotificationBanner
-                                                        image={require('../../images/user_image_1.jpg')}
-                                                        text="Lorem Ipsum is simply dummy text of the printing and typesetting industry ... "
-                                                />
-                                        </ScrollView>
+                                        <FlatList
+                                                style={styles.scrollView}
+                                                data={this.state.data}
+                                                extraData={this.state}
+                                                ItemSeparatorComponent={() => {
+                                                        return (
+                                                                <View style={styles.separator} />
+                                                        )
+                                                }}
+                                                keyExtractor={(item) => {
+                                                        return item.id;
+                                                }}
+                                                renderItem={(item) => {
+                                                        const Notification = item.item;
+                                                        var swipeBtns = [
+                                                                {
+                                                                        component:<Ionicons name={"trash"} size={20} color={"white"} style={{alignSelf:'center',marginTop:'50%'}} />,                                                                                                                                               
+                                                                        backgroundColor: '#d9534f',                                                                                                                                                                                                                       
+                                                                        underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+                                                                        onPress: () => { alert(Notification.name) }
+                                                                },
+                                                                {
+                                                                        text: 'Mark As Read',
+                                                                        component:<Ionicons name={"check"} size={20} color={"white"} style={{alignSelf:'center',marginTop:'50%'}} />,
+                                                                        backgroundColor: '#4885ed',
+                                                                        underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+                                                                        onPress: () => { alert(Notification.name) }
+                                                                }
+
+                                                        ];
+                                                        return (
+                                                                <Swipeout sensitivity={1000} autoClose={true} style={{ width: '100%', backgroundColor: 'transparent', }} right={swipeBtns}>
+                                                                        <NotificationBanner
+                                                                                image={{ uri: Notification.image }}
+                                                                                name={Notification.name}
+                                                                                posted={Notification.posted}
+                                                                                text={Notification.text}
+                                                                        />
+                                                                </Swipeout>
+                                                        );
+                                                }} />
                                 </View>
                         </View>
                 );
