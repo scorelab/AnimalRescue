@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";
 import styles from "./style";
+import Ionicons from "react-native-vector-icons/FontAwesome";
 export default class Comment extends Component {
 
     constructor(props) {
@@ -25,8 +26,16 @@ export default class Comment extends Component {
                 { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar3.png", name: "Maria More More", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
                 { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name: "Clark June Boom!", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
                 { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name: "The googler", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-            ]
+            ],
+            comment: ''
         }
+    }
+    postComment = () => {
+        alert(this.state.comment);
+        this.setState({
+            comment:''
+        })
+        this.textInput.clear()
     }
 
     render() {
@@ -70,11 +79,13 @@ export default class Comment extends Component {
                             placeholder="Write a Comment..."
                             underlineColorAndroid='transparent'
                             multiline={true}
-                            onChangeText={(name_address) => this.setState({ name_address })} />
+                            onChangeText={(text) => this.setState({ comment: text })}
+                            ref={input => { this.textInput = input }} />
                     </KeyboardAvoidingView>
 
-                    <TouchableOpacity style={styles.btnSend}>
-                        <Image source={{ uri: "https://png.icons8.com/small/75/ffffff/filled-sent.png" }} style={styles.iconSend} />
+                    <TouchableOpacity style={styles.btnSend} onPress={() => this.postComment()}>
+                        <Ionicons name="paper-plane" size={25} color={"#192f6a"} />
+                        {/* <Image source={{ uri: "https://png.icons8.com/small/75/ffffff/filled-sent.png" }} style={styles.iconSend} /> */}
                     </TouchableOpacity>
                 </View>
             </View>

@@ -52,7 +52,7 @@ export default StyleSheet.create({
         padding: 5,
     },
     btnSend: {
-        backgroundColor: "#00BFFF",
+        // backgroundColor: "#00BFFF",
         width: 40,
         height: 40,
         borderRadius: 360,
