@@ -45,7 +45,8 @@ export default StyleSheet.create({
     },
     footer: {
         flexDirection: 'row',
-        height: 60,
+        minHeight: 60,
+        maxHeight: 130,
         backgroundColor: '#eeeeee',
         paddingHorizontal: 10,
         padding: 5,
@@ -68,17 +69,19 @@ export default StyleSheet.create({
         backgroundColor: '#FFFFFF',
         borderRadius: 30,
         borderBottomWidth: 1,
-        height: 40,
+        minHeight: 40,
         flexDirection: 'row',
         alignItems: 'center',
         flex: 1,
         marginRight: 10,
+        
     },
     inputs: {
-        height: 40,
+        height: "auto",
         marginLeft: 16,
         borderBottomColor: '#FFFFFF',
         flex: 1,
+        flexWrap:'wrap'
     },
    
 });

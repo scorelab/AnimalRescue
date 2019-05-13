@@ -69,6 +69,7 @@ export default class Comment extends Component {
                         <TextInput style={styles.inputs}
                             placeholder="Write a Comment..."
                             underlineColorAndroid='transparent'
+                            multiline={true}
                             onChangeText={(name_address) => this.setState({ name_address })} />
                     </KeyboardAvoidingView>
 
