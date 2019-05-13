@@ -13,6 +13,7 @@ import {
 import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";
 import styles from "./style";
 import Ionicons from "react-native-vector-icons/FontAwesome";
+import Swipeout from 'react-native-swipeout';
 export default class Comment extends Component {
 
     constructor(props) {
@@ -33,7 +34,7 @@ export default class Comment extends Component {
     postComment = () => {
         alert(this.state.comment);
         this.setState({
-            comment:''
+            comment: ''
         })
         this.textInput.clear()
     }
@@ -56,21 +57,36 @@ export default class Comment extends Component {
                     }}
                     renderItem={(item) => {
                         const Notification = item.item;
+                        var swipeBtns = [
+                            {
+                                text: 'Delete',
+                                backgroundColor: '#d9534f',
+                                authoClose: true,
+                                buttonWidth: 300,
+                                sensitivity: 100,
+                                stye: { width: 500 },
+                                underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+                                onPress: () => { alert(Notification.name) }
+                            }
+
+                        ];
                         return (
-                            <View style={styles.container}>
-                                <TouchableOpacity onPress={() => { }}>
-                                    <Image style={styles.image} source={{ uri: Notification.image }} />
-                                </TouchableOpacity>
-                                <View style={styles.content}>
-                                    <View style={styles.contentHeader}>
-                                        <Text style={styles.name}>{Notification.name}</Text>
-                                        <Text style={styles.time}>
-                                            9:58 am
+                            <Swipeout style={{ width: '100%',backgroundColor: 'transparent', }} right={swipeBtns}>
+                                <View style={styles.container}>
+                                    <TouchableOpacity onPress={() => { }}>
+                                        <Image style={styles.image} source={{ uri: Notification.image }} />
+                                    </TouchableOpacity>
+                                    <View style={styles.content}>
+                                        <View style={styles.contentHeader}>
+                                            <Text style={styles.name}>{Notification.name}</Text>
+                                            <Text style={styles.time}>
+                                                9:58 am
                                         </Text>
+                                        </View>
+                                        <Text rkType='primary3 mediumLine'>{Notification.comment}</Text>
                                     </View>
-                                    <Text rkType='primary3 mediumLine'>{Notification.comment}</Text>
                                 </View>
-                            </View>
+                            </Swipeout>
                         );
                     }} />
                 <View style={styles.footer}>
