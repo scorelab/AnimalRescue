@@ -18,11 +18,24 @@ export default class NotificationScreen extends Component {
                                 { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name: "Clark June Boom!", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", posted: "2 hours Ago" },
                                 { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name: "The googler", text: "Lorem ipsum dolor sit amet, et dolor.", posted: "2 hours Ago" },
                         ],
-                        comment: ''
+                        comment: '',
+                        rowIndex:null
+
+
+                }
+        }
+        onSwipeOpen(rowIndex) {
+                this.setState({
+                        rowIndex: rowIndex
+                })                
+        }
+        onSwipeClose(rowIndex) {
+                if (rowIndex === this.state.rowIndex) {
+                        this.setState({ rowIndex: null });
                 }
         }
 
-        render() {                
+        render() {
 
                 return (
                         <View style={{ flex: 1, flexDirection: 'column', }}>
@@ -31,40 +44,46 @@ export default class NotificationScreen extends Component {
                                         <FlatList
                                                 style={styles.scrollView}
                                                 data={this.state.data}
-                                                extraData={this.state}
+                                                extraData={this.state.rowIndex}
                                                 ItemSeparatorComponent={() => {
                                                         return (
                                                                 <View style={styles.separator} />
                                                         )
                                                 }}
-                                                keyExtractor={(item) => {
-                                                        return item.id;
-                                                }}
-                                                renderItem={(item) => {
+                                                keyExtractor={(item, index) => index.toString()}
+                                                renderItem={({item, index}) => {
                                                         const Notification = item.item;
                                                         var swipeBtns = [
                                                                 {
-                                                                        component:<Ionicons name={"trash"} size={20} color={"white"} style={{alignSelf:'center',marginTop:'50%'}} />,                                                                                                                                               
-                                                                        backgroundColor: '#d9534f',                                                                                                                                                                                                                       
+                                                                        component: <Ionicons name={"trash"} size={20} color={"white"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
+                                                                        backgroundColor: '#d9534f',
                                                                         underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-                                                                        onPress: () => { alert(Notification.name) }
+                                                                        onPress: () => { alert(item.name) }
                                                                 },
                                                                 {
                                                                         text: 'Mark As Read',
-                                                                        component:<Ionicons name={"check"} size={20} color={"white"} style={{alignSelf:'center',marginTop:'50%'}} />,
+                                                                        component: <Ionicons name={"check"} size={20} color={"white"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
                                                                         backgroundColor: '#4885ed',
                                                                         underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-                                                                        onPress: () => { alert(Notification.name) }
+                                                                        onPress: () => { alert(item.name) }
                                                                 }
 
                                                         ];
                                                         return (
-                                                                <Swipeout sensitivity={1000} autoClose={true} style={{ width: '100%', backgroundColor: 'transparent', }} right={swipeBtns}>
+                                                                <Swipeout
+                                                                        rowIndex={index}
+                                                                        sectionId={0}
+                                                                        onOpen={() => this.onSwipeOpen(index)}
+                                                                        close={this.state.rowIndex !== index}
+                                                                        onClose={() => this.onSwipeClose(index)}
+                                                                        sensitivity={1000}
+                                                                        autoClose={true}
+                                                                        style={{ width: '100%', backgroundColor: 'transparent', }} right={swipeBtns}>
                                                                         <NotificationBanner
-                                                                                image={{ uri: Notification.image }}
-                                                                                name={Notification.name}
-                                                                                posted={Notification.posted}
-                                                                                text={Notification.text}
+                                                                                image={{ uri: item.image }}
+                                                                                name={item.name}
+                                                                                posted={item.posted}
+                                                                                text={item.text}
                                                                         />
                                                                 </Swipeout>
                                                         );
