@@ -28,7 +28,19 @@ export default class Comment extends Component {
                 { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name: "Clark June Boom!", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
                 { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name: "The googler", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
             ],
-            comment: ''
+            comment: '',
+            rowIndex: null
+        }
+    }
+
+    onSwipeOpen(rowIndex) {
+        this.setState({
+            rowIndex: rowIndex
+        })
+    }
+    onSwipeClose(rowIndex) {
+        if (rowIndex === this.state.rowIndex) {
+            this.setState({ rowIndex: null });
         }
     }
     postComment = () => {
@@ -46,17 +58,20 @@ export default class Comment extends Component {
                 <FlatList
                     style={styles.root}
                     data={this.state.data}
-                    extraData={this.state}
                     ItemSeparatorComponent={() => {
                         return (
                             <View style={styles.separator} />
                         )
                     }}
-                    keyExtractor={(item) => {
-                        return item.id;
+                    extraData={this.state.rowIndex}
+                    ItemSeparatorComponent={() => {
+                        return (
+                            <View style={styles.separator} />
+                        )
                     }}
-                    renderItem={(item) => {
-                        const Notification = item.item;
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item, index }) => {
+                        const Notification = item;
                         var swipeBtns = [
                             {
                                 text: 'Delete',
@@ -71,7 +86,14 @@ export default class Comment extends Component {
 
                         ];
                         return (
-                            <Swipeout style={{ width: '100%',backgroundColor: 'transparent', }} right={swipeBtns}>
+                            <Swipeout
+                                rowIndex={index}
+                                sectionId={0}
+                                onOpen={() => this.onSwipeOpen(index)}
+                                close={this.state.rowIndex !== index}
+                                onClose={() => this.onSwipeClose(index)}
+                                style={{ width: '100%', backgroundColor: 'transparent', }}
+                                right={swipeBtns}>
                                 <View style={styles.container}>
                                     <TouchableOpacity onPress={() => { }}>
                                         <Image style={styles.image} source={{ uri: Notification.image }} />
