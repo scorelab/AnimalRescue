@@ -92,7 +92,7 @@ export default class Comment extends Component {
                                 onOpen={() => this.onSwipeOpen(index)}
                                 close={this.state.rowIndex !== index}
                                 onClose={() => this.onSwipeClose(index)}
-                                style={{ width: '100%', backgroundColor: 'transparent', }}
+                                style={{ width: '100%', backgroundColor: 'transparent'}}
                                 right={swipeBtns}>
                                 <View style={styles.container}>
                                     <TouchableOpacity onPress={() => { }}>

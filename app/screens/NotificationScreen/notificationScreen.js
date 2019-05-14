@@ -10,13 +10,13 @@ export default class NotificationScreen extends Component {
                 super(props);
                 this.state = {
                         data: [
-                                { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name: "Frank Odalthh", text: "Lorem ipsum dolor sit amet, ", posted: "2 hours Ago" },
-                                { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name: "John DoeLink", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", posted: "2 hours Ago" },
-                                { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar7.png", name: "March SoulLaComa", text: "Lorem ipsum dolor sit amet, consectetget dolor.", posted: "2 hours Ago" },
-                                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar2.png", name: "Finn DoRemiFaso", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing eli eget dolr.", posted: "2 hours Ago" },
-                                { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar3.png", name: "Maria More More", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", posted: "2 hours Ago" },
-                                { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name: "Clark June Boom!", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", posted: "2 hours Ago" },
-                                { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name: "The googler", text: "Lorem ipsum dolor sit amet, et dolor.", posted: "2 hours Ago" },
+                                { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name: "Frank Odalthh", text: "Lorem ipsum dolor sit amet, ", posted: "2 hours Ago", read:1 },
+                                { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name: "John DoeLink", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", posted: "2 hours Ago",read:0 },
+                                { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar7.png", name: "March SoulLaComa", text: "Lorem ipsum dolor sit amet, consectetget dolor.", posted: "2 hours Ago",read:1 },
+                                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar2.png", name: "Finn DoRemiFaso", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing eli eget dolr.", posted: "2 hours Ago",read:0 },
+                                { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar3.png", name: "Maria More More", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", posted: "2 hours Ago",read:1 },
+                                { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name: "Clark June Boom!", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", posted: "2 hours Ago",read:1 },
+                                { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name: "The googler", text: "Lorem ipsum dolor sit amet, et dolor.", posted: "2 hours Ago",read:0 },
                         ],
                         comment: '',
                         rowIndex:null
@@ -53,7 +53,7 @@ export default class NotificationScreen extends Component {
                                                 keyExtractor={(item, index) => index.toString()}
                                                 renderItem={({item, index}) => {
                                                         const Notification = item.item;
-                                                        var swipeBtns = [
+                                                        var unRead = [
                                                                 {
                                                                         component: <Ionicons name={"trash"} size={20} color={"white"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
                                                                         backgroundColor: '#d9534f',
@@ -69,24 +69,60 @@ export default class NotificationScreen extends Component {
                                                                 }
 
                                                         ];
-                                                        return (
-                                                                <Swipeout
-                                                                        rowIndex={index}
-                                                                        sectionId={0}
-                                                                        onOpen={() => this.onSwipeOpen(index)}
-                                                                        close={this.state.rowIndex !== index}
-                                                                        onClose={() => this.onSwipeClose(index)}
-                                                                        sensitivity={1000}
-                                                                        autoClose={true}
-                                                                        style={{ width: '100%', backgroundColor: 'transparent', }} right={swipeBtns}>
-                                                                        <NotificationBanner
-                                                                                image={{ uri: item.image }}
-                                                                                name={item.name}
-                                                                                posted={item.posted}
-                                                                                text={item.text}
-                                                                        />
-                                                                </Swipeout>
-                                                        );
+
+                                                        var read = [
+                                                                {
+                                                                        component: <Ionicons name={"trash"} size={20} color={"white"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
+                                                                        backgroundColor: '#d9534f',
+                                                                        underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+                                                                        onPress: () => { alert(item.name) }
+                                                                } 
+                                                        ];
+
+                                                        if(item.read == 1){
+                                                                return (                                                                
+                                                                        <Swipeout
+                                                                                rowIndex={index}
+                                                                                sectionId={0}
+                                                                                onOpen={() => this.onSwipeOpen(index)}
+                                                                                close={this.state.rowIndex !== index}
+                                                                                onClose={() => this.onSwipeClose(index)}
+                                                                                sensitivity={1000}
+                                                                                autoClose={true}
+                                                                                style={{ width: '100%', backgroundColor: 'transparent'}}                                                                        
+                                                                                right={read}>                                                                       
+                                                                                <NotificationBanner
+                                                                                        read={item.read}
+                                                                                        image={{ uri: item.image }}
+                                                                                        name={item.name}
+                                                                                        posted={item.posted}
+                                                                                        text={item.text}
+                                                                                />
+                                                                        </Swipeout>
+                                                                );    
+                                                        }else{
+                                                                return (                                                                
+                                                                        <Swipeout
+                                                                                rowIndex={index}
+                                                                                sectionId={0}
+                                                                                onOpen={() => this.onSwipeOpen(index)}
+                                                                                close={this.state.rowIndex !== index}
+                                                                                onClose={() => this.onSwipeClose(index)}
+                                                                                sensitivity={1000}
+                                                                                autoClose={true}
+                                                                                style={{ width: '100%', backgroundColor: 'transparent'}}                                                                        
+                                                                                right={unRead}>                                                                       
+                                                                                <NotificationBanner
+                                                                                        read={item.read}
+                                                                                        image={{ uri: item.image }}
+                                                                                        name={item.name}
+                                                                                        posted={item.posted}
+                                                                                        text={item.text}
+                                                                                />
+                                                                        </Swipeout>
+                                                                );
+                                                        }
+                                                        
                                                 }} />
                                 </View>
                         </View>

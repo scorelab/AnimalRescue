@@ -21,10 +21,22 @@ export default StyleSheet.create({
         alignItems:'center',
         paddingBottom:10
     },
-    cardContainer: {
+    cardContainerRead: {
         flex:1,
         width:'100%',
         backgroundColor:'#fff',
+        borderRadius:5,        
+        alignItems:'center',
+        justifyContent:'flex-start',
+        borderBottomWidth:0.7,
+        borderColor:"#192f6a"
+        // marginBottom:20,
+        // marginTop:10
+    },
+    cardContainer: {
+        flex:1,
+        width:'100%',
+        backgroundColor:'#d6ebf2',
         borderRadius:5,        
         alignItems:'center',
         justifyContent:'flex-start',
@@ -37,7 +49,7 @@ export default StyleSheet.create({
         marginLeft:10,
         marginVertical:20,
         marginRight:20,
-        marginLeft:20,
+        marginLeft:20,        
         // marginBottom:10,
         // width:deviceWidth,
         height:'auto',
