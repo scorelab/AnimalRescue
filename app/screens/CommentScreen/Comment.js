@@ -74,7 +74,7 @@ export default class Comment extends Component {
                         const Notification = item;
                         var swipeBtns = [
                             {
-                                text: 'Delete',
+                                component: <Ionicons name={"trash"} size={20} color={"white"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
                                 backgroundColor: '#d9534f',
                                 authoClose: true,
                                 buttonWidth: 300,
@@ -92,7 +92,7 @@ export default class Comment extends Component {
                                 onOpen={() => this.onSwipeOpen(index)}
                                 close={this.state.rowIndex !== index}
                                 onClose={() => this.onSwipeClose(index)}
-                                style={{ width: '100%', backgroundColor: 'transparent'}}
+                                style={{ width: '100%', backgroundColor: 'transparent' }}
                                 right={swipeBtns}>
                                 <View style={styles.container}>
                                     <TouchableOpacity onPress={() => { }}>

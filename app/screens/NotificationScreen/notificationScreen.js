@@ -21,7 +21,7 @@ export default class NotificationScreen extends Component {
                         ],
                         comment: '',
                         rowIndex: null,
-                        alterView:false
+                        alterView: false
 
 
                 }
@@ -42,7 +42,7 @@ export default class NotificationScreen extends Component {
                 return (
                         <View style={{ flex: 1, flexDirection: 'column', }}>
                                 <Header title={"Notifications"} />
-                                <TouchableOpacity onPress={() => this.setState({alterView:true})} style={{ justifyContent: 'flex-end', marginVertical: 10, flexDirection: 'row', marginRight: 10 }}>
+                                <TouchableOpacity onPress={() => this.setState({ alterView: true })} style={{ justifyContent: 'flex-end', marginVertical: 10, flexDirection: 'row', marginRight: 10 }}>
                                         <Text style={{ color: "#007bff" }}>Mark All As Read</Text>
                                         <Ionicons name={"check"} size={12} color={"#007bff"} />
                                         <Ionicons name={"check"} size={12} color={"#007bff"} />
@@ -132,23 +132,7 @@ export default class NotificationScreen extends Component {
 
                                                 }} />
                                 </View>
-                                <RNBottomActionSheet.AlertView
-                                        visible={this.state.alterView}
-                                        title={"Awesome!"}
-                                        message={"What can we improve? Your feedback is always welcome."}
-                                        positiveText={"OK"}
-                                        positiveBackgroundColor={"#eeffee"}
-                                        positiveTextColor={"#006500"}
-                                        negativeText={"Exit"}
-                                        negativeBackgroundColor={"#ffebeb"}
-                                        negativeTextColor={"#760000"}
-                                        theme={"light"}
-                                        onPositive={() => {
-                                                console.log("positive clicked");
-                                        }}
-                                        onNegative={() => {
-                                                console.log("negative clicked");
-                                        }} />
+
                         </View>
                 );
         }
