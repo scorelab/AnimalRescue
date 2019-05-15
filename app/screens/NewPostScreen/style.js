@@ -79,7 +79,7 @@ export default StyleSheet.create({
         borderWidth: 0.8,
         borderStyle: 'dashed',
         width: '90%',
-        minHeight: deviceHeight * 0.45,
+        minHeight: deviceHeight * 0.47,
 
     },
     rightIconContainer: {

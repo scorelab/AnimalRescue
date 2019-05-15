@@ -160,7 +160,7 @@ class NewPost extends React.Component {
                         </ProgressStep>
 
                         <ProgressStep label="Location" onNext={() => this.checkLocation()} error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
-                            <View style={styles.stepContainer}>
+                            <View style={styles.stepContainer}>                                
                                 <MapView
                                     style={styles.mapContainer}
                                     provider={PROVIDER_GOOGLE}
@@ -187,8 +187,8 @@ class NewPost extends React.Component {
                                     ) : (
                                             <View></View>
                                         )}
-
                                 </MapView>
+                                <Search/>
 
                             </View>
                         </ProgressStep>
