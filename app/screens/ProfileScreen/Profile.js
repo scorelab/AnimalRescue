@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image, ScrollView, Linking, Dimensions } from 'react-native';
+import { Text, View, TouchableOpacity, Image, ScrollView, Linking, Dimensions, ImageBackground } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import ProfileTabBar from "../../components/ProfileTabBar/ProfileBar";
 import styles from "./style";
@@ -7,7 +7,6 @@ import Ionicons from "react-native-vector-icons/FontAwesome";
 import ImagePicker from "react-native-image-picker";
 import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_GRAY } from "../../config/styles";
 const { width, height } = Dimensions.get('window');
-
 class Profile extends React.Component {
 
     constructor() {
@@ -17,16 +16,16 @@ class Profile extends React.Component {
             newCoverPhoto: null,
             active: 0,
             data1: [
-                { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png" },
-                { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar2.png" },
-                { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar3.png" },
-                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar4.png" },
-                { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar5.png" },
-                { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar6.png" },
-                { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar7.png" },
-                { id: 8, image: "https://bootdey.com/img/Content/avatar/avatar1.png" },
-                { id: 9, image: "https://bootdey.com/img/Content/avatar/avatar2.png" },
-                { id: 10, image: "https://bootdey.com/img/Content/avatar/avatar3.png" },
+                { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", status: 0 },
+                { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar2.png", status: 1 },
+                { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar3.png", status: 2 },
+                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar4.png", status: 2 },
+                { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar5.png", status: 1 },
+                { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar6.png", status: 1 },
+                { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar7.png", status: 1 },
+                { id: 8, image: "https://bootdey.com/img/Content/avatar/avatar1.png", status: 2 },
+                { id: 9, image: "https://bootdey.com/img/Content/avatar/avatar2.png", status: 0 },
+                { id: 10, image: "https://bootdey.com/img/Content/avatar/avatar3.png", status: 0 },
             ],
             data2: [
                 { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png" },
@@ -106,18 +105,50 @@ class Profile extends React.Component {
             return (
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                     <Image source={require('../../images/level4.png')} style={{ width: 'auto', height: 'auto' }} />
+
                 </View>
             )
 
         } else if (this.state.active == 1) {
             return this.state.data1.map((data, index) => {
-                return (
-                    <TouchableOpacity>
-                        <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
-                            <Image source={{ uri: data.image }} style={{ width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }} />
-                        </View>
-                    </TouchableOpacity>
-                )
+                if(data.status == 0){
+                    return (
+                        <TouchableOpacity>
+                            <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
+                                <ImageBackground source={{ uri: data.image }} style={{ overflow: 'hidden', width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }}>
+                                    <View style={{ overflow: 'hidden', alignSelf: 'center', rotation: -45, backgroundColor: 'red', marginVertical: '20%', width: '100%', height: 15, marginRight: '50%' }}>
+                                        <Text style={{ textAlign: 'center', color: '#fff' }}>Active</Text>
+                                    </View>
+                                </ImageBackground>
+                            </View>
+                        </TouchableOpacity>
+                    )
+                }else if(data.status ==1){
+                    return (
+                        <TouchableOpacity>
+                            <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
+                                <ImageBackground source={{ uri: data.image }} style={{ overflow: 'hidden', width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }}>
+                                    <View style={{ overflow: 'hidden', alignSelf: 'center', rotation: -45, backgroundColor: '#4885ed', width: '100%',  marginVertical: '20%',height: 15, marginRight: '50%' }}>
+                                        <Text style={{ textAlign: 'center', color: '#fff' }}>Ongoing</Text>
+                                    </View>
+                                </ImageBackground>
+                            </View>
+                        </TouchableOpacity>
+                    )
+                }else{
+                    return (
+                        <TouchableOpacity>
+                            <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
+                                <ImageBackground source={{ uri: data.image }} style={{ overflow: 'hidden', width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }}>
+                                    <View style={{ overflow: 'hidden', alignSelf: 'center', rotation: -45, backgroundColor: 'green', width: '100%', marginVertical: '20%', height: 15, marginRight: '50%' }}>
+                                        <Text style={{ textAlign: 'center', color: '#fff' }}>Finished</Text>
+                                    </View>
+                                </ImageBackground>
+                            </View>
+                        </TouchableOpacity>
+                    )
+                }
+                
             });
         } else if (this.state.active == 2) {
             return this.state.data1.map((data, index) => {
@@ -185,9 +216,9 @@ class Profile extends React.Component {
                         onPress3={() => this.setState({ active: 3 })}
                     />
                     {this.state.active == 0 ? (
-                        <View style={{ justifyContent: 'center', alignItems: 'center',marginVertical:10 }}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
                             <Image source={require('../../images/level10.png')} style={{ width: 120, height: 120 }} />
-                            <Text style={{fontSize:15}}>Animal Helper Level 10</Text>
+                            <Text style={{ fontSize: 15 }}>Animal Helper Level 10</Text>
                         </View>
                     ) : (
                             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
