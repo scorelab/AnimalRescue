@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity, PermissionsAndroid, TextInput, KeyboardAvoidingView,ScrollView } from 'react-native';
+import { Text, View, Image, TouchableOpacity, PermissionsAndroid, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import ImagePicker from "react-native-image-picker";
@@ -11,6 +11,8 @@ import styles from "./style";
 import Snackbar from 'react-native-snackbar';
 const options = ['Cat', 'Dog', 'Monkey'];
 import DropdownAlert from 'react-native-dropdownalert';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+
 
 // Labels is optional
 const labels = ['Cat', 'Dog', 'Monkey'];
@@ -35,6 +37,7 @@ class NewPost extends React.Component {
             description: '',
             animationState: 'rest',
         }
+        this.mapRef = null;
 
     }
 
@@ -58,7 +61,7 @@ class NewPost extends React.Component {
                     locationError: false
                 })
             }
-
+            // this.mapView.animateToRegion(region, 1000);
 
         }, (error) => console.log(error));
     }
@@ -102,6 +105,25 @@ class NewPost extends React.Component {
 
     };
 
+    handleLocationSelected = (data, { geometry }) => {
+        const {
+            location: { lat: latitude, lng: longitude }
+        } = geometry;
+        let region = {
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: 0.00922 * 1.5,
+            longitudeDelta: 0.00421 * 1.5
+        }
+        this.setState({
+            latitude,
+            longitude,
+            region: region,
+        });
+
+        this.mapView.animateToRegion(region, 1000);
+    };
+
     checkPhoto = () => {
         if (this.state.photoError == true) {
             this.dropdown.alertWithType('error', 'Error', 'Please Select An Image');
@@ -128,7 +150,7 @@ class NewPost extends React.Component {
                 photoError: true,
                 selectedAnimal: '',
                 description: '',
-                pickedImage:null
+                pickedImage: null
             })
             this.dropdown.alertWithType('success', 'Success', 'Post Creted Successfully');
         }
@@ -160,7 +182,7 @@ class NewPost extends React.Component {
                         </ProgressStep>
 
                         <ProgressStep label="Location" onNext={() => this.checkLocation()} error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
-                            <View style={styles.stepContainer}>                                
+                            <View style={styles.stepContainer}>
                                 <MapView
                                     style={styles.mapContainer}
                                     provider={PROVIDER_GOOGLE}
@@ -169,6 +191,7 @@ class NewPost extends React.Component {
                                     loadingEnabled={true}
                                     zoomControlEnabled={true}
                                     showsMyLocationButton={true}
+                                    ref={ref => { this.mapView = ref }}
                                     onPress={(e) => this.setState({
                                         longitude: e.nativeEvent.coordinate.longitude,
                                         latitude: e.nativeEvent.coordinate.latitude,
@@ -188,8 +211,7 @@ class NewPost extends React.Component {
                                             <View></View>
                                         )}
                                 </MapView>
-                                <Search/>
-
+                                <Search onLocationSelected={this.handleLocationSelected} />
                             </View>
                         </ProgressStep>
                         <ProgressStep label="Information" onSubmit={() => this.submit()} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
@@ -220,7 +242,7 @@ class NewPost extends React.Component {
                                         editable={true}
                                         multiline={true}
                                         numberOfLines={5}
-                                        maxlength={750}                                        
+                                        maxlength={750}
                                         onChangeText={(text) => this.setState({ description: text })}
                                     />
 
