@@ -19,12 +19,18 @@ export default StyleSheet.create({
     nextBtn: {
         backgroundColor: '#192f6a',
         borderRadius: 13,
-        width: 70
+        width: "80%",
+        marginHorizontal:10,
+        padding:10,
+        alignSelf:'center'
     },
     preBtn: {
         backgroundColor: '#192f6a',
         borderRadius: 13,
-        width: 70
+        width: "80%",
+        padding:10,
+        marginHorizontal:10,
+        alignSelf:'center'
     },
     nextBtnText: {
         color: 'white',
@@ -72,7 +78,7 @@ export default StyleSheet.create({
         backgroundColor: COLOR_GRAY,
         borderWidth: 0.8,
         borderStyle: 'dashed',
-        width: '100%',
+        width: '90%',
         minHeight: deviceHeight * 0.45,
 
     },
