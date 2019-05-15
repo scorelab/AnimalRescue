@@ -94,7 +94,7 @@ export default class NotificationScreen extends Component {
                                                                                 onOpen={() => this.onSwipeOpen(index)}
                                                                                 close={this.state.rowIndex !== index}
                                                                                 onClose={() => this.onSwipeClose(index)}
-                                                                                sensitivity={1000}
+                                                                                sensitivity={50}
                                                                                 autoClose={true}
                                                                                 style={{ width: '100%', backgroundColor: 'transparent' }}
                                                                                 right={read}>
@@ -115,7 +115,7 @@ export default class NotificationScreen extends Component {
                                                                                 onOpen={() => this.onSwipeOpen(index)}
                                                                                 close={this.state.rowIndex !== index}
                                                                                 onClose={() => this.onSwipeClose(index)}
-                                                                                sensitivity={1000}
+                                                                                sensitivity={50}
                                                                                 autoClose={true}
                                                                                 style={{ width: '100%', backgroundColor: 'transparent' }}
                                                                                 right={unRead}>
