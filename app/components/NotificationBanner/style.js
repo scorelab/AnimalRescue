@@ -36,7 +36,7 @@ export default StyleSheet.create({
     cardContainer: {
         flex:1,
         width:'100%',
-        backgroundColor:'#d6ebf2',
+        backgroundColor:'#e8f6fa',        
         borderRadius:5,        
         alignItems:'center',
         justifyContent:'flex-start',

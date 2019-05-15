@@ -104,7 +104,7 @@ class Auth extends React.Component {
             return (
                 // <PreLoader/>
                 <View style={styles.scrollContainer}>
-                    <StatusBar backgroundColor="#192222" barStyle="default" />
+                    <StatusBar backgroundColor="#00063f" barStyle="light-content"/>
                     <View style={styles.container}>
                         <Image style={styles.logo} source={require("../../images/ara.png")} />
                         <Text style={styles.companyName}>Animal Rescue App</Text>

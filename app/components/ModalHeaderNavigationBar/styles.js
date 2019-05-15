@@ -7,7 +7,7 @@ let deviceHeight = Dimensions.get("window").height;
 export default StyleSheet.create({
 navigationBar: {
     backgroundColor: COLOR_PRIMARY,
-    height: 55,
+    height: 50,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -26,13 +26,14 @@ rightIconContainer: {
 },
 titleArea:{
     justifyContent:'center',    
-    alignItems:"center"
+    alignItems:"center",
+    width:'40%'
 },
 goBackArea:{
     justifyContent:'flex-start',    
     alignItems:"flex-start",
-    marginLeft:5,
-    width:50
+    paddingLeft:15,
+    width:'30%'
 },
 
 //Text

@@ -6,6 +6,10 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { COLOR_PRIMARY } from "../../config/styles";
 
 export default class HeaderNavigationBar extends Component {
+    editPro = () => {
+        this.RBSheet.close();
+        alert("Now Navigate");
+    }
     render() {
         return (
             <View style={styles.navigationBar}>
@@ -50,7 +54,7 @@ export default class HeaderNavigationBar extends Component {
                         <View style={{ borderBottomColor: COLOR_PRIMARY, borderBottomWidth: 0.5 }}></View>
 
                         <ScrollView style={styles.body}>
-                            <TouchableOpacity style={styles.card}>
+                            <TouchableOpacity style={styles.card} onPress={() => this.editPro()}>
                                 <Ionicons name={"edit"} size={30} color={"#192f6a"} style={{marginLeft:20}} />
                                 <View style={styles.cardContent}>
                                     <Text style={styles.name}>Edit Profile</Text>

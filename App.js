@@ -76,7 +76,7 @@ export default class App extends React.Component {
         }),
         tabBarOptions: {
           tabBarPosition:'bottom',
-          activeTintColor: "#4885ed",
+          activeTintColor: "#83b4ff",
           inactiveTintColor: "white",
           showIcon :true,
           labelStyle: {

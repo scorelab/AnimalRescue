@@ -190,7 +190,7 @@ class Profile extends React.Component {
         return (
             <View style={styles.container}>
                 <Header title="Profile" />
-                <ScrollView style={{ marginBottom: 60 }} stickyHeaderIndices={[4]} showsVerticalScrollIndicator={false}>
+                <ScrollView style={{ marginBottom: 50 }} stickyHeaderIndices={[4]} showsVerticalScrollIndicator={false}>
                     <View style={styles.header}>
                         <Image style={{ width: '100%', height: '100%' }} source={require("../../images/dog.jpg")} />
                         <TouchableOpacity style={styles.editCover} onPress={() => this.editCoverPicture()}>

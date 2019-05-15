@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View, TouchableOpacity, Text } from 'react-native';
+import { ScrollView, View, TouchableOpacity, Text, StatusBar } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import Post from "../../components/HomePostComponent/HomePostComponent";
 import styles from "./style";
@@ -104,7 +104,8 @@ export default class Home extends Component {
 
         return (
             <View style={styles.container}>
-                <Header title="Home" />
+                <StatusBar backgroundColor="#00063f" barStyle="light-content" />
+                {/* <Header title="Home" /> */}
                 <View style={styles.tabBarContainer}>
                     {this.state.active == 0 ? (
                         <TouchableOpacity onPress={() => this.setState({ active: 0 })} style={styles.tabBarActive}>

@@ -7,7 +7,7 @@ let deviceHeight = Dimensions.get("window").height;
 export default StyleSheet.create({
     navigationBar: {
         backgroundColor: COLOR_PRIMARY,
-        height: 55,
+        height: 50,
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
@@ -32,8 +32,8 @@ export default StyleSheet.create({
         // alignSelf:'flex-end',
         justifyContent: 'flex-end',
         alignItems: "flex-end",
-        marginRight: 15,
-        width: '27%'
+        paddingRight: 15,
+        width: '30%'
     },
     container: {
         width: '100%',
@@ -49,7 +49,7 @@ export default StyleSheet.create({
     //Text
 
     titleFont: {
-        fontSize: 22,
+        fontSize: 18,
         color: "white"
     },
     username: {

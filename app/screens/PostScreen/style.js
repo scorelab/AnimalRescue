@@ -8,7 +8,7 @@ export default StyleSheet.create({
 
     },
     scroll: {
-        marginBottom: 20
+        marginBottom: 0
     },
     Img: {
         width: "100%",
@@ -123,8 +123,7 @@ export default StyleSheet.create({
     },
     profile: {
         flexDirection: 'row',
-        marginTop: 20,
-        marginVertical:20,
+        marginTop: 15,        
         alignItems:'center',
         justifyContent:'center'
     },

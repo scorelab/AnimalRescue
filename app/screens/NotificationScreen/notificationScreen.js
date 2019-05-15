@@ -11,13 +11,13 @@ export default class NotificationScreen extends Component {
                 super(props);
                 this.state = {
                         data: [
-                                { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name: "Frank Odalthh", text: "Lorem ipsum dolor sit amet, ", posted: "2 hours Ago", read: 1 },
-                                { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name: "John DoeLink", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", posted: "2 hours Ago", read: 0 },
-                                { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar7.png", name: "March SoulLaComa", text: "Lorem ipsum dolor sit amet, consectetget dolor.", posted: "2 hours Ago", read: 1 },
-                                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar2.png", name: "Finn DoRemiFaso", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing eli eget dolr.", posted: "2 hours Ago", read: 0 },
-                                { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar3.png", name: "Maria More More", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", posted: "2 hours Ago", read: 1 },
-                                { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name: "Clark June Boom!", text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.", posted: "2 hours Ago", read: 1 },
-                                { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name: "The googler", text: "Lorem ipsum dolor sit amet, et dolor.", posted: "2 hours Ago", read: 0 },
+                                { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name: "Frank Odalthh", text: "Lorem ipsum dolor sit amet. ", posted: "2 hours Ago", read: 1 },
+                                { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name: "John DoeLink", text: "Lorem ipsum dolor sit amet.", posted: "2 hours Ago", read: 0 },
+                                { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar7.png", name: "March SoulLaComa", text: "Lorem ipsum dolor sit amet.", posted: "2 hours Ago", read: 1 },
+                                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar2.png", name: "Finn DoRemiFaso", text: "Lorem ipsum dolor sit amet.", posted: "2 hours Ago", read: 0 },
+                                { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar3.png", name: "Maria More More", text: "Lorem ipsum dolor sit amet.", posted: "2 hours Ago", read: 1 },
+                                { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name: "Clark June Boom!", text: "Lorem ipsum dolor sit amet.", posted: "2 hours Ago", read: 1 },
+                                { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name: "The googler", text: "Lorem ipsum dolor sit amet.", posted: "2 hours Ago", read: 0 },
                         ],
                         comment: '',
                         rowIndex: null,
@@ -62,15 +62,15 @@ export default class NotificationScreen extends Component {
                                                         const Notification = item.item;
                                                         var unRead = [
                                                                 {
-                                                                        component: <Ionicons name={"trash"} size={20} color={"white"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
-                                                                        backgroundColor: '#d9534f',
+                                                                        component: <Ionicons name={"trash"} size={20} color={"#b00020"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
+                                                                        backgroundColor: '#fff',
                                                                         underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
                                                                         onPress: () => { alert(item.name) }
                                                                 },
                                                                 {
                                                                         text: 'Mark As Read',
-                                                                        component: <Ionicons name={"check"} size={20} color={"white"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
-                                                                        backgroundColor: '#4885ed',
+                                                                        component: <Ionicons name={"check"} size={20} color={"#0D47A1"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
+                                                                        backgroundColor: '#fff',
                                                                         underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
                                                                         onPress: () => { alert(item.name) }
                                                                 }
@@ -79,8 +79,8 @@ export default class NotificationScreen extends Component {
 
                                                         var read = [
                                                                 {
-                                                                        component: <Ionicons name={"trash"} size={20} color={"white"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
-                                                                        backgroundColor: '#d9534f',
+                                                                        component: <Ionicons name={"trash"} size={20} color={"#b00020"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
+                                                                        backgroundColor: '#fff',
                                                                         underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
                                                                         onPress: () => { alert(item.name) }
                                                                 }
