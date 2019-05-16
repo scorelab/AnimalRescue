@@ -1,17 +1,22 @@
 import React, { Component } from "react";
-import { ScrollView, View, TouchableOpacity, Text, StatusBar } from 'react-native';
+import { ScrollView, View, TouchableOpacity, Text, StatusBar, Animated } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import Post from "../../components/HomePostComponent/HomePostComponent";
 import styles from "./style";
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import { COLOR_PRIMARY, COLOR_GRAY } from "../../config/styles";
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+
+const AnimatedHeader = Animated.createAnimatedComponent(Header);
 export default class Home extends Component {
 
     constructor() {
         super()
         this.state = {
             liked: false,
-            active: 0
+            active: 0,
+            isHeaderHidden: false,
+            height: new Animated.Value(50)
         }
 
     }
@@ -20,40 +25,34 @@ export default class Home extends Component {
 
     }
 
-    onSwipeLeft() {
-        if (this.state.active != 2) {
-            var active = this.state.active;
-            active = active + 1;
-            this.setState({
-                active: active
-            })
-        } else {
-            this.setState({
-                active: 0
-            })
-        }
+    setAnimationUp = enable => {
+        Animated.timing(this.state.height, {
+            duration: 400,
+            toValue: enable ? 0 : 50
+        }).start()
+    };
 
+    setAnimationDown = enable => {
+        Animated.timing(this.state.height, {
+            duration: 400,
+            toValue: enable ? 50 : 0
+        }).start()
+    };
+
+    onSwipeUp(gestureState) {
+        this.setAnimationUp(true);
 
     }
 
-    onSwipeRight() {
-        if (this.state.active != 0) {
-            var active = this.state.active;
-            active = active - 1;
-            this.setState({
-                active: active
-            })
-        } else {
-            this.setState({
-                active: 2
-            })
-        }
+    onSwipeDown(gestureState) {
+        this.setAnimationDown(true);
     }
     renderSection = () => {
 
         const { navigate } = this.props.navigation;
         if (this.state.active == 0) {
             return (
+
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <Post
                         press={() => navigate('Post')}
@@ -65,11 +64,13 @@ export default class Home extends Component {
                     />
 
                 </ScrollView>
+
             )
 
         } else if (this.state.active == 1) {
             return (
-                <ScrollView showsVerticalScrollIndicator={false}>
+
+                <ScrollView showsVerticalScrollIndicator={false} >
                     <Post
                         press={() => navigate('Post')}
                         liked={this.state.liked}
@@ -80,6 +81,7 @@ export default class Home extends Component {
                     />
                     <Post />
                 </ScrollView>
+
             )
         } else if (this.state.active == 2) {
             return (
@@ -96,16 +98,28 @@ export default class Home extends Component {
                     <Post />
                     <Post />
                 </ScrollView>
+
             )
         }
     }
 
     render() {
-
+        const config = {
+            velocityThreshold:0.1,
+            directionalOffsetThreshold:10,
+            gestureIsClickThreshold: 0.0001
+        };
         return (
-            <View style={styles.container}>
+            // <View style={styles.container}>
+            <GestureRecognizer
+                onSwipeUp={(state) => this.onSwipeUp(state)}
+                onSwipeDown={(state) => this.onSwipeDown(state)}
+                config={config}
+                style={styles.container}
+            >
                 <StatusBar backgroundColor="#00063f" barStyle="light-content" />
-                {/* <Header title="Home" /> */}
+                <AnimatedHeader title="Home" height={this.state.height} />
+
                 <View style={styles.tabBarContainer}>
                     {this.state.active == 0 ? (
                         <TouchableOpacity onPress={() => this.setState({ active: 0 })} style={styles.tabBarActive}>
@@ -141,7 +155,8 @@ export default class Home extends Component {
                 <View style={{ flex: 1, backgroundColor: 'transparent' }}>
                     {this.renderSection()}
                 </View>
-            </View >
+            </GestureRecognizer>
+            // </View >
 
         )
 

@@ -12,7 +12,7 @@ export default class HeaderNavigationBar extends Component {
     }
     render() {
         return (
-            <View style={styles.navigationBar}>
+            <View style={[styles.navigationBar , {height:this.props.height}]}>
                 <View style={styles.goBackArea}>
                     <Text style={styles.titleFont}>{this.props.end}</Text>
                 </View>
