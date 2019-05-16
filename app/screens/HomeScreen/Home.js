@@ -16,7 +16,8 @@ export default class Home extends Component {
             liked: false,
             active: 0,
             isHeaderHidden: false,
-            height: new Animated.Value(50)
+            height: new Animated.Value(50),
+            visible: true
         }
 
     }
@@ -25,79 +26,92 @@ export default class Home extends Component {
 
     }
 
-    setAnimationUp = enable => {
+    setAnimation = () => {
         Animated.timing(this.state.height, {
             duration: 400,
-            toValue: enable ? 0 : 50
+            friction:35,
+            toValue: this.state.visible ? 50 : 0
         }).start()
     };
-
-    setAnimationDown = enable => {
-        Animated.timing(this.state.height, {
-            duration: 400,
-            toValue: enable ? 50 : 0
-        }).start()
-    };
-
+    handleScroll = (event) => {
+        var currentOffset = event.nativeEvent.contentOffset.y;
+        var direction = currentOffset > this.offset ? 'down' : 'up';
+        if (direction == 'down') {
+            this.setState({
+                visible: false
+            })
+            this.setAnimation();
+            this.offset = currentOffset;
+        } else {
+            this.setState({
+                visible: true
+            });
+            this.setAnimation();
+            this.offset = currentOffset;
+            // show the nav
+        }
+    }
     onSwipeUp(gestureState) {
-        this.setAnimationUp(true);
-
+        this.setState({
+            visible: false
+        });
+        this.setAnimation();
     }
 
     onSwipeDown(gestureState) {
-        this.setAnimationDown(true);
+        this.setState({
+            visible: false
+        });
+        this.setAnimation();
     }
+
     renderSection = () => {
 
         const { navigate } = this.props.navigation;
         if (this.state.active == 0) {
             return (
-
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <Post
-                        press={() => navigate('Post')}
-                        liked={this.state.liked}
-                        comment={() => navigate('Comment')}
-                        like={() => this.setState({ liked: true })}
-                        numberOfLikes={10}
-                        numberOfComments={1}
-                    />
-
-                </ScrollView>
+                // <ScrollView showsVerticalScrollIndicator={false}>
+                <Post
+                    press={() => navigate('Post')}
+                    liked={this.state.liked}
+                    comment={() => navigate('Comment')}
+                    like={() => this.setState({ liked: true })}
+                    numberOfLikes={10}
+                    numberOfComments={1}
+                />
+                // </ScrollView>
 
             )
 
         } else if (this.state.active == 1) {
             return (
 
-                <ScrollView showsVerticalScrollIndicator={false} >
-                    <Post
-                        press={() => navigate('Post')}
-                        liked={this.state.liked}
-                        comment={() => navigate('Comment')}
-                        like={() => this.setState({ liked: true })}
-                        numberOfLikes={10}
-                        numberOfComments={1}
-                    />
-                    <Post />
-                </ScrollView>
+                // <ScrollView showsVerticalScrollIndicator={false} >
+                <Post
+                    press={() => navigate('Post')}
+                    liked={this.state.liked}
+                    comment={() => navigate('Comment')}
+                    like={() => this.setState({ liked: true })}
+                    numberOfLikes={10}
+                    numberOfComments={1}
+                />
+
+                // </ScrollView>
 
             )
         } else if (this.state.active == 2) {
             return (
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <Post
-                        press={() => navigate('Post')}
-                        liked={this.state.liked}
-                        comment={() => navigate('Comment')}
-                        like={() => this.setState({ liked: true })}
-                        numberOfLikes={10}
-                        numberOfComments={1}
-                    />
-                    <Post />
-                    <Post />
-                    <Post />
-                </ScrollView>
+                // <ScrollView showsVerticalScrollIndicator={false}>
+                <Post
+                    press={() => navigate('Post')}
+                    liked={this.state.liked}
+                    comment={() => navigate('Comment')}
+                    like={() => this.setState({ liked: true })}
+                    numberOfLikes={10}
+                    numberOfComments={1}
+                />
+
+                // </ScrollView>
 
             )
         }
@@ -105,22 +119,22 @@ export default class Home extends Component {
 
     render() {
         const config = {
-            velocityThreshold:0.1,
-            directionalOffsetThreshold:10,
-            gestureIsClickThreshold: 0.0001
+            velocityThreshold: 0.3,
+            directionalOffsetThreshold: 70,
+            gestureIsClickThreshold: 5
         };
         return (
-            // <View style={styles.container}>
-            <GestureRecognizer
-                onSwipeUp={(state) => this.onSwipeUp(state)}
-                onSwipeDown={(state) => this.onSwipeDown(state)}
-                config={config}
-                style={styles.container}
-            >
+            <View style={styles.container}>
                 <StatusBar backgroundColor="#00063f" barStyle="light-content" />
                 <AnimatedHeader title="Home" height={this.state.height} />
-
-                <View style={styles.tabBarContainer}>
+                <GestureRecognizer
+                    onSwipeUp={(state) => this.onSwipeUp(state)}
+                    onSwipeDown={(state) => this.onSwipeDown(state)}
+                    config={config}
+                    // style={styles.container}
+                    style={styles.tabBarContainer}
+                >
+                    {/* <View style={styles.tabBarContainer}> */}
                     {this.state.active == 0 ? (
                         <TouchableOpacity onPress={() => this.setState({ active: 0 })} style={styles.tabBarActive}>
                             <Text style={{ color: '#fff' }}>Active</Text>
@@ -151,12 +165,59 @@ export default class Home extends Component {
                                 <Text style={{ color: '#a0a0a0' }}>Finished</Text>
                             </TouchableOpacity>
                         )}
-                </View>
-                <View style={{ flex: 1, backgroundColor: 'transparent' }}>
-                    {this.renderSection()}
-                </View>
-            </GestureRecognizer>
-            // </View >
+                    {/* </View> */}
+                </GestureRecognizer>
+                <ScrollView
+                    style={{ backgroundColor: 'transparent' }}
+                    showsVerticalScrollIndicator={false}
+                    onScroll={this.handleScroll}
+                // onScrollBeginDrag={() => this.setState({ visible: true })}
+                // onScrollEndDrag={() => this.setState({ visible: false })}
+                >
+                    {/* {this.renderSection()} */}
+                    <Post
+                        press={() => navigate('Post')}
+                        liked={this.state.liked}
+                        comment={() => navigate('Comment')}
+                        like={() => this.setState({ liked: true })}
+                        numberOfLikes={10}
+                        numberOfComments={1}
+                    />
+                    <Post
+                        press={() => navigate('Post')}
+                        liked={this.state.liked}
+                        comment={() => navigate('Comment')}
+                        like={() => this.setState({ liked: true })}
+                        numberOfLikes={10}
+                        numberOfComments={1}
+                    />
+                    <Post
+                        press={() => navigate('Post')}
+                        liked={this.state.liked}
+                        comment={() => navigate('Comment')}
+                        like={() => this.setState({ liked: true })}
+                        numberOfLikes={10}
+                        numberOfComments={1}
+                    />
+                    <Post
+                        press={() => navigate('Post')}
+                        liked={this.state.liked}
+                        comment={() => navigate('Comment')}
+                        like={() => this.setState({ liked: true })}
+                        numberOfLikes={10}
+                        numberOfComments={1}
+                    />
+                    <Post
+                        press={() => navigate('Post')}
+                        liked={this.state.liked}
+                        comment={() => navigate('Comment')}
+                        like={() => this.setState({ liked: true })}
+                        numberOfLikes={10}
+                        numberOfComments={1}
+                    />
+                </ScrollView>
+
+            </View >
 
         )
 
