@@ -6,7 +6,6 @@ import styles from "./style";
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import { COLOR_PRIMARY, COLOR_GRAY } from "../../config/styles";
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
-
 const AnimatedHeader = Animated.createAnimatedComponent(Header);
 export default class Home extends Component {
 
@@ -28,7 +27,7 @@ export default class Home extends Component {
 
     setAnimation = () => {
         Animated.timing(this.state.height, {
-            duration: 300,                        
+            duration: 300,
             toValue: this.state.visible ? 50 : 0
         }).start()
     };
@@ -117,7 +116,7 @@ export default class Home extends Component {
     }
 
     render() {
-        
+
         const config = {
             velocityThreshold: 0.3,
             directionalOffsetThreshold: 70,
@@ -218,7 +217,6 @@ export default class Home extends Component {
                 </ScrollView>
 
             </View >
-
         )
 
 

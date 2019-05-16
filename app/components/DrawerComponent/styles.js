@@ -5,43 +5,6 @@ let deviceWidth = Dimensions.get("window").width;
 let deviceHeight = Dimensions.get("window").height;
 
 export default StyleSheet.create({
-    navigationBar: {
-        backgroundColor: COLOR_PRIMARY,
-        height: 50,
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%"
-    },
-    leftIconContainer: {
-        marginLeft: 10,
-        marginTop: 5,
-        borderRadius: 5
-    },
-    rightIconContainer: {
-        marginLeft: 10,
-        marginTop: 5,
-        borderRadius: 5
-    },
-    titleArea: {
-        justifyContent: 'center',
-        alignItems: "center",
-        width: '40%'
-    },
-    goBackArea: {
-        // alignSelf:'flex-end',
-        justifyContent: 'flex-start',
-        alignItems: "flex-start",
-        paddingLeft: 15,
-        width: '30%'
-    },
-    
-    //Text
-
-    titleFont: {
-        fontSize: 18,
-        color: "white"
-    },
 
     container: {
         width: '100%',
@@ -51,7 +14,7 @@ export default StyleSheet.create({
 
     body: {
         // 
-        height:'100%',
+        height: '100%',
         backgroundColor: COLOR_GRAY,
     },
     username: {
@@ -123,7 +86,7 @@ export default StyleSheet.create({
         backgroundColor: "white",
         padding: 10,
         flexDirection: 'row',
-        borderBottomWidth:1
+        // borderBottomWidth: 1
         // borderRadius: 30,
     },
     cardContent: {

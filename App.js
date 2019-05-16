@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { createStackNavigator, createBottomTabNavigator, createAppContainer,createMaterialTopTabNavigator  } from "react-navigation";
+import { createStackNavigator, createBottomTabNavigator, createAppContainer, createMaterialTopTabNavigator } from "react-navigation";
 import { StyleSheet, TouchableOpacity, View, Container } from 'react-native';
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import Home from "./app/screens/HomeScreen/Home";
@@ -10,28 +10,30 @@ import NewPost from "./app/screens/NewPostScreen/NewPost";
 import Notification from "./app/screens/NotificationScreen/notificationScreen";
 import Post from "./app/screens/PostScreen/Post";
 import Comment from "./app/screens/CommentScreen/Comment";
+import ContronPanel from "./app/components/DrawerComponent/DrawerPanel"
 import { Badge } from 'react-native-elements';
-
+import Drawer from 'react-native-drawer'
+import {Header} from "./app/components/HeaderNavigationBar/HeaderNavigationBar"
 console.disableYellowBox = true;
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      count:2
+      count: 2
     }
-  }  
+  }
 
-  click = () =>{
+  click = () => {
     this.setState({
-      count:0
+      count: 0
     })
   }
-  componentDidMount(){
-    
+  componentDidMount() {
+
   }
   render() {
-    const AppStack = createMaterialTopTabNavigator (
+    const AppStack = createMaterialTopTabNavigator(
       {
         Home: { screen: Home },
         New: { screen: NewPost },
@@ -39,7 +41,7 @@ export default class App extends React.Component {
         Notification: {
           screen: Notification,
           navigationOptions: {
-            tabBarLabel: "Notifications",                        
+            tabBarLabel: "Notifications",
             tabBarIcon: ({ tintColor }) => (
               <View>
                 {this.state.count > 0 ? (
@@ -53,19 +55,19 @@ export default class App extends React.Component {
                     </View>
                   )}
               </View>
-    
+
             )
           },
         }
       },
       {
         defaultNavigationOptions: ({ navigation }) => ({
-          tabBarPosition :'bottom',
-          tabBarIcon: ({ focused, tintColor }) => {    
+          tabBarPosition: 'bottom',
+          tabBarIcon: ({ focused, tintColor }) => {
             const { routeName } = navigation.state;
             let iconName;
             if (routeName === "Home") {
-              iconName = "home";              
+              iconName = "home";
             } else if (routeName === "New") {
               iconName = "plus-square";
             } else if (routeName === "Profile") {
@@ -75,22 +77,22 @@ export default class App extends React.Component {
           }
         }),
         tabBarOptions: {
-          tabBarPosition:'bottom',
+          tabBarPosition: 'bottom',
           activeTintColor: "#83b4ff",
           inactiveTintColor: "white",
-          showIcon :true,
+          showIcon: true,
           labelStyle: {
-            fontSize: 9,            
+            fontSize: 9,
           },
           style: {
             backgroundColor: '#192f6a',
-            color:'#fff',
-            height:55
+            color: '#fff',
+            height: 55
           }
         },
       }
     );
-    
+
     const Stack = createStackNavigator(
       {
         Auth: {
@@ -99,6 +101,7 @@ export default class App extends React.Component {
         Post: {
           screen: Post
         },
+
         Comment: {
           screen: Comment
         },
@@ -113,12 +116,29 @@ export default class App extends React.Component {
         headerMode: "none"
       }
     )
-    
-    const AppContainer = createAppContainer(Stack);
-    
-    return (
 
-      <AppContainer/>
+    const AppContainer = createAppContainer(Stack);
+
+    return (
+      // <Drawer
+      //   ref={(ref) => this._drawer = ref}
+      //   open={open}
+      //   type="overlay"
+      //   content={<ContronPanel />}
+      //   tapToClose={true}
+      //   openDrawerOffset={0.2} //20% gap on the right side of drawer
+      //   panCloseMask={0.2}
+      //   closedDrawerOffset={-3}
+      //   captureGestures={close}
+      //   tapToClose={true}
+      //   styles={{ flex: 1, zIndex: 1000 }}
+      //   tweenHandler={(ratio) => ({
+      //     main: { opacity: (2 - ratio) / 2 }
+      //   })}
+      // >
+        <AppContainer />
+      // </Drawer>
+
     );
   }
 }

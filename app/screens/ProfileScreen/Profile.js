@@ -189,7 +189,7 @@ class Profile extends React.Component {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
-                <Header title="Profile" />
+                <Header title="Profile" height={50} />
                 <ScrollView style={{ marginBottom: 50 }} stickyHeaderIndices={[4]} showsVerticalScrollIndicator={false}>
                     <View style={styles.header}>
                         <Image style={{ width: '100%', height: '100%' }} source={require("../../images/dog.jpg")} />

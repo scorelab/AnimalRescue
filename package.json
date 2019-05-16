@@ -11,6 +11,7 @@
     "react": "16.6.3",
     "react-native": "0.58.6",
     "react-native-bottom-action-sheet": "0.0.20",
+    "react-native-drawer": "^2.5.1",
     "react-native-dropdownalert": "^3.10.0",
     "react-native-elements": "^1.1.0",
     "react-native-fbsdk": "^0.8.0",

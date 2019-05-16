@@ -41,7 +41,7 @@ export default class NotificationScreen extends Component {
 
                 return (
                         <View style={{ flex: 1, flexDirection: 'column', }}>
-                                <Header title={"Notifications"} />
+                                <Header title={"Notifications"} height={50}/>
                                 {/* <TouchableOpacity onPress={() => this.setState({ alterView: true })} style={{ justifyContent: 'flex-end', marginVertical: 10, flexDirection: 'row', marginRight: 10 }}>
                                         <Text style={{ color: "#007bff" }}>Mark All As Read</Text>
                                         <Ionicons name={"check-double"} size={12} color={"#007bff"} />

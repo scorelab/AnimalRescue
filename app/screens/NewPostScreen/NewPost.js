@@ -160,7 +160,7 @@ class NewPost extends React.Component {
         return (
 
             <ScrollView style={{ flex: 1 }}>
-                <Header title="New Post" />
+                <Header title="New Post"  height={50}/>
                 <View style={styles.container}>
                     <ProgressSteps activeStepIconBorderColor={COLOR_PRIMARY} completedProgressBarColor={COLOR_PRIMARY} completedStepIconColor={COLOR_PRIMARY} activeLabelColor={COLOR_PRIMARY} labelColor={COLOR_BLACK}>
                         <ProgressStep label="Photo" onNext={() => this.checkPhoto()} errors={this.state.photoError} previousBtnDisabled={true} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
