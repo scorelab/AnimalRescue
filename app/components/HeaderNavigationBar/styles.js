@@ -30,9 +30,9 @@ export default StyleSheet.create({
     },
     goBackArea: {
         // alignSelf:'flex-end',
-        justifyContent: 'flex-end',
-        alignItems: "flex-end",
-        paddingRight: 15,
+        justifyContent: 'flex-start',
+        alignItems: "flex-start",
+        paddingLeft: 15,
         width: '30%'
     },
     container: {

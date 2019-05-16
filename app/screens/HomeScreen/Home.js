@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View, TouchableOpacity, Text, StatusBar, Animated } from 'react-native';
+import { ScrollView, View, TouchableOpacity, Text, StatusBar, Animated, Easing } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import Post from "../../components/HomePostComponent/HomePostComponent";
 import styles from "./style";
@@ -28,8 +28,7 @@ export default class Home extends Component {
 
     setAnimation = () => {
         Animated.timing(this.state.height, {
-            duration: 400,
-            friction:35,
+            duration: 300,                        
             toValue: this.state.visible ? 50 : 0
         }).start()
     };
@@ -118,6 +117,7 @@ export default class Home extends Component {
     }
 
     render() {
+        
         const config = {
             velocityThreshold: 0.3,
             directionalOffsetThreshold: 70,
