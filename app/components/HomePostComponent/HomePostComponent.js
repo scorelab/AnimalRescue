@@ -20,16 +20,16 @@ export default class HomePostComponent extends Component {
         <View style={style.cardTitleBar}>
           <TouchableOpacity style={style.userAvatarArea} onPress={this.props.profile}>
             <Image
-              source={require("../../images/user_image_1.jpg")}
+              source={{uri : this.props.avatar}}
               style={style.userAvatarImage}
             />
           </TouchableOpacity>
           <View style={style.cardTitleArea}>
             <View style={style.nameLine}>
-              <Text style={style.nameFont}>John Doe</Text>
+              <Text style={style.nameFont}>{this.props.name}</Text>
             </View>
             <View style={style.dateTimeLine}>
-              <Text>8:00 AM | 01 Jun 2018</Text>
+              <Text>{this.props.posted}</Text>
             </View>
           </View>
         </View>

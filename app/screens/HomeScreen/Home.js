@@ -16,7 +16,16 @@ export default class Home extends Component {
             active: 0,
             isHeaderHidden: false,
             height: new Animated.Value(50),
-            visible: true
+            visible: true,
+            data: [
+                { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name: "Frank Odalthh", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
+                { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name: "John DoeLink", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
+                { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar7.png", name: "March SoulLaComa", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
+                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar2.png", name: "Finn DoRemiFaso", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
+                { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar3.png", name: "Maria More More", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
+                { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name: "Clark June Boom!", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
+                { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name: "The googler", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
+            ],
         }
 
     }
@@ -28,6 +37,7 @@ export default class Home extends Component {
     setAnimation = () => {
         Animated.timing(this.state.height, {
             duration: 300,
+            tension: 100,
             toValue: this.state.visible ? 50 : 0
         }).start()
     };
@@ -67,51 +77,57 @@ export default class Home extends Component {
 
         const { navigate } = this.props.navigation;
         if (this.state.active == 0) {
-            return (
-                // <ScrollView showsVerticalScrollIndicator={false}>
-                <Post
-                    press={() => navigate('Post')}
-                    liked={this.state.liked}
-                    comment={() => navigate('Comment')}
-                    like={() => this.setState({ liked: true })}
-                    numberOfLikes={10}
-                    numberOfComments={1}
-                />
-                // </ScrollView>
+            return this.state.data.map((data, index) => {
+                return (
+                    <Post
+                        press={() => navigate('Post')}
+                        liked={this.state.liked}
+                        comment={() => navigate('Comment')}
+                        like={() => this.setState({ liked: true })}
+                        numberOfLikes={10}
+                        numberOfComments={1}
+                        name={data.name}
+                        posted="2 hours Ago"
+                        avatar={data.image}
+                    />
 
-            )
+                )
+            });
 
         } else if (this.state.active == 1) {
-            return (
+            return this.state.data.map((data, index) => {
+                return (
+                    <Post
+                        press={() => navigate('Post')}
+                        liked={this.state.liked}
+                        comment={() => navigate('Comment')}
+                        like={() => this.setState({ liked: true })}
+                        numberOfLikes={10}
+                        numberOfComments={1}
+                        name={data.name}
+                        posted="2 hours Ago"
+                        avatar={data.image}
+                    />
 
-                // <ScrollView showsVerticalScrollIndicator={false} >
-                <Post
-                    press={() => navigate('Post')}
-                    liked={this.state.liked}
-                    comment={() => navigate('Comment')}
-                    like={() => this.setState({ liked: true })}
-                    numberOfLikes={10}
-                    numberOfComments={1}
-                />
-
-                // </ScrollView>
-
-            )
+                )
+            });
         } else if (this.state.active == 2) {
-            return (
-                // <ScrollView showsVerticalScrollIndicator={false}>
-                <Post
-                    press={() => navigate('Post')}
-                    liked={this.state.liked}
-                    comment={() => navigate('Comment')}
-                    like={() => this.setState({ liked: true })}
-                    numberOfLikes={10}
-                    numberOfComments={1}
-                />
+            return this.state.data.map((data, index) => {
+                return (
+                    <Post
+                        press={() => navigate('Post')}
+                        liked={this.state.liked}
+                        comment={() => navigate('Comment')}
+                        like={() => this.setState({ liked: true })}
+                        numberOfLikes={10}
+                        numberOfComments={1}
+                        name={data.name}
+                        posted="2 hours Ago"
+                        avatar={data.image}
+                    />
 
-                // </ScrollView>
-
-            )
+                )
+            });
         }
     }
 
@@ -173,47 +189,8 @@ export default class Home extends Component {
                 // onScrollBeginDrag={() => this.setState({ visible: true })}
                 // onScrollEndDrag={() => this.setState({ visible: false })}
                 >
-                    {/* {this.renderSection()} */}
-                    <Post
-                        press={() => navigate('Post')}
-                        liked={this.state.liked}
-                        comment={() => navigate('Comment')}
-                        like={() => this.setState({ liked: true })}
-                        numberOfLikes={10}
-                        numberOfComments={1}
-                    />
-                    <Post
-                        press={() => navigate('Post')}
-                        liked={this.state.liked}
-                        comment={() => navigate('Comment')}
-                        like={() => this.setState({ liked: true })}
-                        numberOfLikes={10}
-                        numberOfComments={1}
-                    />
-                    <Post
-                        press={() => navigate('Post')}
-                        liked={this.state.liked}
-                        comment={() => navigate('Comment')}
-                        like={() => this.setState({ liked: true })}
-                        numberOfLikes={10}
-                        numberOfComments={1}
-                    />
-                    <Post
-                        press={() => navigate('Post')}
-                        liked={this.state.liked}
-                        comment={() => navigate('Comment')}
-                        like={() => this.setState({ liked: true })}
-                        numberOfLikes={10}
-                        numberOfComments={1}
-                    />
-                    <Post
-                        press={() => navigate('Post')}
-                        liked={this.state.liked}
-                        comment={() => navigate('Comment')}
-                        like={() => this.setState({ liked: true })}
-                        numberOfLikes={10}
-                        numberOfComments={1}
-                    />
+                    {this.renderSection()}
+
                 </ScrollView>
 
             </View >
