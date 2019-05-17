@@ -7,6 +7,7 @@ import Ionicons from "react-native-vector-icons/FontAwesome";
 import ImagePicker from "react-native-image-picker";
 import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_GRAY } from "../../config/styles";
 const { width, height } = Dimensions.get('window');
+import TouchableScale from "react-native-touchable-scale";
 class Profile extends React.Component {
 
     constructor() {
@@ -113,7 +114,7 @@ class Profile extends React.Component {
             return this.state.data1.map((data, index) => {
                 if(data.status == 0){
                     return (
-                        <TouchableOpacity>
+                        <TouchableScale>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
                                 <ImageBackground source={{ uri: data.image }} style={{ overflow: 'hidden', width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }}>
                                     <View style={{ overflow: 'hidden', alignSelf: 'center', rotation: -45, backgroundColor: 'red', marginVertical: '20%', width: '100%', height: 15, marginRight: '50%' }}>
@@ -121,11 +122,11 @@ class Profile extends React.Component {
                                     </View>
                                 </ImageBackground>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableScale>
                     )
                 }else if(data.status ==1){
                     return (
-                        <TouchableOpacity>
+                        <TouchableScale>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
                                 <ImageBackground source={{ uri: data.image }} style={{ overflow: 'hidden', width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }}>
                                     <View style={{ overflow: 'hidden', alignSelf: 'center', rotation: -45, backgroundColor: '#4885ed', width: '100%',  marginVertical: '20%',height: 15, marginRight: '50%' }}>
@@ -133,11 +134,11 @@ class Profile extends React.Component {
                                     </View>
                                 </ImageBackground>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableScale>
                     )
                 }else{
                     return (
-                        <TouchableOpacity>
+                        <TouchableScale>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
                                 <ImageBackground source={{ uri: data.image }} style={{ overflow: 'hidden', width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }}>
                                     <View style={{ overflow: 'hidden', alignSelf: 'center', rotation: -45, backgroundColor: 'green', width: '100%', marginVertical: '20%', height: 15, marginRight: '50%' }}>
@@ -145,7 +146,7 @@ class Profile extends React.Component {
                                     </View>
                                 </ImageBackground>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableScale>
                     )
                 }
                 
@@ -153,21 +154,21 @@ class Profile extends React.Component {
         } else if (this.state.active == 2) {
             return this.state.data1.map((data, index) => {
                 return (
-                    <TouchableOpacity>
+                    <TouchableScale>
                         <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
                             <Image source={{ uri: data.image }} style={{ width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }} />
                         </View>
-                    </TouchableOpacity>
+                    </TouchableScale>
                 )
             });
         } else if (this.state.active == 3) {
             return this.state.data3.map((data, index) => {
                 return (
-                    <TouchableOpacity>
+                    <TouchableScale>
                         <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
                             <Image source={{ uri: data.image }} style={{ width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }} />
                         </View>
-                    </TouchableOpacity>
+                    </TouchableScale>
                 )
             });
         }
@@ -193,15 +194,15 @@ class Profile extends React.Component {
                 <ScrollView style={{ marginBottom: 50 }} stickyHeaderIndices={[4]} showsVerticalScrollIndicator={false}>
                     <View style={styles.header}>
                         <Image style={{ width: '100%', height: '100%' }} source={require("../../images/dog.jpg")} />
-                        <TouchableOpacity style={styles.editCover} onPress={() => this.editCoverPicture()}>
+                        <TouchableScale style={styles.editCover} onPress={() => this.editCoverPicture()}>
                             <Ionicons name={'camera'} size={20} color={'#000'} />
                             <Text> EDIT</Text>
-                        </TouchableOpacity>
+                        </TouchableScale >
                     </View>
                     <Image style={styles.avatar} source={require("../../images/user_image_1.jpg")} />
-                    <TouchableOpacity style={styles.editProfilePic} onPress={() => this.editProfilePicture()}>
+                    <TouchableScale style={styles.editProfilePic} onPress={() => this.editProfilePicture()}>
                         <Ionicons name={'camera'} size={15} color={'#000'} />
-                    </TouchableOpacity>
+                    </TouchableScale>
                     <View style={styles.body}>
                         <View style={styles.bodyContent}>
                             <Text style={styles.name}>John Doe</Text>

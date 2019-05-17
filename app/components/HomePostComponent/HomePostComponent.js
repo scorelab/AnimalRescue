@@ -5,6 +5,7 @@ import { Image } from 'react-native-elements';
 import style from "./styles";
 import { BallIndicator } from 'react-native-indicators';
 import { COLOR_PRIMARY } from "../../config/styles";
+import TouchableScale from "react-native-touchable-scale";
 export default class HomePostComponent extends Component {
 
   plural = (number) => {
@@ -35,7 +36,7 @@ export default class HomePostComponent extends Component {
         </View>
 
         <View style={style.cardViewBody}>
-          <TouchableOpacity style={style.cardViewBody} onPress={this.props.press}>
+          <TouchableScale style={style.cardViewBody} onPress={this.props.press}>
             <Text style={style.postContentFont} numberOfLines={3} ellipsizeMode={'tail'}>
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy text
@@ -56,7 +57,7 @@ export default class HomePostComponent extends Component {
                 borderBottomWidth: 1
               }}
             />
-          </TouchableOpacity>
+          </TouchableScale>
           <View style={style.likeCommentDisplayArea}>
             {this.props.numberOfLikes >= 1 ? (
               <View style={style.row}>
