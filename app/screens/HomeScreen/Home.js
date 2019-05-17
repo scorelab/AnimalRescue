@@ -34,44 +34,44 @@ export default class Home extends Component {
 
     }
 
-    setAnimation = () => {
-        Animated.timing(this.state.height, {
-            duration: 300,
-            tension: 100,
-            toValue: this.state.visible ? 50 : 0
-        }).start()
-    };
-    handleScroll = (event) => {
-        var currentOffset = event.nativeEvent.contentOffset.y;
-        var direction = currentOffset > this.offset ? 'down' : 'up';
-        if (direction == 'down') {
-            this.setState({
-                visible: false
-            })
-            this.setAnimation();
-            this.offset = currentOffset;
-        } else {
-            this.setState({
-                visible: true
-            });
-            this.setAnimation();
-            this.offset = currentOffset;
-            // show the nav
-        }
-    }
-    onSwipeUp(gestureState) {
-        this.setState({
-            visible: false
-        });
-        this.setAnimation();
-    }
+    // setAnimation = () => {
+    //     Animated.timing(this.state.height, {
+    //         duration: 300,
+    //         tension: 100,
+    //         toValue: this.state.visible ? 50 : 0
+    //     }).start()
+    // };
+    // handleScroll = (event) => {
+    //     var currentOffset = event.nativeEvent.contentOffset.y;
+    //     var direction = currentOffset > this.offset ? 'down' : 'up';
+    //     if (direction == 'down') {
+    //         this.setState({
+    //             visible: false
+    //         })
+    //         this.setAnimation();
+    //         this.offset = currentOffset;
+    //     } else {
+    //         this.setState({
+    //             visible: true
+    //         });
+    //         this.setAnimation();
+    //         this.offset = currentOffset;
+    //         // show the nav
+    //     }
+    // }
+    // onSwipeUp(gestureState) {
+    //     this.setState({
+    //         visible: false
+    //     });
+    //     this.setAnimation();
+    // }
 
-    onSwipeDown(gestureState) {
-        this.setState({
-            visible: false
-        });
-        this.setAnimation();
-    }
+    // onSwipeDown(gestureState) {
+    //     this.setState({
+    //         visible: false
+    //     });
+    //     this.setAnimation();
+    // }
 
     renderSection = () => {
 
@@ -133,11 +133,6 @@ export default class Home extends Component {
 
     render() {
 
-        const config = {
-            velocityThreshold: 0.3,
-            directionalOffsetThreshold: 70,
-            gestureIsClickThreshold: 5
-        };
         return (
 
             <View style={styles.container}>

@@ -74,8 +74,8 @@ export default class Comment extends Component {
                         const Notification = item;
                         var swipeBtns = [
                             {
-                                component: <Ionicons name={"trash"} size={20} color={"white"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
-                                backgroundColor: '#d9534f',
+                                component: <Ionicons name={"trash"} size={20} color={"#b00020"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
+                                backgroundColor: '#fff',
                                 authoClose: true,
                                 buttonWidth: 300,
                                 sensitivity: 100,
