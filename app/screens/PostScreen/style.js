@@ -134,5 +134,11 @@ export default StyleSheet.create({
         alignSelf: 'center',
         marginLeft: 10
     },
+    image: {
+        height: 250,
+        width: Dimensions.get('window').width,
+        alignSelf: 'stretch',
+        resizeMode: 'cover',
+    },
     
 });
