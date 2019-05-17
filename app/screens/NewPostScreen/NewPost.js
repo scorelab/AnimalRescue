@@ -9,13 +9,14 @@ import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { COLOR_PRIMARY, COLOR_BLACK, COLOR_SECONDARY } from "../../config/styles";
 import styles from "./style";
 import Snackbar from 'react-native-snackbar';
-const options = ['Cat', 'Dog', 'Monkey'];
 import DropdownAlert from 'react-native-dropdownalert';
+import ActionSheet from 'react-native-actionsheet'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 
 // Labels is optional
 const labels = ['Cat', 'Dog', 'Monkey'];
+const options = ['Cancel', 'Cat', 'Dog', 'Monkey', 'Bird', 'Fish', 'Pig', 'Cow', 'Goat'];
 class NewPost extends React.Component {
 
     constructor() {
@@ -160,7 +161,7 @@ class NewPost extends React.Component {
         return (
 
             <ScrollView style={{ flex: 1 }}>
-                <Header title="New Post"  height={50}/>
+                <Header title="New Post" height={50} />
                 <View style={styles.container}>
                     <ProgressSteps activeStepIconBorderColor={COLOR_PRIMARY} completedProgressBarColor={COLOR_PRIMARY} completedStepIconColor={COLOR_PRIMARY} activeLabelColor={COLOR_PRIMARY} labelColor={COLOR_BLACK}>
                         <ProgressStep label="Photo" onNext={() => this.checkPhoto()} errors={this.state.photoError} previousBtnDisabled={true} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
@@ -220,7 +221,7 @@ class NewPost extends React.Component {
                                     <Text
                                         style={styles.textStyle}
                                         onPress={() => {
-                                            this.refs.picker.show();
+                                            this.ActionSheet.show()
                                         }}
                                     >
                                         Click here to select Animal Type
@@ -229,7 +230,7 @@ class NewPost extends React.Component {
                                         <Text
                                             style={styles.textStyle}
                                             onPress={() => {
-                                                this.refs.picker.show();
+                                                this.ActionSheet.show()
                                             }}
                                         >
                                             {this.state.selectedAnimal}
@@ -248,7 +249,7 @@ class NewPost extends React.Component {
 
                                 </KeyboardAvoidingView>
 
-                                <SimplePicker
+                                {/* <SimplePicker
                                     ref={'picker'}
                                     options={options}
                                     confirmTextStyle={{ color: COLOR_PRIMARY, fontSize: 16 }}
@@ -259,11 +260,25 @@ class NewPost extends React.Component {
                                             selectedAnimal: option,
                                         });
                                     }}
-                                />
+                                /> */}
                             </View>
                         </ProgressStep>
                     </ProgressSteps>
                 </View>
+                <ActionSheet
+                    ref={o => this.ActionSheet = o}
+                    title={'Select The Animal Type ?'}
+                    options={options}
+                    cancelButtonIndex={0}
+                    destructiveButtonIndex={0}
+                    onPress={(index) => {
+                        if(index>0){
+                            this.setState({
+                                selectedAnimal: options[index],
+                            });
+                        }                        
+                    }}
+                />
                 <DropdownAlert ref={ref => this.dropdown = ref} />
             </ScrollView>
 

@@ -10,6 +10,7 @@
     "firebase": "^5.11.1",
     "react": "16.6.3",
     "react-native": "0.58.6",
+    "react-native-actionsheet": "^2.4.2",
     "react-native-bottom-action-sheet": "0.0.20",
     "react-native-drawer": "^2.5.1",
     "react-native-dropdownalert": "^3.10.0",
