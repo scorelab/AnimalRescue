@@ -237,15 +237,30 @@ class NewPost extends React.Component {
                                         </Text>
                                     )}
                                 <KeyboardAvoidingView behavior="padding" enabled={true}>
-                                    <TextInput
-                                        style={styles.descriptiontStyle}
-                                        placeholder={'Enter Description Here'}
-                                        editable={true}
-                                        multiline={true}
-                                        numberOfLines={5}
-                                        maxlength={750}
-                                        onChangeText={(text) => this.setState({ description: text })}
-                                    />
+                                    {this.state.description.length.toString() <= 70 ? (
+                                        <TextInput
+                                            style={[styles.descriptiontStyle, { fontSize: 32 }]}
+                                            placeholder={'Enter Description Here'}
+                                            editable={true}
+                                            multiline={true}
+                                            numberOfLines={5}
+                                            maxlength={750}
+                                            value={this.state.description}
+                                            onChangeText={(text) => this.setState({ description: text })}
+                                        />
+                                    ) : (
+                                            <TextInput
+                                                style={[styles.descriptiontStyle, { fontSize: 20 }]}
+                                                placeholder={'Enter Description Here'}
+                                                editable={true}
+                                                multiline={true}
+                                                numberOfLines={5}
+                                                maxlength={750}
+                                                value={this.state.description}
+                                                onChangeText={(text) => this.setState({ description: text })}
+                                            />
+                                        )}
+
 
                                 </KeyboardAvoidingView>
 
@@ -272,11 +287,11 @@ class NewPost extends React.Component {
                     cancelButtonIndex={0}
                     destructiveButtonIndex={0}
                     onPress={(index) => {
-                        if(index>0){
+                        if (index > 0) {
                             this.setState({
                                 selectedAnimal: options[index],
                             });
-                        }                        
+                        }
                     }}
                 />
                 <DropdownAlert ref={ref => this.dropdown = ref} />
