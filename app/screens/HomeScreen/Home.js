@@ -6,9 +6,9 @@ import styles from "./style";
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import { COLOR_PRIMARY, COLOR_GRAY } from "../../config/styles";
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+import HomeTabBar from "../../components/HomeTabBar/HomeTabBar";
 const AnimatedHeader = Animated.createAnimatedComponent(Header);
 export default class Home extends Component {
-
     constructor() {
         super()
         this.state = {
@@ -139,61 +139,35 @@ export default class Home extends Component {
             gestureIsClickThreshold: 5
         };
         return (
+
             <View style={styles.container}>
                 <StatusBar backgroundColor="#00063f" barStyle="light-content" />
-                <AnimatedHeader title="Home" height={this.state.height} />
-                <GestureRecognizer
-                    onSwipeUp={(state) => this.onSwipeUp(state)}
-                    onSwipeDown={(state) => this.onSwipeDown(state)}
-                    config={config}
-                    // style={styles.container}
-                    style={styles.tabBarContainer}
-                >
-                    {/* <View style={styles.tabBarContainer}> */}
-                    {this.state.active == 0 ? (
-                        <TouchableOpacity onPress={() => this.setState({ active: 0 })} style={styles.tabBarActive}>
-                            <Text style={{ color: '#fff' }}>Active</Text>
-                        </TouchableOpacity>
-                    ) : (
-                            <TouchableOpacity onPress={() => this.setState({ active: 0 })} style={styles.tabBar}>
-                                <Text style={{ color: '#a0a0a0' }}>Active</Text>
-                            </TouchableOpacity>
-                        )}
-
-
-                    {this.state.active == 1 ? (
-                        <TouchableOpacity onPress={() => this.setState({ active: 1 })} style={styles.tabBarActive}>
-                            <Text style={{ color: '#fff' }}>Pending</Text>
-                        </TouchableOpacity>
-                    ) : (
-                            <TouchableOpacity onPress={() => this.setState({ active: 1 })} style={styles.tabBar}>
-                                <Text style={{ color: '#a0a0a0' }}>Pending</Text>
-                            </TouchableOpacity>
-                        )}
-
-                    {this.state.active == 2 ? (
-                        <TouchableOpacity onPress={() => this.setState({ active: 2 })} style={styles.tabBarActive}>
-                            <Text style={{ color: '#fff' }}>Finished</Text>
-                        </TouchableOpacity>
-                    ) : (
-                            <TouchableOpacity onPress={() => this.setState({ active: 2 })} style={styles.tabBar}>
-                                <Text style={{ color: '#a0a0a0' }}>Finished</Text>
-                            </TouchableOpacity>
-                        )}
-                    {/* </View> */}
-                </GestureRecognizer>
                 <ScrollView
-                    style={{ backgroundColor: 'transparent' }}
-                    showsVerticalScrollIndicator={false}
-                    onScroll={this.handleScroll}
-                // onScrollBeginDrag={() => this.setState({ visible: true })}
-                // onScrollEndDrag={() => this.setState({ visible: false })}
+                    style={{ backgroundColor: 'transparent',alignSelf:'center'}}
+                    contentContainerStyle={{justifyContent:'center', alignItems:'center'}}
+                    stickyHeaderIndices={[1]}                    
+                    // showsVerticalScrollIndicator={false}
+                    // onScroll={this.handleScroll}
+                    // scrollEventThrottle={60}
+                    // onScrollBeginDrag={() => this.setState({ visible: true })}
+                    // onScrollEndDrag={() => this.setState({ visible: false })}
                 >
+                    <AnimatedHeader title="Home" height={50} />
+                    <HomeTabBar
+                        active={this.state.active}
+                        onPress0={() => this.setState({ active: 0 })}
+                        onPress1={() => this.setState({ active: 1 })}
+                        onPress2={() => this.setState({ active: 2 })}
+                    />
+
+
                     {this.renderSection()}
 
                 </ScrollView>
 
+
             </View >
+
         )
 
 
