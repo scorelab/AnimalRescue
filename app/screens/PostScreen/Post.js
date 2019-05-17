@@ -5,11 +5,7 @@ import {
     View,
     TouchableOpacity,
     Image,
-    Alert,
-    ScrollView,
-    FlatList,
-    Button,
-    BackHandler
+    Linking
 } from 'react-native';
 import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";
 import styles from "./style";
@@ -17,6 +13,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import HeaderImageScrollView, { TriggeringView } from 'react-native-image-header-scroll-view';
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as Animatable from 'react-native-animatable';
+import TouchableScale from "react-native-touchable-scale";
 export default class Post extends Component {
 
     constructor(props) {
@@ -54,7 +51,16 @@ export default class Post extends Component {
         const { navigate } = this.props.navigation;
         navigate('Comment')
     }
-
+    openMap = () => {
+        var url = "https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=5.95492,80.554956"
+        Linking.canOpenURL(url).then(supported => {
+            if (!supported) {
+                console.log('Can\'t handle url: ' + url);
+            } else {
+                return Linking.openURL(url);
+            }
+        }).catch(err => console.error('An error occurred', err));
+    }
     navBar = () => {
         this.navTitleView.fadeInUp(200)
         this.setState({
@@ -132,6 +138,7 @@ export default class Post extends Component {
                             showsMyLocationButton={true}
                             scrollEnabled={false}
                         >
+
                             {this.state.latitude != null && this.state.latitude != null ? (
                                 <Marker
                                     coordinate={{
@@ -150,7 +157,29 @@ export default class Post extends Component {
 
                         </MapView>
 
+                        <TouchableScale onPress={() => this.openMap()}
+                            style={{
+                                position: 'absolute',//use absolute position to show button on top of the map
+                                top: '70%', //for center align
+                                right:5,
+                                alignSelf: 'flex-end', //for align to right                                                               
+                                width: 'auto',                                
+                                borderRadius: 15,
+                                paddingHorizontal:10,
+                                paddingVertical:10,
+                                backgroundColor: '#192f6a',
+                                alignItems: 'center',
+                                justifyContent: 'center', 
+                                flexDirection:'row'                               
+                            }}
+                        >
+                            <Icon name="compass" size={24} color={'#fff'} style={{alignSelf:'center'}} />
+                            <Text style={{color:'#fff',fontSize:14,marginLeft:2}}> Get Direction</Text>
+                        </TouchableScale>
+
+
                     </View>
+
                     <View style={styles.profile}>
                         <Image style={styles.avatar}
                             source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar1.png' }} />
@@ -168,12 +197,12 @@ export default class Post extends Component {
                         >
 
                             {this.state.liked == false ? (
-                                <TouchableOpacity style={[styles.row,{alignItems:'flex-end'}]}>
-                                    <Icon name="thumbs-up" size={24} />                                    
+                                <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]}>
+                                    <Icon name="thumbs-up" size={24} />
                                 </TouchableOpacity>
                             ) : (
-                                    <TouchableOpacity style={[styles.row,{alignItems:'flex-end'}]} >
-                                        <Icon name="thumbs-up" size={24} color={COLOR_PRIMARY} />                                        
+                                    <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} >
+                                        <Icon name="thumbs-up" size={24} color={COLOR_PRIMARY} />
                                     </TouchableOpacity>
                                 )}
 
@@ -183,8 +212,8 @@ export default class Post extends Component {
                         <View
                             style={styles.likeCommentArea}
                         >
-                            <TouchableOpacity style={[styles.row,{alignItems:'flex-start'}]} onPress={() => this.clickEventListener()}>
-                                <Icon name="comment" size={24} />                                
+                            <TouchableOpacity style={[styles.row, { alignItems: 'flex-start' }]} onPress={() => this.clickEventListener()}>
+                                <Icon name="comment" size={24} />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -212,7 +241,7 @@ export default class Post extends Component {
                     <View style={styles.separator}></View>
                     <View style={styles.addToCarContainer}>
                         <TouchableOpacity style={styles.shareButton} onPress={() => this.clickEventListener()}>
-                            <Text style={styles.shareButtonText}>Add To Cart</Text>
+                            <Text style={styles.shareButtonText}>I Will Handle</Text>
                         </TouchableOpacity>
                     </View>
 
