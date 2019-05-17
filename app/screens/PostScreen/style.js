@@ -122,7 +122,7 @@ export default StyleSheet.create({
         borderColor: "#192f6a",
     },
     profile: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         marginTop: 15,        
         alignItems:'center',
         justifyContent:'center'
@@ -139,6 +139,19 @@ export default StyleSheet.create({
         width: Dimensions.get('window').width,
         alignSelf: 'stretch',
         resizeMode: 'cover',
+    },
+    likeCommentArea: {
+        width: "auto",
+        height: 25,        
+        marginTop: 10,
+        
+    },    
+    row:{ 
+        flexDirection: 'row',
+        width:'60%' , 
+        justifyContent:'center',
+        alignItems:'center',
+        alignSelf:'center'       
     },
     
 });

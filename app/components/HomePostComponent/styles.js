@@ -101,7 +101,7 @@ likeCommentDisplayArea:{
     marginTop: 10 
 },
 row:{ 
-    flexDirection: 'row' 
+    flexDirection: 'row', 
 },
 fontColor:{
     color:"#000000"

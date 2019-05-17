@@ -15,7 +15,7 @@ import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNa
 import styles from "./style";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import HeaderImageScrollView, { TriggeringView } from 'react-native-image-header-scroll-view';
-
+import Icon from "react-native-vector-icons/FontAwesome";
 import * as Animatable from 'react-native-animatable';
 export default class Post extends Component {
 
@@ -25,7 +25,8 @@ export default class Post extends Component {
             latitude: null,
             longitude: null,
             region: null,
-            showNavTitle: false
+            showNavTitle: false,
+            liked: false
         }
     }
     componentDidMount = async () => {
@@ -57,7 +58,7 @@ export default class Post extends Component {
     navBar = () => {
         this.navTitleView.fadeInUp(200)
         this.setState({
-            showNavTitle:true
+            showNavTitle: true
         })
     }
     render() {
@@ -68,7 +69,7 @@ export default class Post extends Component {
                     minHeight={50}
                     headerImage={require("../../images/dog.jpg")}
                     fadeOutForeground
-                    style={{marginBottom:5}}
+                    style={{ marginBottom: 10 }}
                     // renderHeader={() => <Image source={require("../../images/dog.jpg")} style={styles.image} />}
                     // renderForeground={() => (
                     //     <View style={styles.titleContainer}>
@@ -129,6 +130,7 @@ export default class Post extends Component {
                             loadingEnabled={true}
                             zoomControlEnabled={true}
                             showsMyLocationButton={true}
+                            scrollEnabled={false}
                         >
                             {this.state.latitude != null && this.state.latitude != null ? (
                                 <Marker
@@ -149,8 +151,44 @@ export default class Post extends Component {
                         </MapView>
 
                     </View>
+                    <View style={styles.profile}>
+                        <Image style={styles.avatar}
+                            source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar1.png' }} />
 
-                    <View style={styles.starContainer}>
+                        <Text style={styles.profileName}>
+                            Kasun Kavinda Pathirana
+                         </Text>
+                        <Text style={{ marginLeft: 20 }}>
+                            5 hours ago
+                         </Text>
+                    </View>
+                    <View style={styles.row}>
+                        <View
+                            style={styles.likeCommentArea}
+                        >
+
+                            {this.state.liked == false ? (
+                                <TouchableOpacity style={[styles.row,{alignItems:'flex-end'}]}>
+                                    <Icon name="thumbs-up" size={24} />                                    
+                                </TouchableOpacity>
+                            ) : (
+                                    <TouchableOpacity style={[styles.row,{alignItems:'flex-end'}]} >
+                                        <Icon name="thumbs-up" size={24} color={COLOR_PRIMARY} />                                        
+                                    </TouchableOpacity>
+                                )}
+
+
+                        </View>
+
+                        <View
+                            style={styles.likeCommentArea}
+                        >
+                            <TouchableOpacity style={[styles.row,{alignItems:'flex-start'}]} onPress={() => this.clickEventListener()}>
+                                <Icon name="comment" size={24} />                                
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    {/* <View style={styles.starContainer}>
                         <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
                         <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
                         <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
@@ -170,7 +208,7 @@ export default class Post extends Component {
                         <TouchableOpacity style={styles.btnSize}><Text>M</Text></TouchableOpacity>
                         <TouchableOpacity style={styles.btnSize}><Text>L</Text></TouchableOpacity>
                         <TouchableOpacity style={styles.btnSize}><Text>XL</Text></TouchableOpacity>
-                    </View>
+                    </View> */}
                     <View style={styles.separator}></View>
                     <View style={styles.addToCarContainer}>
                         <TouchableOpacity style={styles.shareButton} onPress={() => this.clickEventListener()}>
