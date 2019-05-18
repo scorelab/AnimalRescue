@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { createStackNavigator, createSwitchNavigator, createAppContainer, createMaterialTopTabNavigator, createDrawerNavigator } from "react-navigation";
-import { StyleSheet, TouchableOpacity, View, Container ,Text} from 'react-native';
+import { createStackNavigator, createSwitchNavigator, createAppContainer, createMaterialTopTabNavigator, createDrawerNavigator, DrawerItem } from "react-navigation";
+import { StyleSheet, SafeAreaView, View, Container ,ScrollView} from 'react-native';
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import Home from "./app/screens/HomeScreen/Home";
 import Auth from "./app/screens/AuthScreen/Auth";
@@ -12,8 +12,7 @@ import Post from "./app/screens/PostScreen/Post";
 import Comment from "./app/screens/CommentScreen/Comment";
 import ContronPanel from "./app/components/DrawerComponent/DrawerPanel"
 import { Badge } from 'react-native-elements';
-import Drawer from 'react-native-drawer'
-import { Header } from "./app/components/HeaderNavigationBar/HeaderNavigationBar"
+
 console.disableYellowBox = true;
 
 export default class App extends React.Component {
@@ -93,9 +92,17 @@ export default class App extends React.Component {
       }
     );
 
+    const CustumDrawerComponent = (props) => (
+      <SafeAreaView>
+        <ContronPanel/>        
+      </SafeAreaView>
+    )
     const AppDrawerNavigator = createDrawerNavigator({
       Dashboard: AppStack
-    });
+    },{
+      contentComponent:CustumDrawerComponent
+    }
+    );
 
     const Stack = createStackNavigator(
       {
