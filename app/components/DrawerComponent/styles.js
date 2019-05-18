@@ -7,15 +7,15 @@ let deviceHeight = Dimensions.get("window").height;
 export default StyleSheet.create({
 
     container: {
-        width: '100%',
-        overflow: 'scroll',
-        backgroundColor: "#000"
+        width: '100%',        
+        backgroundColor: "#fff",
+        flex:1
     },
 
     body: {
         // 
         height: '100%',
-        backgroundColor: COLOR_GRAY,
+        backgroundColor: "#fff",
     },
     username: {
         color: "#20B2AA",
@@ -24,12 +24,13 @@ export default StyleSheet.create({
         marginLeft: 10
     },
     image: {
-        width: 50,
-        height: 50,
-        borderRadius: 20
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        marginTop:-30,
+        marginLeft:30
     },
-    box: {
-        padding: 20,
+    box: {        
         backgroundColor: 'white',
         flexDirection: 'row',
     },
@@ -40,9 +41,10 @@ export default StyleSheet.create({
         marginLeft: 10,
     },
     title: {
-        fontSize: 18,
+        fontSize: 16,
         color: "#151515",
-        marginTop: 12
+        padding:5
+        
     },
     description: {
         fontSize: 15,

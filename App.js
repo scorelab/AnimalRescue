@@ -93,7 +93,7 @@ export default class App extends React.Component {
     );
 
     const CustumDrawerComponent = (props) => (
-      <SafeAreaView>
+      <SafeAreaView style={{flex:1,backgroundColor:'#fff'}}>
         <ContronPanel/>        
       </SafeAreaView>
     )

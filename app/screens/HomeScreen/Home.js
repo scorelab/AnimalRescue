@@ -140,7 +140,7 @@ export default class Home extends Component {
                 <ScrollView
                     style={{ backgroundColor: 'transparent',alignSelf:'center'}}
                     contentContainerStyle={{justifyContent:'center', alignItems:'center'}}
-                    stickyHeaderIndices={[1]}                    
+                    stickyHeaderIndices={[1]}                                      
                     // showsVerticalScrollIndicator={false}
                     // onScroll={this.handleScroll}
                     // scrollEventThrottle={60}
