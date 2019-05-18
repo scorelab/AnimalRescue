@@ -147,7 +147,7 @@ export default class Home extends Component {
                     // onScrollBeginDrag={() => this.setState({ visible: true })}
                     // onScrollEndDrag={() => this.setState({ visible: false })}
                 >
-                    <AnimatedHeader title="Home" height={50} />
+                    <AnimatedHeader title="Home" height={50} drawer={() => this.props.navigation.openDrawer()}/>
                     <HomeTabBar
                         active={this.state.active}
                         onPress0={() => this.setState({ active: 0 })}

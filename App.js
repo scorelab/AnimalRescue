@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { createStackNavigator, createBottomTabNavigator, createAppContainer, createMaterialTopTabNavigator } from "react-navigation";
-import { StyleSheet, TouchableOpacity, View, Container } from 'react-native';
+import { createStackNavigator, createSwitchNavigator, createAppContainer, createMaterialTopTabNavigator, createDrawerNavigator } from "react-navigation";
+import { StyleSheet, TouchableOpacity, View, Container ,Text} from 'react-native';
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import Home from "./app/screens/HomeScreen/Home";
 import Auth from "./app/screens/AuthScreen/Auth";
@@ -13,7 +13,7 @@ import Comment from "./app/screens/CommentScreen/Comment";
 import ContronPanel from "./app/components/DrawerComponent/DrawerPanel"
 import { Badge } from 'react-native-elements';
 import Drawer from 'react-native-drawer'
-import {Header} from "./app/components/HeaderNavigationBar/HeaderNavigationBar"
+import { Header } from "./app/components/HeaderNavigationBar/HeaderNavigationBar"
 console.disableYellowBox = true;
 
 export default class App extends React.Component {
@@ -93,11 +93,12 @@ export default class App extends React.Component {
       }
     );
 
+    const AppDrawerNavigator = createDrawerNavigator({
+      Dashboard: AppStack
+    });
+
     const Stack = createStackNavigator(
       {
-        Auth: {
-          screen: Auth
-        },
         Post: {
           screen: Post
         },
@@ -105,39 +106,23 @@ export default class App extends React.Component {
         Comment: {
           screen: Comment
         },
-        App: {
-          screen: AppStack,
-          navigationOptions: {
-            gesturesEnabled: true,
-          },
-        }
+        App: AppDrawerNavigator
       }, {
-        initialRouteName: "Auth",
+        initialRouteName: "App",
         headerMode: "none"
-      }
+      }      
     )
 
-    const AppContainer = createAppContainer(Stack);
+    const SwitchNav = createSwitchNavigator({
+      Auth: {
+        screen: Auth
+      },
+      Dashboard: Stack
+    })
+    const AppContainer = createAppContainer(SwitchNav);
 
     return (
-      // <Drawer
-      //   ref={(ref) => this._drawer = ref}
-      //   open={open}
-      //   type="overlay"
-      //   content={<ContronPanel />}
-      //   tapToClose={true}
-      //   openDrawerOffset={0.2} //20% gap on the right side of drawer
-      //   panCloseMask={0.2}
-      //   closedDrawerOffset={-3}
-      //   captureGestures={close}
-      //   tapToClose={true}
-      //   styles={{ flex: 1, zIndex: 1000 }}
-      //   tweenHandler={(ratio) => ({
-      //     main: { opacity: (2 - ratio) / 2 }
-      //   })}
-      // >
-        <AppContainer />
-      // </Drawer>
+      <AppContainer />
 
     );
   }

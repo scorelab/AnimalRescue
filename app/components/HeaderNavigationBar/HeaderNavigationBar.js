@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, Image , ScrollView} from "react-native";
+import { Text, View, TouchableOpacity, Image, ScrollView } from "react-native";
 import styles from "./styles";
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import RBSheet from "react-native-raw-bottom-sheet";
@@ -13,20 +13,23 @@ export default class HeaderNavigationBar extends Component {
     }
     render() {
         return (
-            <View style={[styles.navigationBar , {height:this.props.height}]}>
+            <View style={[styles.navigationBar, { height: this.props.height }]}>
                 <View style={styles.goBackArea}>
-                <TouchableOpacity onPress={() => {
-                        this.RBSheet.open();
-                    }}>
+                    <TouchableOpacity
+                        onPress={this.props.drawer}
+                        // onPress={() => {
+                        //     this.RBSheet.open();
+                        // }}
+                    >
                         <Ionicons name={"bars"} size={25} color={"white"} />
                     </TouchableOpacity>
-                    
+
                 </View>
                 <View style={styles.titleArea}>
                     <Text style={styles.titleFont}>{this.props.title}</Text>
                 </View>
                 <View style={styles.goBackArea}>
-                   <Text style={styles.titleFont}>{this.props.end}</Text>
+                    <Text style={styles.titleFont}>{this.props.end}</Text>
                 </View>
                 <RBSheet
                     ref={ref => {
@@ -46,7 +49,7 @@ export default class HeaderNavigationBar extends Component {
                         }
                     }}
                 >
-                    <ControlPanel/>
+                    <ControlPanel />
                 </RBSheet>
             </View >
         );
