@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "firebase": "^5.11.1",
+    "firebase": "^5.8.6",
     "react": "16.6.3",
     "react-native": "0.58.6",
     "react-native-actionsheet": "^2.4.2",
@@ -24,6 +24,7 @@
     "react-native-indicators": "^0.13.0",
     "react-native-looped-carousel": "^0.1.13",
     "react-native-maps": "^0.24.2",
+    "react-native-progress": "^3.6.0",
     "react-native-progress-steps": "^1.2.7",
     "react-native-raw-bottom-sheet": "^1.1.4",
     "react-native-reanimated": "^1.0.1",
