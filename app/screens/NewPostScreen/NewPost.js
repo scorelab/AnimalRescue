@@ -12,7 +12,7 @@ import Snackbar from 'react-native-snackbar';
 import DropdownAlert from 'react-native-dropdownalert';
 import ActionSheet from 'react-native-actionsheet'
 import { f, auth, storage, database } from "../../config/firebaseConfig";
-import PreLoader from "../../components/PreLoader/PreLoader"
+import Progress from "../../components/Progress/Progress"
 // Labels is optional
 const labels = ['Cat', 'Dog', 'Monkey'];
 const options = ['Cancel', 'Cat', 'Dog', 'Monkey', 'Bird', 'Fish', 'Pig', 'Cow', 'Goat'];
@@ -179,7 +179,7 @@ class NewPost extends React.Component {
         var uploadTask = storage.ref('posts/images/' + this.state.selectedAnimal).child(filePath).put(blob);
 
         uploadTask.on('state_changed', function (snapshot) {
-            let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
+            let progress = ((snapshot.bytesTransferred / snapshot.totalBytes)*100).toFixed(0);
             that.setState({
                 progress: progress
             });
@@ -253,7 +253,7 @@ class NewPost extends React.Component {
     render() {
         if (this.state.uploading == true) {
             return(
-                <PreLoader />
+                <Progress percentage={this.state.progress}/>
             )
             
         } else {
