@@ -4,7 +4,7 @@ import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_GRAY } from "../../config/styles"
 
 export default StyleSheet.create({
   header: {
-    backgroundColor: "#00BFFF",
+    backgroundColor:COLOR_GRAY,
     height: 150,
   },
   avatar: {
@@ -16,7 +16,9 @@ export default StyleSheet.create({
     marginBottom: 10,
     alignSelf: 'center',
     position: 'absolute',
-    marginTop: 100
+    marginTop: 100,
+    backgroundColor:COLOR_GRAY
+
   },
   editCover: {
     flexDirection: 'row',
@@ -42,7 +44,7 @@ export default StyleSheet.create({
     borderRadius: 15
   },
   name: {
-    fontSize: 22,
+    fontSize: 20,
     color: "#FFFFFF",
     fontWeight: '600',
   },
@@ -54,11 +56,14 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 30,
+    // alignItems:'center',
+    // justifyContent:'center'
   },
   name: {
     fontSize: 28,
     color: "#696969",
-    fontWeight: "600"
+    fontWeight: "600",
+    textAlign:'center'
   },
   info: {
     fontSize: 16,

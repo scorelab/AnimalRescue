@@ -7,7 +7,7 @@ import {
     Image,
     FlatList,
     TextInput,
-    KeyboardAvoidingView,
+    KeyboardAvoidingView,    
     ScrollView
 } from 'react-native';
 import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";

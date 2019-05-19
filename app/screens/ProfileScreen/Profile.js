@@ -1,12 +1,14 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image, ScrollView, Linking, Dimensions, ImageBackground } from 'react-native';
+import { Text, View, Image, ScrollView, Linking, Dimensions, ImageBackground } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import ProfileTabBar from "../../components/ProfileTabBar/ProfileBar";
 import styles from "./style";
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import ImagePicker from "react-native-image-picker";
+import { BallIndicator } from 'react-native-indicators';
 import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_GRAY } from "../../config/styles";
 const { width, height } = Dimensions.get('window');
+import { f, auth, storage, database } from "../../config/firebaseConfig";
 import TouchableScale from "react-native-touchable-scale";
 class Profile extends React.Component {
 
@@ -15,7 +17,11 @@ class Profile extends React.Component {
         this.state = {
             newProfileImage: null,
             newCoverPhoto: null,
+            profilePicture: null,
+            coverPicture: null,
+            name: null,
             active: 0,
+            post: [],
             data1: [
                 { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", status: 0 },
                 { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar2.png", status: 1 },
@@ -70,6 +76,41 @@ class Profile extends React.Component {
     }
     componentDidMount() {
         this.requestCameraPermission();
+        this.setState({
+            name: f.auth().currentUser.displayName
+        })
+        var that = this;
+        let userId = f.auth().currentUser.uid;
+        database.ref('users').child(userId).on('value', (function (snapshot) {
+            that.setState({
+                post:[]
+            })
+            const exist = (snapshot.val() != null);
+            var data = snapshot.val();
+            if (exist) {
+                that.setState({
+                    profileData: data,
+                    profilePicture: data.dp,
+                    coverPicture: data.cover,                    
+
+                });
+                var postData = data.post
+                var postArray = that.state.post
+                for (var posts in postData) {
+                    let postOBJ = postData[posts]
+                    postArray.push({
+                        image: postOBJ.image,
+                        status: postOBJ.status,
+                        posted: postOBJ.posted
+                    })
+                }
+                console.log(that.state.post);
+            }
+
+        }), function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+
 
     }
 
@@ -102,17 +143,10 @@ class Profile extends React.Component {
     }
 
     renderSection = () => {
-        if (this.state.active == 0) {
-            return (
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <Image source={require('../../images/level4.png')} style={{ width: 'auto', height: 'auto' }} />
+        if (this.state.active == 1) {
 
-                </View>
-            )
-
-        } else if (this.state.active == 1) {
-            return this.state.data1.map((data, index) => {
-                if(data.status == 0){
+            return this.state.post.map((data, index) => {
+                if (data.status == 0) {
                     return (
                         <TouchableScale>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
@@ -124,19 +158,19 @@ class Profile extends React.Component {
                             </View>
                         </TouchableScale>
                     )
-                }else if(data.status ==1){
+                } else if (data.status == 1) {
                     return (
                         <TouchableScale>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
                                 <ImageBackground source={{ uri: data.image }} style={{ overflow: 'hidden', width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }}>
-                                    <View style={{ overflow: 'hidden', alignSelf: 'center', rotation: -45, backgroundColor: '#4885ed', width: '100%',  marginVertical: '20%',height: 15, marginRight: '50%' }}>
+                                    <View style={{ overflow: 'hidden', alignSelf: 'center', rotation: -45, backgroundColor: '#4885ed', width: '100%', marginVertical: '20%', height: 15, marginRight: '50%' }}>
                                         <Text style={{ textAlign: 'center', color: '#fff' }}>Ongoing</Text>
                                     </View>
                                 </ImageBackground>
                             </View>
                         </TouchableScale>
                     )
-                }else{
+                } else {
                     return (
                         <TouchableScale>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
@@ -149,7 +183,7 @@ class Profile extends React.Component {
                         </TouchableScale>
                     )
                 }
-                
+
             });
         } else if (this.state.active == 2) {
             return this.state.data1.map((data, index) => {
@@ -190,22 +224,22 @@ class Profile extends React.Component {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
-                <Header title="Profile" height={50} drawer={() => this.props.navigation.openDrawer()}/>
+                <Header title="Profile" height={50} drawer={() => this.props.navigation.openDrawer()} />
                 <ScrollView style={{ marginBottom: 50 }} stickyHeaderIndices={[4]} showsVerticalScrollIndicator={false}>
                     <View style={styles.header}>
-                        <Image style={{ width: '100%', height: '100%' }} source={require("../../images/dog.jpg")} />
+                        <Image style={{ width: '100%', height: '100%' }} source={{ uri: this.state.coverPicture }} />
                         <TouchableScale style={styles.editCover} onPress={() => this.editCoverPicture()}>
                             <Ionicons name={'camera'} size={20} color={'#000'} />
                             <Text> EDIT</Text>
                         </TouchableScale >
                     </View>
-                    <Image style={styles.avatar} source={require("../../images/user_image_1.jpg")} />
+                    <Image style={styles.avatar} source={{ uri: this.state.profilePicture }} />
                     <TouchableScale style={styles.editProfilePic} onPress={() => this.editProfilePicture()}>
                         <Ionicons name={'camera'} size={15} color={'#000'} />
                     </TouchableScale>
                     <View style={styles.body}>
                         <View style={styles.bodyContent}>
-                            <Text style={styles.name}>John Doe</Text>
+                            <Text style={styles.name}>{this.state.name}</Text>
                         </View>
 
                     </View>

@@ -82,7 +82,8 @@ class Auth extends React.Component {
         const defaults = {
             uid,
             token,
-            dp
+            dp,
+            cover:'https://firebasestorage.googleapis.com/v0/b/animal-res-app.appspot.com/o/Cover%2Fdog.jpg?alt=media&token=1ad5a80a-b436-4288-8f7c-a5b8c80edda0'
 
         };
         f.database()

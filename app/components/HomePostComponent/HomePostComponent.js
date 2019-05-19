@@ -48,7 +48,7 @@ export default class HomePostComponent extends Component {
               <Image
                 source={require("../../images/dog.jpg")}
                 style={style.postImage}
-                PlaceholderContent={<BallIndicator color='#192f6a' />}
+                PlaceholderContent={<BallIndicator color={COLOR_PRIMARY} />}
               />
             </View>
             <View
