@@ -36,7 +36,7 @@ export default class HomePostComponent extends Component {
         </View>
 
         <View style={style.cardViewBody}>
-          <TouchableScale style={style.cardViewBody} onPress={this.props.press}>
+          <TouchableScale style={style.cardViewBody} onPress={this.props.press} onLongPress={() => alert("hii")}>
             <Text style={style.postContentFont} numberOfLines={3} ellipsizeMode={'tail'}>
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy text

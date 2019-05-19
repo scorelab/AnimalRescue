@@ -37,6 +37,7 @@ node_modules/*
 npm-debug.log
 yarn-error.log
 app/config/firebaseConfig.js
+
 # BUCK
 buck-out/
 \.buckd/
