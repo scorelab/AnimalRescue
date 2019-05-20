@@ -17,7 +17,7 @@ export default class HomePostComponent extends Component {
   render() {
     return (
 
-      <View style={style.cardView}>
+      <View key={this.props.keyNo} style={style.cardView}>
         <View style={style.cardTitleBar}>
           <TouchableOpacity style={style.userAvatarArea} onPress={this.props.profile}>
             <Image
@@ -38,15 +38,11 @@ export default class HomePostComponent extends Component {
         <View style={style.cardViewBody}>
           <TouchableScale style={style.cardViewBody} onPress={this.props.press} onLongPress={() => alert("hii")}>
             <Text style={style.postContentFont} numberOfLines={3} ellipsizeMode={'tail'}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500sLorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s
+             {this.props.description}
           </Text>
             <View style={style.postImageArea}>
               <Image
-                source={require("../../images/dog.jpg")}
+                source={{uri : this.props.image}}
                 style={style.postImage}
                 PlaceholderContent={<BallIndicator color={COLOR_PRIMARY} />}
               />

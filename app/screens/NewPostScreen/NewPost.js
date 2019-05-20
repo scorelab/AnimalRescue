@@ -234,7 +234,8 @@ class NewPost extends React.Component {
             description: '',
             selectedAnimal: '',
             photoError: true,
-            pickedImage: null
+            pickedImage: null,
+            postId:this.uniqueId()
         });
         this.props.navigation.navigate('Post', { id: postId })
 

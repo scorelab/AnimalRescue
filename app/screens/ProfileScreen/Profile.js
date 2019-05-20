@@ -111,7 +111,7 @@ class Profile extends React.Component {
                 that.setState({
                     postFinal: that.state.post
                 })
-                console.log(that.state.post);
+                // console.log(that.state.post);
             }
 
         }), function (errorObject) {
@@ -266,8 +266,10 @@ class Profile extends React.Component {
     }
 
 
-    renderSection = () => {
+    renderSection = () => {        
         if (this.state.active == 1) {
+            this.state.postFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+            this.state.postFinal.reverse();
             return this.state.postFinal.map((data, index) => {
                 if (data.status == 0) {
                     return (
