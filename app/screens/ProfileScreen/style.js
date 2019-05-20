@@ -150,6 +150,33 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  imageSquare: {
+    overflow: 'hidden',
+    width: undefined,
+    height: undefined,
+    flex: 1,
+    marginHorizontal: 1,
+    marginVertical: 2
+  },
+  imageLabel: {
+    overflow: 'hidden',
+    alignSelf: 'center',
+    rotation: -45,
+    // backgroundColor: 'green',
+    width: '100%',
+    marginVertical: '20%',
+    height: 15,
+    marginRight: '50%'
+  },
+  imageLabelText: {
+    textAlign: 'center',
+    color: '#fff'
+  },
+  photoArea: {
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+
   overlay: {
     position: 'absolute',
     top: 0,

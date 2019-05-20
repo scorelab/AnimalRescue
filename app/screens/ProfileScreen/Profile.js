@@ -271,11 +271,11 @@ class Profile extends React.Component {
             return this.state.postFinal.map((data, index) => {
                 if (data.status == 0) {
                     return (
-                        <TouchableScale>
-                            <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
-                                <ImageBackground source={{ uri: data.image }} style={{ overflow: 'hidden', width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }}>
-                                    <View style={{ overflow: 'hidden', alignSelf: 'center', rotation: -45, backgroundColor: 'red', marginVertical: '20%', width: '100%', height: 15, marginRight: '50%' }}>
-                                        <Text style={{ textAlign: 'center', color: '#fff' }}>Active</Text>
+                        <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id})}>
+                            <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 },{backgroundColor:COLOR_GRAY}]}>
+                                <ImageBackground source={{ uri: data.image }} style={styles.imageSquare}>
+                                    <View style={[styles.imageLabel,{backgroundColor:'red'}]}>
+                                        <Text style={styles.imageLabelText}>Active</Text>
                                     </View>
                                 </ImageBackground>
                             </View>
@@ -283,11 +283,11 @@ class Profile extends React.Component {
                     )
                 } else if (data.status == 1) {
                     return (
-                        <TouchableScale>
+                        <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id})}>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
-                                <ImageBackground source={{ uri: data.image }} style={{ overflow: 'hidden', width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }}>
-                                    <View style={{ overflow: 'hidden', alignSelf: 'center', rotation: -45, backgroundColor: '#4885ed', width: '100%', marginVertical: '20%', height: 15, marginRight: '50%' }}>
-                                        <Text style={{ textAlign: 'center', color: '#fff' }}>Ongoing</Text>
+                                <ImageBackground source={{ uri: data.image }} style={styles.imageSquare}>
+                                    <View style={[styles.imageLabel,{backgroundColor:'#4885ed'}]}>
+                                        <Text style={styles.imageLabelText}>Ongoing</Text>
                                     </View>
                                 </ImageBackground>
                             </View>
@@ -295,11 +295,11 @@ class Profile extends React.Component {
                     )
                 } else {
                     return (
-                        <TouchableScale>
+                        <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id})}>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
-                                <ImageBackground source={{ uri: data.image }} style={{ overflow: 'hidden', width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }}>
-                                    <View style={{ overflow: 'hidden', alignSelf: 'center', rotation: -45, backgroundColor: 'green', width: '100%', marginVertical: '20%', height: 15, marginRight: '50%' }}>
-                                        <Text style={{ textAlign: 'center', color: '#fff' }}>Finished</Text>
+                                <ImageBackground source={{ uri: data.image }} style={styles.imageSquare}>
+                                    <View style={[styles.imageLabel,{backgroundColor:'green'}]}>
+                                        <Text style={styles.imageLabelText}>Finished</Text>
                                     </View>
                                 </ImageBackground>
                             </View>
@@ -313,7 +313,7 @@ class Profile extends React.Component {
                 return (
                     <TouchableScale>
                         <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
-                            <Image source={{ uri: data.image }} style={{ width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }} />
+                            <Image source={{ uri: data.image }} style={styles.imageSquare} />
                         </View>
                     </TouchableScale>
                 )
@@ -323,7 +323,7 @@ class Profile extends React.Component {
                 return (
                     <TouchableScale>
                         <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
-                            <Image source={{ uri: data.image }} style={{ width: undefined, height: undefined, flex: 1, marginHorizontal: 1, marginVertical: 2 }} />
+                            <Image source={{ uri: data.image }} style={styles.imageSquare} />
                         </View>
                     </TouchableScale>
                 )
@@ -413,7 +413,7 @@ class Profile extends React.Component {
                             <Text style={{ fontSize: 15 }}>Animal Helper Level 10</Text>
                         </View>
                     ) : (
-                            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                            <View style={styles.photoArea}>
                                 {this.renderSection()}
                             </View>
                         )}
