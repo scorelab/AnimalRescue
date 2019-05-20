@@ -214,12 +214,14 @@ class NewPost extends React.Component {
             longitude: this.state.longitude,
             latitude: this.state.latitude,
             status: 0,
+            id:postId,
             posted: posted,
         };
 
         const myPostOBJ = {
             image: imageURL,
             status: 0,
+            id:postId,
             posted: posted,
         }
         

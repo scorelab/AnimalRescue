@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView, Linking, Dimensions, ImageBackground } from 'react-native';
+import { Text, View, Image, ScrollView, Linking, Dimensions, ImageBackground, ProgressBarAndroid } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import ProfileTabBar from "../../components/ProfileTabBar/ProfileBar";
 import styles from "./style";
@@ -22,6 +22,9 @@ class Profile extends React.Component {
             name: null,
             active: 0,
             post: [],
+            postFinal: [],
+            uploading: false,
+            progress:0,
             data1: [
                 { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", status: 0 },
                 { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar2.png", status: 1 },
@@ -83,7 +86,7 @@ class Profile extends React.Component {
         let userId = f.auth().currentUser.uid;
         database.ref('users').child(userId).on('value', (function (snapshot) {
             that.setState({
-                post:[]
+                post: []
             })
             const exist = (snapshot.val() != null);
             var data = snapshot.val();
@@ -91,7 +94,7 @@ class Profile extends React.Component {
                 that.setState({
                     profileData: data,
                     profilePicture: data.dp,
-                    coverPicture: data.cover,                    
+                    coverPicture: data.cover,
 
                 });
                 var postData = data.post
@@ -101,9 +104,13 @@ class Profile extends React.Component {
                     postArray.push({
                         image: postOBJ.image,
                         status: postOBJ.status,
-                        posted: postOBJ.posted
+                        posted: postOBJ.posted,
+                        id: postOBJ.id
                     })
                 }
+                that.setState({
+                    postFinal: that.state.post
+                })
                 console.log(that.state.post);
             }
 
@@ -128,6 +135,69 @@ class Profile extends React.Component {
         });
     }
 
+    cancelProfilePicture = () => {
+        this.setState({
+            newProfileImage:null
+        })
+    }
+    saveProfilePicture = async() => {
+        var uri = this.state.newProfileImage
+        var that = this;
+        var userId = f.auth().currentUser.uid;
+        var re = /(?:\.([^.]+))?$/;
+        var ext = re.exec(uri)[1];
+
+        this.setState({
+            currentFileType: ext,
+            uploading: true
+        });
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                resolve(xhr.response);
+            };
+            xhr.onerror = function (e) {
+                console.log(e);
+                reject(new TypeError('Network request failed'));
+            };
+            xhr.responseType = 'blob';
+            xhr.open('GET', uri, true);
+            xhr.send(null);
+        });
+        var filePath = userId + '.' + that.state.currentFileType;
+
+        var uploadTask = storage.ref('users/profilePictures/' + userId).child(filePath).put(blob);
+
+        uploadTask.on('state_changed', function (snapshot) {
+            let progress = ((snapshot.bytesTransferred / snapshot.totalBytes)*100).toFixed(0);
+            that.setState({
+                progress: progress
+            });
+        }, function (error) {
+            console.log(error);
+
+        }, function () {
+            that.setState({
+                progress: 100
+            });
+            // alert("done");
+            uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                database.ref('users').child(userId).update({ dp: downloadURL });
+                that.setState({
+                    newProfileImage:null,
+                    progress:0,
+                    uploading:false,
+                    profilePicture:downloadURL
+                })
+                // that.setDatabse(downloadURL);
+                // console.log(downloadURL);
+            },function(error){
+                console.log(error)
+            })
+        })
+        
+    }
+
     editCoverPicture = () => {
         ImagePicker.showImagePicker({ title: "Pick a Cover Photo", maxWidth: 800, maxHeight: 600 }, res => {
             if (res.didCancel) {
@@ -144,8 +214,7 @@ class Profile extends React.Component {
 
     renderSection = () => {
         if (this.state.active == 1) {
-
-            return this.state.post.map((data, index) => {
+            return this.state.postFinal.map((data, index) => {
                 if (data.status == 0) {
                     return (
                         <TouchableScale>
@@ -207,6 +276,7 @@ class Profile extends React.Component {
             });
         }
 
+
     }
     openMap = () => {
         var url = "https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=5.95492,80.554956"
@@ -233,10 +303,28 @@ class Profile extends React.Component {
                             <Text> EDIT</Text>
                         </TouchableScale >
                     </View>
-                    <Image style={styles.avatar} source={{ uri: this.state.profilePicture }} />
-                    <TouchableScale style={styles.editProfilePic} onPress={() => this.editProfilePicture()}>
-                        <Ionicons name={'camera'} size={15} color={'#000'} />
-                    </TouchableScale>
+                    {this.state.newProfileImage == null ? (
+                        <Image style={styles.avatar} source={{ uri: this.state.profilePicture }} />
+                    ) : (
+                            <Image style={styles.avatar} source={{ uri: this.state.newProfileImage }} />
+                        )}
+                    {this.state.newProfileImage == null ? (
+                        <TouchableScale style={styles.editProfilePic} onPress={() => this.editProfilePicture()}>
+                            <Ionicons name={'camera'} size={15} color={'#000'} />
+                        </TouchableScale>
+                    ) : (
+                            <View style={styles.editActionView}>                                
+                                <TouchableScale style={styles.cancelProfilePicture} onPress={() => this.cancelProfilePicture()}>
+                                    <Ionicons name={'times'} size={15} color={'#000'} />
+                                </TouchableScale>
+                                <TouchableScale style={styles.saveProfilePic} onPress={() => this.saveProfilePicture()}>
+                                    <Ionicons name={'check'} size={15} color={'#000'} />
+                                </TouchableScale>
+                            </View>
+                        )}
+
+
+
                     <View style={styles.body}>
                         <View style={styles.bodyContent}>
                             <Text style={styles.name}>{this.state.name}</Text>
@@ -263,6 +351,20 @@ class Profile extends React.Component {
 
 
                 </ScrollView>
+                {this.state.uploading == true ? (
+                    <View style={styles.overlay}>
+                        <ProgressBarAndroid
+                            styleAttr="Large"
+                            indeterminate={false}
+                            style={{ height: 80, borderRadius: 50 }}
+                            color="#fff"
+                        />
+                        <Text style={styles.progressState}>{this.state.progress}%</Text>   
+                    </View>
+                    
+                ) : (
+                        <View></View>
+                    )}
 
             </View>
 

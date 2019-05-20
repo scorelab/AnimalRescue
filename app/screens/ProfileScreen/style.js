@@ -4,7 +4,7 @@ import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_GRAY } from "../../config/styles"
 
 export default StyleSheet.create({
   header: {
-    backgroundColor:COLOR_GRAY,
+    backgroundColor: COLOR_GRAY,
     height: 150,
   },
   avatar: {
@@ -17,7 +17,7 @@ export default StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     marginTop: 100,
-    backgroundColor:COLOR_GRAY
+    backgroundColor: COLOR_GRAY
 
   },
   editCover: {
@@ -37,6 +37,34 @@ export default StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     marginLeft: 75,
+    marginTop: 20,
+    backgroundColor: COLOR_GRAY,
+    height: 30,
+    width: 30,
+    borderRadius: 15
+  },
+  editActionView: {
+    flexDirection: 'row',
+    width: 100,
+    alignSelf: 'center',
+    justifyContent: 'space-between'
+  },
+  saveProfilePic: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    // marginLeft: 75,
+    marginTop: 20,
+    backgroundColor: COLOR_GRAY,
+    height: 30,
+    width: 30,
+    borderRadius: 15
+  },
+  cancelProfilePicture: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    // marginLeft: "40%",
     marginTop: 20,
     backgroundColor: COLOR_GRAY,
     height: 30,
@@ -63,7 +91,7 @@ export default StyleSheet.create({
     fontSize: 28,
     color: "#696969",
     fontWeight: "600",
-    textAlign:'center'
+    textAlign: 'center'
   },
   info: {
     fontSize: 16,
@@ -87,12 +115,12 @@ export default StyleSheet.create({
     borderRadius: 30,
     backgroundColor: "#00BFFF",
   },
-  tabBarContainer:{ 
-    flexDirection: 'row', 
-    borderWidth: 1.5, 
-    borderColor: COLOR_GRAY, 
-    height: 50, 
-    width: '100%' 
+  tabBarContainer: {
+    flexDirection: 'row',
+    borderWidth: 1.5,
+    borderColor: COLOR_GRAY,
+    height: 50,
+    width: '100%'
   },
   tabBarActive: {
     width: '25%',
@@ -109,6 +137,21 @@ export default StyleSheet.create({
     borderColor: COLOR_GRAY,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(25,47,106,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  progressState: {
+    fontSize: 32,
+    fontWeight: '600',
+    color: '#FFFFFF',
   },
 
 
