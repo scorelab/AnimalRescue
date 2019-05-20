@@ -24,7 +24,7 @@ class Profile extends React.Component {
             post: [],
             postFinal: [],
             uploading: false,
-            progress:0,
+            progress: 0,
             data1: [
                 { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", status: 0 },
                 { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar2.png", status: 1 },
@@ -137,10 +137,10 @@ class Profile extends React.Component {
 
     cancelProfilePicture = () => {
         this.setState({
-            newProfileImage:null
+            newProfileImage: null
         })
     }
-    saveProfilePicture = async() => {
+    saveProfilePicture = async () => {
         var uri = this.state.newProfileImage
         var that = this;
         var userId = f.auth().currentUser.uid;
@@ -169,7 +169,7 @@ class Profile extends React.Component {
         var uploadTask = storage.ref('users/profilePictures/' + userId).child(filePath).put(blob);
 
         uploadTask.on('state_changed', function (snapshot) {
-            let progress = ((snapshot.bytesTransferred / snapshot.totalBytes)*100).toFixed(0);
+            let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
             that.setState({
                 progress: progress
             });
@@ -184,18 +184,16 @@ class Profile extends React.Component {
             uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
                 database.ref('users').child(userId).update({ dp: downloadURL });
                 that.setState({
-                    newProfileImage:null,
-                    progress:0,
-                    uploading:false,
-                    profilePicture:downloadURL
+                    newProfileImage: null,
+                    progress: 0,
+                    uploading: false,
+                    profilePicture: downloadURL
                 })
-                // that.setDatabse(downloadURL);
-                // console.log(downloadURL);
-            },function(error){
+            }, function (error) {
                 console.log(error)
             })
         })
-        
+
     }
 
     editCoverPicture = () => {
@@ -211,6 +209,62 @@ class Profile extends React.Component {
             }
         });
     }
+
+    saveCoverPicture = async () => {
+        var uri = this.state.newCoverPhoto
+        var that = this;
+        var userId = f.auth().currentUser.uid;
+        var re = /(?:\.([^.]+))?$/;
+        var ext = re.exec(uri)[1];
+
+        this.setState({
+            currentFileType: ext,
+            uploading: true
+        });
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                resolve(xhr.response);
+            };
+            xhr.onerror = function (e) {
+                console.log(e);
+                reject(new TypeError('Network request failed'));
+            };
+            xhr.responseType = 'blob';
+            xhr.open('GET', uri, true);
+            xhr.send(null);
+        });
+        var filePath = userId + '.' + that.state.currentFileType;
+
+        var uploadTask = storage.ref('users/coverPictures/' + userId).child(filePath).put(blob);
+
+        uploadTask.on('state_changed', function (snapshot) {
+            let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
+            that.setState({
+                progress: progress
+            });
+        }, function (error) {
+            console.log(error);
+
+        }, function () {
+            that.setState({
+                progress: 100
+            });            
+            uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                database.ref('users').child(userId).update({ cover: downloadURL });
+                that.setState({
+                    newCoverPhoto: null,
+                    progress: 0,
+                    uploading: false,
+                    coverPicture: downloadURL
+                })
+            }, function (error) {
+                console.log(error)
+            })
+        })
+
+    }
+
 
     renderSection = () => {
         if (this.state.active == 1) {
@@ -296,14 +350,29 @@ class Profile extends React.Component {
             <View style={styles.container}>
                 <Header title="Profile" height={50} drawer={() => this.props.navigation.openDrawer()} />
                 <ScrollView style={{ marginBottom: 50 }} stickyHeaderIndices={[4]} showsVerticalScrollIndicator={false}>
-                    <View style={styles.header}>
-                        <Image style={{ width: '100%', height: '100%' }} source={{ uri: this.state.coverPicture }} />
-                        <TouchableScale style={styles.editCover} onPress={() => this.editCoverPicture()}>
-                            <Ionicons name={'camera'} size={20} color={'#000'} />
-                            <Text> EDIT</Text>
-                        </TouchableScale >
-                    </View>
-                    {this.state.newProfileImage == null ? (
+                    {this.state.newCoverPhoto == null ? (
+                        <View style={styles.header}>
+                            <Image style={{ width: '100%', height: '100%' }} source={{ uri: this.state.coverPicture }} />
+                            <TouchableScale style={styles.editCover} onPress={() => this.editCoverPicture()}>
+                                <Ionicons name={'camera'} size={20} color={'#000'} />
+                                <Text> EDIT</Text>
+                            </TouchableScale >
+                        </View>
+                    ) : (
+                            <View style={styles.header}>
+                                <Image style={{ width: '100%', height: '100%' }} source={{ uri: this.state.newCoverPhoto }} />
+                                <TouchableScale style={styles.editCover} onPress={() => this.saveCoverPicture()}>
+                                    <Ionicons name={'check'} size={20} color={'#000'} />
+                                    <Text> Save</Text>
+                                </TouchableScale >
+                                <TouchableScale style={styles.cancleCover} onPress={() => this.setState({newCoverPhoto:null})}>
+                                    <Ionicons name={'times'} size={20} color={'#000'} />
+                                    <Text> Cancel</Text>
+                                </TouchableScale >
+                            </View>
+                        )}
+
+                    {this.state.newProfileImage == null  ? (
                         <Image style={styles.avatar} source={{ uri: this.state.profilePicture }} />
                     ) : (
                             <Image style={styles.avatar} source={{ uri: this.state.newProfileImage }} />
@@ -313,7 +382,7 @@ class Profile extends React.Component {
                             <Ionicons name={'camera'} size={15} color={'#000'} />
                         </TouchableScale>
                     ) : (
-                            <View style={styles.editActionView}>                                
+                            <View style={styles.editActionView}>
                                 <TouchableScale style={styles.cancelProfilePicture} onPress={() => this.cancelProfilePicture()}>
                                     <Ionicons name={'times'} size={15} color={'#000'} />
                                 </TouchableScale>
@@ -359,9 +428,9 @@ class Profile extends React.Component {
                             style={{ height: 80, borderRadius: 50 }}
                             color="#fff"
                         />
-                        <Text style={styles.progressState}>{this.state.progress}%</Text>   
+                        <Text style={styles.progressState}>{this.state.progress}%</Text>
                     </View>
-                    
+
                 ) : (
                         <View></View>
                     )}

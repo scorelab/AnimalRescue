@@ -32,6 +32,18 @@ export default StyleSheet.create({
     borderRadius: 15,
     backgroundColor: COLOR_GRAY
   },
+  cancleCover: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 15,
+    alignSelf: 'flex-start',
+    marginTop: -30,
+    width: 75,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: COLOR_GRAY
+  },
   editProfilePic: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -144,7 +156,7 @@ export default StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(25,47,106,0.4)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center'
   },
