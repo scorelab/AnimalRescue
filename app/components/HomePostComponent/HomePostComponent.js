@@ -36,7 +36,7 @@ export default class HomePostComponent extends Component {
         </View>
 
         <View style={style.cardViewBody}>
-          <TouchableScale style={style.cardViewBody} onPress={this.props.press} onLongPress={() => alert("hii")}>
+          <TouchableScale style={style.cardViewBody} onPress={this.props.press}>
             <Text style={style.postContentFont} numberOfLines={3} ellipsizeMode={'tail'}>
              {this.props.description}
           </Text>

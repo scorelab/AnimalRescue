@@ -11,6 +11,15 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor:COLOR_GRAY
     },  
+    overlay: {
+        // 
+        flex:1,
+        width:'100%',
+        height:deviceHeight,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
     
 
 });

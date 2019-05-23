@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View, TouchableOpacity, Text, StatusBar, Animated, Easing } from 'react-native';
+import { ScrollView, View, ProgressBarAndroid, FlatList, StatusBar, Animated, Text } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import Post from "../../components/HomePostComponent/HomePostComponent";
 import styles from "./style";
@@ -12,6 +12,7 @@ const AnimatedHeader = Animated.createAnimatedComponent(Header);
 export default class Home extends Component {
     constructor() {
         super()
+
         this.state = {
             liked: false,
             active: 0,
@@ -19,8 +20,12 @@ export default class Home extends Component {
             height: new Animated.Value(50),
             visible: true,
             loaded: false,
-            post: [],
-            postFinal: [],
+            activePost: [],
+            activePostFinal: [],
+            pendingPost: [],
+            pendingPostFinal: [],
+            finishedPost: [],
+            finishedPostFinal: [],
             data: [
                 { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name: "Frank Odalthh", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
                 { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name: "John DoeLink", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
@@ -33,44 +38,71 @@ export default class Home extends Component {
         }
 
     }
-
     componentDidMount = () => {
         var that = this;
         let userId = f.auth().currentUser.uid;
         database.ref('posts').orderByChild('posted').on('value', (function (snapshot) {
-            that.setState({
-                post: []
-            })
             const exist = (snapshot.val() != null);
             if (exist) {
                 var data = snapshot.val();
                 var postData = data
-                var postArray = that.state.post
+                var activePostArray = that.state.activePost
+                var pendingPostArray = that.state.pendingPost
+                var finishedPostArray = that.state.finishedPost
                 for (var posts in postData) {
                     let postOBJ = postData[posts]
                     console.log(postOBJ);
-                    database.ref('users').child(postOBJ.userId).once('value').then(function (snapshot) {
+                    database.ref('users').child(postOBJ.userId).on('value', (function (snapshot) {
                         const exsists = (snapshot.val() != null);
                         if (exsists) {
                             var data = snapshot.val();
                             // console.log(data);
-                            postArray.push({
-                                image: postOBJ.image,
-                                description: postOBJ.description,
-                                posted: postOBJ.posted,
-                                avatar: data.dp,
-                                name: data.first_name + " " + data.last_name,
-                                userId: postOBJ.userId
-                            })
+                            if (postOBJ.status == 0) {
+                                activePostArray.push({
+                                    image: postOBJ.image,
+                                    description: postOBJ.description,
+                                    posted: postOBJ.posted,
+                                    avatar: data.dp,
+                                    name: data.first_name + " " + data.last_name,
+                                    userId: postOBJ.userId
+                                })
+                            } else if (postOBJ.status == 1) {
+                                pendingPostArray.push({
+                                    image: postOBJ.image,
+                                    description: postOBJ.description,
+                                    posted: postOBJ.posted,
+                                    avatar: data.dp,
+                                    name: data.first_name + " " + data.last_name,
+                                    userId: postOBJ.userId
+                                })
+                            } else {
+                                finishedPostArray.push({
+                                    image: postOBJ.image,
+                                    description: postOBJ.description,
+                                    posted: postOBJ.posted,
+                                    avatar: data.dp,
+                                    name: data.first_name + " " + data.last_name,
+                                    userId: postOBJ.userId
+                                })
+                            }
                             // console.log(that.state.postArray);
 
                         }
-                    })
+                        that.setState({
+                            activePostFinal: activePostArray,
+                            pendingPostFinal: pendingPostArray,
+                            finishedPostFinal: finishedPostArray,
+                            loaded: true,
+                            active: 0,
+                            activePost: [],
+                            pendingPost: [],
+                            finishedPost: []
+                        })
+                    }), function (errorObject) {
+                        console.log("The read failed: " + errorObject.code);
+                    });
                 }
-                that.setState({
-                    postFinal: that.state.post,
-                    loaded: true
-                })
+
                 console.log(that.state.postFinal);
             }
 
@@ -78,6 +110,7 @@ export default class Home extends Component {
             console.log("The read failed: " + errorObject.code);
         });
     }
+
 
     timeConvertor = (timestamp) => {
         var a = new Date(timestamp * 1000);
@@ -160,65 +193,65 @@ export default class Home extends Component {
     renderSection = () => {
 
         const { navigate } = this.props.navigation;
-        if (this.state.loaded == true) {
-            if (this.state.active == 0) {
-                return this.state.post.map((data, index) => {
-                    return (
-                        <Post
-                            keyNo={index}
-                            name={data.name}
-                            avatar={data.avatar}
-                            image={data.image}
-                            description={data.description}
-                            posted={this.timeConvertor(data.posted)}
-                            press={() => navigate('Post')}
-                            liked={this.state.liked}
-                            comment={() => navigate('Comment')}
-                            like={() => this.setState({ liked: true })}
-                            numberOfLikes={10}
-                            numberOfComments={1}
 
-                        />
+        if (this.state.active == 0) {
+            return this.state.activePostFinal.map((data, index) => {
+                return (
+                    <Post
+                        keyNo={index}
+                        name={data.name}
+                        avatar={data.avatar}
+                        image={data.image}
+                        description={data.description}
+                        posted={this.timeConvertor(data.posted)}
+                        press={() => navigate('Post')}
+                        liked={this.state.liked}
+                        comment={() => navigate('Comment')}
+                        like={() => this.setState({ liked: true })}
+                        numberOfLikes={10}
+                        numberOfComments={1}
 
-                    )
-                });
+                    />
 
-            } else if (this.state.active == 1) {
-                return this.state.data.map((data, index) => {
-                    return (
-                        <Post
-                            press={() => navigate('Post')}
-                            liked={this.state.liked}
-                            comment={() => navigate('Comment')}
-                            like={() => this.setState({ liked: true })}
-                            numberOfLikes={10}
-                            numberOfComments={1}
-                            name={data.name}
-                            posted="2 hours Ago"
-                            avatar={data.image}
-                        />
+                )
+            });
 
-                    )
-                });
-            } else if (this.state.active == 2) {
-                return this.state.data.map((data, index) => {
-                    return (
-                        <Post
-                            press={() => navigate('Post')}
-                            liked={this.state.liked}
-                            comment={() => navigate('Comment')}
-                            like={() => this.setState({ liked: true })}
-                            numberOfLikes={10}
-                            numberOfComments={1}
-                            name={data.name}
-                            posted="2 hours Ago"
-                            avatar={data.image}
-                        />
+        } else if (this.state.active == 1) {
+            return this.state.pendingPostFinal.map((data, index) => {
+                return (
+                    <Post
+                        press={() => navigate('Post')}
+                        liked={this.state.liked}
+                        comment={() => navigate('Comment')}
+                        like={() => this.setState({ liked: true })}
+                        numberOfLikes={10}
+                        numberOfComments={1}
+                        name={data.name}
+                        posted="2 hours Ago"
+                        avatar={data.image}
+                    />
 
-                    )
-                });
-            }
+                )
+            });
+        } else if (this.state.active == 2) {
+            return this.state.finishedPostFinal.map((data, index) => {
+                return (
+                    <Post
+                        press={() => navigate('Post')}
+                        liked={this.state.liked}
+                        comment={() => navigate('Comment')}
+                        like={() => this.setState({ liked: true })}
+                        numberOfLikes={10}
+                        numberOfComments={1}
+                        name={data.name}
+                        posted="2 hours Ago"
+                        avatar={data.image}
+                    />
+
+                )
+            });
         }
+
     }
 
 
@@ -246,7 +279,17 @@ export default class Home extends Component {
                         onPress2={() => this.setState({ active: 2 })}
                     />
 
-                    {this.renderSection()}
+                    {this.state.loaded == true ? this.renderSection() :
+                        <View style={styles.overlay}>
+                            <ProgressBarAndroid
+                                styleAttr="Large"
+                                indeterminate={false}
+                                style={{ height: 80, borderRadius: 50 }}
+                                color="#fff"
+                            />                            
+                        </View>
+                    }
+
 
                 </ScrollView>
 

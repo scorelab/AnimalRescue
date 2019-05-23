@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { createStackNavigator, createSwitchNavigator, createAppContainer, createMaterialTopTabNavigator, createDrawerNavigator, DrawerItem } from "react-navigation";
+import {createStackNavigator, createSwitchNavigator, createAppContainer, createMaterialTopTabNavigator, createDrawerNavigator, DrawerItem } from "react-navigation";
 import { StyleSheet, SafeAreaView, View, Container ,ScrollView} from 'react-native';
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import Home from "./app/screens/HomeScreen/Home";
