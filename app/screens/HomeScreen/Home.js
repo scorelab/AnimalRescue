@@ -52,7 +52,7 @@ export default class Home extends Component {
                 for (var posts in postData) {
                     let postOBJ = postData[posts]
                     console.log(postOBJ);
-                    database.ref('users').child(postOBJ.userId).on('value', (function (snapshot) {
+                    database.ref('users').child(postOBJ.userId).once('value').then(function (snapshot) {
                         const exsists = (snapshot.val() != null);
                         if (exsists) {
                             var data = snapshot.val();
@@ -93,14 +93,11 @@ export default class Home extends Component {
                             pendingPostFinal: pendingPostArray,
                             finishedPostFinal: finishedPostArray,
                             loaded: true,
-                            active: 0,
                             activePost: [],
                             pendingPost: [],
                             finishedPost: []
                         })
-                    }), function (errorObject) {
-                        console.log("The read failed: " + errorObject.code);
-                    });
+                    })
                 }
 
                 console.log(that.state.postFinal);
@@ -220,34 +217,40 @@ export default class Home extends Component {
             return this.state.pendingPostFinal.map((data, index) => {
                 return (
                     <Post
+                        keyNo={index}
+                        name={data.name}
+                        avatar={data.avatar}
+                        image={data.image}
+                        description={data.description}
+                        posted={this.timeConvertor(data.posted)}
                         press={() => navigate('Post')}
                         liked={this.state.liked}
                         comment={() => navigate('Comment')}
                         like={() => this.setState({ liked: true })}
                         numberOfLikes={10}
                         numberOfComments={1}
-                        name={data.name}
-                        posted="2 hours Ago"
-                        avatar={data.image}
-                    />
 
+                    />
                 )
             });
         } else if (this.state.active == 2) {
             return this.state.finishedPostFinal.map((data, index) => {
                 return (
                     <Post
+                        keyNo={index}
+                        name={data.name}
+                        avatar={data.avatar}
+                        image={data.image}
+                        description={data.description}
+                        posted={this.timeConvertor(data.posted)}
                         press={() => navigate('Post')}
                         liked={this.state.liked}
                         comment={() => navigate('Comment')}
                         like={() => this.setState({ liked: true })}
                         numberOfLikes={10}
                         numberOfComments={1}
-                        name={data.name}
-                        posted="2 hours Ago"
-                        avatar={data.image}
-                    />
 
+                    />
                 )
             });
         }
@@ -286,7 +289,7 @@ export default class Home extends Component {
                                 indeterminate={false}
                                 style={{ height: 80, borderRadius: 50 }}
                                 color="#fff"
-                            />                            
+                            />
                         </View>
                     }
 
