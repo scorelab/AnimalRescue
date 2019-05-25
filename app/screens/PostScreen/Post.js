@@ -14,6 +14,7 @@ import HeaderImageScrollView, { TriggeringView } from 'react-native-image-header
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as Animatable from 'react-native-animatable';
 import TouchableScale from "react-native-touchable-scale";
+import { f, auth, storage, database } from "../../config/firebaseConfig";
 export default class Post extends Component {
 
     constructor(props) {
@@ -23,29 +24,86 @@ export default class Post extends Component {
             longitude: null,
             region: null,
             showNavTitle: false,
-            liked: false
+            liked: false,
+            post: [],
+            loaded: false,
+            id: null
         }
+        this.mapRef = null;
     }
     componentDidMount = async () => {
+        var params = this.props.navigation.state.params;
+        console.log(params)
+        if (params) {
 
-        this.watchID = navigator.geolocation.getCurrentPosition((position) => {
-            // Create the object to update this.state.mapRegion through the onRegionChange function           
-            let region = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                latitudeDelta: 0.00922 * 1.5,
-                longitudeDelta: 0.00421 * 1.5
-            }
-            this.setState({
-                region: region,
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-            })
+            var that = this;
+            let userId = f.auth().currentUser.uid;
+            console.log(params.id)
+            database.ref('posts').child(params.id).on('value', (function (snapshot) {
+                const exist = (snapshot.val() != null);
+                console.log(exist)
+                if (exist) {
+                    var data = snapshot.val();
+                    console.log(data)
+                    let region = {
+                        latitude: data.longitude,
+                        longitude: data.longitude,
+                        latitudeDelta: 0.00922 * 1.5,
+                        longitudeDelta: 0.00421 * 1.5
+                    }
+                    that.setState({
+                        region: region,
+                        image: data.image,
+                        description: data.description,
+                        animal: data.animalType,
+                        longitude: data.longitude,
+                        latitude: data.latitude,
+                        loaded: true,
+                    })
+                    that.mapView.animateToRegion(region, 1000);
+                    var postArray = that.state.post
+                    database.ref('users').child(data.userId).once('value').then(function (snapshot) {
+                        const exsists = (snapshot.val() != null);
+                        if (exsists) {
+                            var data = snapshot.val();
+                            that.setState({
+                                avatar: data.dp,
+                                name: data.first_name + " " + data.last_name,
+                                loaded: true,
+                                region: region
+                            })
+                        }
 
-        }, (error) => console.log(error));
+                    })
+                }
+
+                console.log("inside pot " + that.state.post);
+
+            }), function (errorObject) {
+                console.log("The read failed: " + errorObject.code);
+            });
+        }
+        // this.watchID = navigator.geolocation.getCurrentPosition((position) => {
+        //     // Create the object to update this.state.mapRegion through the onRegionChange function           
+        //     let region = {
+        //         latitude: position.coords.latitude,
+        //         longitude: position.coords.longitude,
+        //         latitudeDelta: 0.00922 * 1.5,
+        //         longitudeDelta: 0.00421 * 1.5
+        //     }
+        //     this.setState({
+        //         region: region,                
+        //     })
+
+        // }, (error) => console.log(error));
+        // this.check();
+        // this.mapView.animateToRegion(this.state.region, 1000);
     }
 
+    check = () => {
 
+
+    }
     clickEventListener() {
         // Alert.alert("Success", "Product has beed added to cart")
         const { navigate } = this.props.navigation;
@@ -73,7 +131,7 @@ export default class Post extends Component {
                 <HeaderImageScrollView
                     maxHeight={200}
                     minHeight={50}
-                    headerImage={require("../../images/dog.jpg")}
+                    headerImage={{ uri: this.state.image }}
                     fadeOutForeground
                     style={{ marginBottom: 10 }}
                     // renderHeader={() => <Image source={require("../../images/dog.jpg")} style={styles.image} />}
@@ -109,34 +167,30 @@ export default class Post extends Component {
                     </TriggeringView>
                     <View style={styles.topView}>
                         <View style={styles.informationArea}>
-                            <Text style={styles.name}>Dog</Text>
+                            <Text style={styles.name}>{this.state.animal}</Text>
                             <Text style={styles.description}>
-                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                                Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                                natoque penatibus et magnis dis parturient montes,
-                                nascetur ridiculus mus. Donec quam felis, ultricies nec
-                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                                Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                                natoque penatibus et magnis dis parturient montes,
-                                nascetur ridiculus mus. Donec quam felis, ultricies nec
-                                Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                                Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                                natoque penatibus et magnis dis parturient montes,
-                                nascetur ridiculus mus. Donec quam felis, ultricies nec
-                                </Text>
+                                {this.state.description}
+                            </Text>
                         </View>
                     </View>
 
                     <View style={styles.topView}>
+
                         <MapView
                             style={styles.mapContainer}
                             provider={PROVIDER_GOOGLE}
-                            initialRegion={this.state.region}
+                            initialRegion={{
+                                latitude: this.state.latitude,
+                                longitude: this.state.longitude,
+                                latitudeDelta: 0.00922 * 1.5,
+                                longitudeDelta: 0.00421 * 1.5,
+                            }}
                             showsUserLocation={true}
                             loadingEnabled={true}
                             zoomControlEnabled={true}
                             showsMyLocationButton={true}
                             scrollEnabled={false}
+                            ref={ref => { this.mapView = ref }}
                         >
 
                             {this.state.latitude != null && this.state.latitude != null ? (
@@ -157,24 +211,26 @@ export default class Post extends Component {
 
                         </MapView>
 
+
+
                         <TouchableScale onPress={() => this.openMap()}
                             style={{
                                 position: 'absolute',//use absolute position to show button on top of the map
                                 top: '70%', //for center align
-                                right:5,
+                                right: 5,
                                 alignSelf: 'flex-end', //for align to right                                                               
-                                width: 'auto',                                
+                                width: 'auto',
                                 borderRadius: 15,
-                                paddingHorizontal:10,
-                                paddingVertical:10,
+                                paddingHorizontal: 10,
+                                paddingVertical: 10,
                                 backgroundColor: '#192f6a',
                                 alignItems: 'center',
-                                justifyContent: 'center', 
-                                flexDirection:'row'                               
+                                justifyContent: 'center',
+                                flexDirection: 'row'
                             }}
                         >
-                            <Icon name="compass" size={24} color={'#fff'} style={{alignSelf:'center'}} />
-                            <Text style={{color:'#fff',fontSize:14,marginLeft:2}}> Get Direction</Text>
+                            <Icon name="compass" size={24} color={'#fff'} style={{ alignSelf: 'center' }} />
+                            <Text style={{ color: '#fff', fontSize: 14, marginLeft: 2 }}> Get Direction</Text>
                         </TouchableScale>
 
 
@@ -182,11 +238,11 @@ export default class Post extends Component {
 
                     <View style={styles.profile}>
                         <Image style={styles.avatar}
-                            source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar1.png' }} />
+                            source={{ uri: this.state.avatar }} />
 
                         <Text style={styles.profileName}>
-                            Kasun Kavinda Pathirana
-                         </Text>
+                            {this.state.name}
+                        </Text>
                         <Text style={{ marginLeft: 20 }}>
                             5 hours ago
                          </Text>

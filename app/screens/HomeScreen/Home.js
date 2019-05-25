@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View, ProgressBarAndroid, FlatList, StatusBar, Animated, Text } from 'react-native';
+import { ScrollView, View, ProgressBarAndroid, FlatList, StatusBar, Animated, RefreshControl  } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import Post from "../../components/HomePostComponent/HomePostComponent";
 import styles from "./style";
@@ -14,6 +14,7 @@ export default class Home extends Component {
         super()
 
         this.state = {
+            refreshing:false,
             liked: false,
             active: 0,
             isHeaderHidden: false,
@@ -59,6 +60,7 @@ export default class Home extends Component {
                             // console.log(data);
                             if (postOBJ.status == 0) {
                                 activePostArray.push({
+                                    id:postOBJ.id,
                                     image: postOBJ.image,
                                     description: postOBJ.description,
                                     posted: postOBJ.posted,
@@ -68,6 +70,7 @@ export default class Home extends Component {
                                 })
                             } else if (postOBJ.status == 1) {
                                 pendingPostArray.push({
+                                    id:postOBJ.id,
                                     image: postOBJ.image,
                                     description: postOBJ.description,
                                     posted: postOBJ.posted,
@@ -77,6 +80,7 @@ export default class Home extends Component {
                                 })
                             } else {
                                 finishedPostArray.push({
+                                    id:postOBJ.id,
                                     image: postOBJ.image,
                                     description: postOBJ.description,
                                     posted: postOBJ.posted,
@@ -201,7 +205,7 @@ export default class Home extends Component {
                         image={data.image}
                         description={data.description}
                         posted={this.timeConvertor(data.posted)}
-                        press={() => navigate('Post')}
+                        press={() => navigate('Post',{ id: data.id})}
                         liked={this.state.liked}
                         comment={() => navigate('Comment')}
                         like={() => this.setState({ liked: true })}
@@ -223,7 +227,7 @@ export default class Home extends Component {
                         image={data.image}
                         description={data.description}
                         posted={this.timeConvertor(data.posted)}
-                        press={() => navigate('Post')}
+                        press={() => navigate('Post',{ id: data.id})}
                         liked={this.state.liked}
                         comment={() => navigate('Comment')}
                         like={() => this.setState({ liked: true })}
@@ -243,7 +247,7 @@ export default class Home extends Component {
                         image={data.image}
                         description={data.description}
                         posted={this.timeConvertor(data.posted)}
-                        press={() => navigate('Post')}
+                        press={() => navigate('Post',{ id: data.id})}
                         liked={this.state.liked}
                         comment={() => navigate('Comment')}
                         like={() => this.setState({ liked: true })}
@@ -268,6 +272,12 @@ export default class Home extends Component {
                     style={{ backgroundColor: 'transparent', alignSelf: 'center' }}
                     contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
                     stickyHeaderIndices={[1]}
+                    refreshControl={
+                        <RefreshControl
+                          refreshing={this.state.refreshing}
+                          onRefresh={this._onRefresh}
+                        />
+                      }
                 // showsVerticalScrollIndicator={false}
                 // onScroll={this.handleScroll}
                 // scrollEventThrottle={60}
