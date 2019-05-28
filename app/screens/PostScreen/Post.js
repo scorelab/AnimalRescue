@@ -27,7 +27,8 @@ export default class Post extends Component {
             liked: false,
             post: [],
             loaded: false,
-            id: null
+            id: null,
+            authorId: f.auth().currentUser.uid
         }
         this.mapRef = null;
     }
@@ -37,11 +38,11 @@ export default class Post extends Component {
         if (params) {
 
             var that = this;
-            let userId = f.auth().currentUser.uid;
-            console.log(params.id)
+
+
             database.ref('posts').child(params.id).on('value', (function (snapshot) {
                 const exist = (snapshot.val() != null);
-                console.log(exist)
+                // console.log(exist)
                 if (exist) {
                     var data = snapshot.val();
                     console.log(data)
@@ -59,6 +60,9 @@ export default class Post extends Component {
                         longitude: data.longitude,
                         latitude: data.latitude,
                         loaded: true,
+                        userId: data.userId,
+                        id: data.id,
+
                     })
                     that.mapView.animateToRegion(region, 1000);
                     var postArray = that.state.post
@@ -77,40 +81,22 @@ export default class Post extends Component {
                     })
                 }
 
-                console.log("inside pot " + that.state.post);
+                // console.log("inside pot " + that.state.post);
 
             }), function (errorObject) {
                 console.log("The read failed: " + errorObject.code);
             });
         }
-        // this.watchID = navigator.geolocation.getCurrentPosition((position) => {
-        //     // Create the object to update this.state.mapRegion through the onRegionChange function           
-        //     let region = {
-        //         latitude: position.coords.latitude,
-        //         longitude: position.coords.longitude,
-        //         latitudeDelta: 0.00922 * 1.5,
-        //         longitudeDelta: 0.00421 * 1.5
-        //     }
-        //     this.setState({
-        //         region: region,                
-        //     })
-
-        // }, (error) => console.log(error));
-        // this.check();
-        // this.mapView.animateToRegion(this.state.region, 1000);
+        console.log("Author ID is " + this.state.authorId)
     }
 
-    check = () => {
-
-
-    }
     clickEventListener() {
         // Alert.alert("Success", "Product has beed added to cart")
         const { navigate } = this.props.navigation;
         navigate('Comment')
     }
     openMap = () => {
-        var url = "https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=5.95492,80.554956"
+        var url = "https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=" + this.state.latitude + "," + this.state.longitude;
         Linking.canOpenURL(url).then(supported => {
             if (!supported) {
                 console.log('Can\'t handle url: ' + url);
@@ -296,16 +282,19 @@ export default class Post extends Component {
                     </View> */}
                     <View style={styles.separator}></View>
                     <View style={styles.addToCarContainer}>
-                        <TouchableOpacity style={styles.shareButton} onPress={() => this.clickEventListener()}>
-                            <Text style={styles.shareButtonText}>I Will Handle</Text>
-                        </TouchableOpacity>
+                        {this.state.userId != this.state.authorId ? (
+                            <TouchableOpacity style={styles.shareButton} onPress={() => this.clickEventListener()}>
+                                <Text style={styles.shareButtonText}>I Will Handle</Text>
+                            </TouchableOpacity>
+                        ) : (
+                                <TouchableOpacity style={styles.shareButton} onPress={() => this.clickEventListener()}>
+                                    <Text style={styles.shareButtonText}>Edit</Text>
+                                </TouchableOpacity>
+                            )}
+
                     </View>
 
                 </HeaderImageScrollView>
-                {/* <ModalHeader title="Post" onPress={() => this.props.navigation.goBack()} />
-                <ScrollView style={styles.scroll}>
-                    
-                </ScrollView> */}
             </View>
         );
     }
