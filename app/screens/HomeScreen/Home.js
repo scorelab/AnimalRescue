@@ -207,7 +207,7 @@ export default class Home extends Component {
                         posted={this.timeConvertor(data.posted)}
                         press={() => navigate('Post',{ id: data.id})}
                         liked={this.state.liked}
-                        comment={() => navigate('Comment')}
+                        comment={() => navigate('Comment',{ id: data.id})}
                         like={() => this.setState({ liked: true })}
                         numberOfLikes={10}
                         numberOfComments={1}

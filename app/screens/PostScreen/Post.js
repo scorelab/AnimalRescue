@@ -15,6 +15,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import * as Animatable from 'react-native-animatable';
 import TouchableScale from "react-native-touchable-scale";
 import { f, auth, storage, database } from "../../config/firebaseConfig";
+
 export default class Post extends Component {
 
     constructor(props) {
@@ -62,6 +63,7 @@ export default class Post extends Component {
                         loaded: true,
                         userId: data.userId,
                         id: data.id,
+                        posted: data.posted
 
                     })
                     that.mapView.animateToRegion(region, 1000);
@@ -111,7 +113,49 @@ export default class Post extends Component {
             showNavTitle: true
         })
     }
+
+    timeConvertor = (timestamp) => {
+        var a = new Date(timestamp * 1000);
+        var seconds = Math.floor((new Date() - a) / 1000);
+
+        var interval = Math.floor(seconds / 31536000);
+        if (interval >= 1) {
+            return interval + ' Year' + this.timePlural(interval);
+        }
+
+        var interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) {
+            return interval + ' Month' + this.timePlural(interval);
+        }
+
+        var interval = Math.floor(seconds / 86400);
+        if (interval >= 1) {
+            return interval + ' Day' + this.timePlural(interval);
+        }
+
+        var interval = Math.floor(seconds / 3600);
+        if (interval >= 1) {
+            return interval + ' Hour' + this.timePlural(interval);
+        }
+
+        var interval = Math.floor(seconds / 60);
+        if (interval >= 1) {
+            return interval + ' Minute' + this.timePlural(interval);
+        }
+
+        return Math.floor(seconds) + ' Second' + this.timePlural(seconds)
+    }
+    timePlural = (s) => {
+        if (s == 1) {
+            return ' ago'
+        } else {
+            return 's ago'
+        }
+    }
+
     render() {
+        const { navigate } = this.props.navigation;
+
         return (
             <View style={styles.container}>
                 <HeaderImageScrollView
@@ -230,8 +274,8 @@ export default class Post extends Component {
                             {this.state.name}
                         </Text>
                         <Text style={{ marginLeft: 20 }}>
-                            5 hours ago
-                         </Text>
+                            {this.timeConvertor(this.state.posted)}
+                        </Text>
                     </View>
                     <View style={styles.row}>
                         <View
@@ -254,7 +298,7 @@ export default class Post extends Component {
                         <View
                             style={styles.likeCommentArea}
                         >
-                            <TouchableOpacity style={[styles.row, { alignItems: 'flex-start' }]} onPress={() => this.clickEventListener()}>
+                            <TouchableOpacity style={[styles.row, { alignItems: 'flex-start' }]} onPress={() => navigate('Comment', { id: this.state.id })}>
                                 <Icon name="comment" size={24} />
                             </TouchableOpacity>
                         </View>
