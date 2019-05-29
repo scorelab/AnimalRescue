@@ -7,18 +7,20 @@ import {
     Image,
     FlatList,
     TextInput,
-    KeyboardAvoidingView,    
+    KeyboardAvoidingView,
     ScrollView
 } from 'react-native';
 import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";
 import styles from "./style";
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import Swipeout from 'react-native-swipeout';
+import { f, auth, storage, database } from "../../config/firebaseConfig";
 export default class Comment extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            postId: this.props.navigation.state.params.id,
             data: [
                 { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name: "Frank Odalthh", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
                 { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name: "John DoeLink", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
@@ -33,6 +35,59 @@ export default class Comment extends Component {
         }
     }
 
+    componentDidMount = () => {
+        let params = this.props.navigation.state.params;
+        // console.log(params)        
+        if (params) {            
+            
+        }
+
+    }
+    s4 = () => {
+        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    }
+
+    uniqueId = () => {
+        return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4();
+    }
+    timeConvertor = (timestamp) => {
+        var a = new Date(timestamp * 1000);
+        var seconds = Math.floor((new Date() - a) / 1000);
+
+        var interval = Math.floor(seconds / 31536000);
+        if (interval >= 1) {
+            return interval + ' Year' + this.timePlural(interval);
+        }
+
+        var interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) {
+            return interval + ' Month' + this.timePlural(interval);
+        }
+
+        var interval = Math.floor(seconds / 86400);
+        if (interval >= 1) {
+            return interval + ' Day' + this.timePlural(interval);
+        }
+
+        var interval = Math.floor(seconds / 3600);
+        if (interval >= 1) {
+            return interval + ' Hour' + this.timePlural(interval);
+        }
+
+        var interval = Math.floor(seconds / 60);
+        if (interval >= 1) {
+            return interval + ' Minute' + this.timePlural(interval);
+        }
+
+        return Math.floor(seconds) + ' Second' + this.timePlural(seconds)
+    }
+    timePlural = (s) => {
+        if (s == 1) {
+            return ' ago'
+        } else {
+            return 's ago'
+        }
+    }
     onSwipeOpen(rowIndex) {
         this.setState({
             rowIndex: rowIndex
@@ -44,6 +99,8 @@ export default class Comment extends Component {
         }
     }
     postComment = () => {
+        var userId = f.auth().currentUser.uid;
+        var comment = this.state.comment
         alert(this.state.comment);
         this.setState({
             comment: ''
