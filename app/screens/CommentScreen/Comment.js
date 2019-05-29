@@ -39,7 +39,14 @@ export default class Comment extends Component {
         let params = this.props.navigation.state.params;
         // console.log(params)        
         if (params) {            
-            
+            database.ref('posts').child(this.state.postId).child('userId').once('value').then(function (snapshot) {
+                const exist = (snapshot.val() != null);
+                if (exist) data = snapshot.val();
+                // console.log(data)
+                that.setState({
+                    authorId: data
+                });
+            });
         }
 
     }
@@ -100,8 +107,20 @@ export default class Comment extends Component {
     }
     postComment = () => {
         var userId = f.auth().currentUser.uid;
-        var comment = this.state.comment
-        alert(this.state.comment);
+        var comment = this.state.comment;
+        var postId = this.state.postId;
+        var newCommentId = this.uniqueId();
+        var authorId = this.state.authorId;
+        var date = Date.now();       
+        var posted = Math.floor(date / 1000)
+
+        var newCommentObject = {            
+            authorId: userId,
+            posted: posted,            
+            comment: comment
+        }
+        database.ref('/comments/' + postId + '/' + newCommentId).set(newCommentObject);
+        // alert(this.state.comment);
         this.setState({
             comment: ''
         })
