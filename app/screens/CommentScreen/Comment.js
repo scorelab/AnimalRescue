@@ -21,6 +21,9 @@ export default class Comment extends Component {
         super(props);
         this.state = {
             postId: this.props.navigation.state.params.id,
+            comments: [],
+            commentsFinal: [],
+            loaded: false,
             data: [
                 { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name: "Frank Odalthh", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
                 { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name: "John DoeLink", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
@@ -38,7 +41,7 @@ export default class Comment extends Component {
     componentDidMount = () => {
         let params = this.props.navigation.state.params;
         // console.log(params)        
-        if (params) {            
+        if (params) {
             database.ref('posts').child(this.state.postId).child('userId').once('value').then(function (snapshot) {
                 const exist = (snapshot.val() != null);
                 if (exist) data = snapshot.val();
@@ -46,6 +49,48 @@ export default class Comment extends Component {
                 that.setState({
                     authorId: data
                 });
+            });
+
+            var that = this;
+            let userId = f.auth().currentUser.uid;
+            database.ref('comments').child(this.state.postId).on('value', (function (snapshot) {
+                const exist = (snapshot.val() != null);
+                console.log("comment " + exist)
+                if (exist) {
+                    let data = snapshot.val();
+                    //console.log(data)
+                    var commentData = data
+                    var commentArray = that.state.comments
+                    for (var comments in commentData) {
+                        let cmtOBJ = commentData[comments]
+                        database.ref('users').child(cmtOBJ.authorId).once('value').then(function (snapshot) {
+                            const exsists = (snapshot.val() != null);
+                            if (exsists) {
+                                var data = snapshot.val();
+                                console.log(data)
+                                commentArray.push({
+                                    id: that.state.postId,
+                                    posted: cmtOBJ.posted,
+                                    comment: cmtOBJ.comment,
+                                    avatar: data.dp,
+                                    name: data.first_name + " " + data.last_name,
+                                    userId: cmtOBJ.authorId
+                                })
+                            }
+                            that.setState({
+                                commentsFinal: commentArray,
+                                loaded: true,
+                                comments: []
+                            })
+                        })                       
+
+                    }
+                    console.log(that.state.commentsFinal);
+
+                }
+
+            }), function (errorObject) {
+                console.log("The read failed: " + errorObject.code);
             });
         }
 
@@ -111,12 +156,12 @@ export default class Comment extends Component {
         var postId = this.state.postId;
         var newCommentId = this.uniqueId();
         var authorId = this.state.authorId;
-        var date = Date.now();       
+        var date = Date.now();
         var posted = Math.floor(date / 1000)
 
-        var newCommentObject = {            
+        var newCommentObject = {
             authorId: userId,
-            posted: posted,            
+            posted: posted,
             comment: comment
         }
         database.ref('/comments/' + postId + '/' + newCommentId).set(newCommentObject);
@@ -133,7 +178,7 @@ export default class Comment extends Component {
                 <ModalHeader title="Comments" onPress={() => this.props.navigation.goBack()} />
                 <FlatList
                     style={styles.root}
-                    data={this.state.data}
+                    data={this.state.commentsFinal}
                     ItemSeparatorComponent={() => {
                         return (
                             <View style={styles.separator} />
@@ -147,7 +192,7 @@ export default class Comment extends Component {
                     }}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => {
-                        const Notification = item;
+                        const comments = item;
                         var swipeBtns = [
                             {
                                 component: <Ionicons name={"trash"} size={20} color={"#b00020"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
@@ -157,7 +202,7 @@ export default class Comment extends Component {
                                 sensitivity: 100,
                                 stye: { width: 500 },
                                 underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-                                onPress: () => { alert(Notification.name) }
+                                onPress: () => { alert(comments.name) }
                             }
 
                         ];
@@ -172,23 +217,23 @@ export default class Comment extends Component {
                                 right={swipeBtns}>
                                 <View style={styles.container}>
                                     <TouchableOpacity onPress={() => { }}>
-                                        <Image style={styles.image} source={{ uri: Notification.image }} />
+                                        <Image style={styles.image} source={{ uri: comments.avatar }} />
                                     </TouchableOpacity>
                                     <View style={styles.content}>
                                         <View style={styles.contentHeader}>
-                                            <Text style={styles.name}>{Notification.name}</Text>
+                                            <Text style={styles.name}>{comments.name}</Text>
                                             <Text style={styles.time}>
-                                                9:58 am
-                                        </Text>
+                                                {this.timeConvertor(comments.posted)}
+                                            </Text>
                                         </View>
-                                        <Text rkType='primary3 mediumLine'>{Notification.comment}</Text>
+                                        <Text rkType='primary3 mediumLine'>{comments.comment}</Text>
                                     </View>
                                 </View>
                             </Swipeout>
                         );
                     }} />
                 <View style={styles.footer}>
-                    <KeyboardAvoidingView style={styles.inputContainer} behavior='padding' enabled>
+                    <KeyboardAvoidingView style={styles.inputContainer} behavior='position' enabled>
                         <TextInput style={styles.inputs}
                             placeholder="Write a Comment..."
                             underlineColorAndroid='transparent'
