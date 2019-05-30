@@ -69,7 +69,8 @@ export default class Comment extends Component {
                                 var data = snapshot.val();
                                 console.log(data)
                                 commentArray.push({
-                                    id: that.state.postId,
+                                    id:cmtOBJ.commentId,
+                                    pid: that.state.postId,
                                     posted: cmtOBJ.posted,
                                     comment: cmtOBJ.comment,
                                     avatar: data.dp,
@@ -162,6 +163,7 @@ export default class Comment extends Component {
         var posted = Math.floor(date / 1000)
 
         var newCommentObject = {
+            commentId:newCommentId,
             authorId: userId,
             posted: posted,
             comment: comment
@@ -174,6 +176,10 @@ export default class Comment extends Component {
         this.textInput.clear()
     }
 
+    deleteComment = (id,index) => {
+        database.ref('/comments/' + this.state.postId + '/' + id).remove();
+        this.onSwipeClose(index);
+    }
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -204,7 +210,7 @@ export default class Comment extends Component {
                                 sensitivity: 100,
                                 stye: { width: 500 },
                                 underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-                                onPress: () => { alert(comments.name) }
+                                onPress: () => { this.deleteComment(comments.id,index) }
                             }
 
                         ];
