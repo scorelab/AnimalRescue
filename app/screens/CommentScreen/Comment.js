@@ -82,7 +82,9 @@ export default class Comment extends Component {
                                 loaded: true,
                                 comments: []
                             })
-                        })                       
+                            that.state.commentsFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                            that.state.commentsFinal.reverse();
+                        })
 
                     }
                     console.log(that.state.commentsFinal);
@@ -233,7 +235,7 @@ export default class Comment extends Component {
                         );
                     }} />
                 <View style={styles.footer}>
-                    <KeyboardAvoidingView style={styles.inputContainer} behavior='position' enabled>
+                    <KeyboardAvoidingView style={styles.inputContainer} behavior="padding" enabled>
                         <TextInput style={styles.inputs}
                             placeholder="Write a Comment..."
                             underlineColorAndroid='transparent'

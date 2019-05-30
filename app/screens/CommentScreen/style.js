@@ -72,7 +72,7 @@ export default StyleSheet.create({
         minHeight: 40,
         flexDirection: 'row',
         alignItems: 'center',
-        flex: 0.25,
+        flex: 1,
         marginRight: 10,
         
     },
