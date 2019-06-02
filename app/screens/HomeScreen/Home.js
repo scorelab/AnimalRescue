@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View, ProgressBarAndroid, FlatList, StatusBar, Animated, RefreshControl  } from 'react-native';
+import { ScrollView, View, ProgressBarAndroid, FlatList, StatusBar, Animated, RefreshControl } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import Post from "../../components/HomePostComponent/HomePostComponent";
 import styles from "./style";
@@ -14,7 +14,7 @@ export default class Home extends Component {
         super()
 
         this.state = {
-            refreshing:false,
+            refreshing: false,
             liked: false,
             active: 0,
             isHeaderHidden: false,
@@ -41,7 +41,7 @@ export default class Home extends Component {
     }
     componentDidMount = () => {
         var that = this;
-        let userId = f.auth().currentUser.uid;
+        const userId = f.auth().currentUser.uid;
         database.ref('posts').orderByChild('posted').on('value', (function (snapshot) {
             const exist = (snapshot.val() != null);
             if (exist) {
@@ -57,56 +57,71 @@ export default class Home extends Component {
                         const exsists = (snapshot.val() != null);
                         if (exsists) {
                             var data = snapshot.val();
-                            // console.log(data);
+                            var likes=postOBJ.likes
+                            var count = 0;
+                            var userLike = 0
+                            for(var liker in likes){
+                                console.log(liker);
+                                if(liker == userId){
+                                   userLike+=1;
+                                }
+                                count+=1
+                            } 
+
                             if (postOBJ.status == 0) {
                                 activePostArray.push({
-                                    id:postOBJ.id,
+                                    id: postOBJ.id,
                                     image: postOBJ.image,
                                     description: postOBJ.description,
                                     posted: postOBJ.posted,
                                     avatar: data.dp,
                                     name: data.first_name + " " + data.last_name,
-                                    userId: postOBJ.userId
+                                    userId: postOBJ.userId,
+                                    like: userLike>0,
+                                    likecount:count                                 
                                 })
                             } else if (postOBJ.status == 1) {
                                 pendingPostArray.push({
-                                    id:postOBJ.id,
+                                    id: postOBJ.id,
                                     image: postOBJ.image,
                                     description: postOBJ.description,
                                     posted: postOBJ.posted,
                                     avatar: data.dp,
                                     name: data.first_name + " " + data.last_name,
-                                    userId: postOBJ.userId
+                                    userId: postOBJ.userId, 
+                                    like: userLike>0,
+                                    likecount:count                                       
                                 })
                             } else {
                                 finishedPostArray.push({
-                                    id:postOBJ.id,
+                                    id: postOBJ.id,
                                     image: postOBJ.image,
                                     description: postOBJ.description,
                                     posted: postOBJ.posted,
                                     avatar: data.dp,
                                     name: data.first_name + " " + data.last_name,
-                                    userId: postOBJ.userId
+                                    userId: postOBJ.userId,
+                                    like:userLike>0,
+                                    likecount:count                                        
                                 })
                             }
-                            // console.log(that.state.postArray);
-
+                            console.log(activePostArray);
+                            that.setState({
+                                activePostFinal: activePostArray,
+                                pendingPostFinal: pendingPostArray,
+                                finishedPostFinal: finishedPostArray,
+                                loaded: true,
+                                activePost: [],
+                                pendingPost: [],
+                                finishedPost: []
+                            })
                         }
-                        that.setState({
-                            activePostFinal: activePostArray,
-                            pendingPostFinal: pendingPostArray,
-                            finishedPostFinal: finishedPostArray,
-                            loaded: true,
-                            activePost: [],
-                            pendingPost: [],
-                            finishedPost: []
-                        })
-                    })
-                }
 
+                    })
+
+                }
                 console.log(that.state.postFinal);
             }
-
         }), function (errorObject) {
             console.log("The read failed: " + errorObject.code);
         });
@@ -152,6 +167,20 @@ export default class Home extends Component {
         }
     }
 
+    setLike = (status, postID) => {
+        if (status == false) {
+            var userId = f.auth().currentUser.uid;
+            var set = 1;
+            likeObj = {
+                userId: userId,
+                status: 1
+            }
+            database.ref("posts/"+postID + '/likes/' + userId).set(likeObj);
+        } else {
+            var userId = f.auth().currentUser.uid;
+            database.ref("posts/"+postID + '/likes/' + userId).remove();
+        }
+    }
     // setAnimation = () => {
     //     Animated.timing(this.state.height, {
     //         duration: 300,
@@ -205,11 +234,11 @@ export default class Home extends Component {
                         image={data.image}
                         description={data.description}
                         posted={this.timeConvertor(data.posted)}
-                        press={() => navigate('Post',{ id: data.id})}
-                        liked={this.state.liked}
-                        comment={() => navigate('Comment',{ id: data.id})}
-                        like={() => this.setState({ liked: true })}
-                        numberOfLikes={10}
+                        press={() => navigate('Post', { id: data.id })}
+                        liked={data.like}
+                        comment={() => navigate('Comment', { id: data.id })}
+                        like={() => this.setLike(data.like, data.id)}
+                        numberOfLikes={data.likecount}
                         numberOfComments={1}
 
                     />
@@ -227,11 +256,11 @@ export default class Home extends Component {
                         image={data.image}
                         description={data.description}
                         posted={this.timeConvertor(data.posted)}
-                        press={() => navigate('Post',{ id: data.id})}
-                        liked={this.state.liked}
+                        press={() => navigate('Post', { id: data.id })}
+                        liked={data.like}
                         comment={() => navigate('Comment')}
-                        like={() => this.setState({ liked: true })}
-                        numberOfLikes={10}
+                        like={() => this.setLike(data.like, data.id)}
+                        numberOfLikes={data.likecount}
                         numberOfComments={1}
 
                     />
@@ -247,11 +276,11 @@ export default class Home extends Component {
                         image={data.image}
                         description={data.description}
                         posted={this.timeConvertor(data.posted)}
-                        press={() => navigate('Post',{ id: data.id})}
-                        liked={this.state.liked}
+                        press={() => navigate('Post', { id: data.id })}
+                        liked={data.like}
                         comment={() => navigate('Comment')}
-                        like={() => this.setState({ liked: true })}
-                        numberOfLikes={10}
+                        like={() => this.setLike(data.like, data.id)}
+                        numberOfLikes={data.likecount}
                         numberOfComments={1}
 
                     />
@@ -274,10 +303,10 @@ export default class Home extends Component {
                     stickyHeaderIndices={[1]}
                     refreshControl={
                         <RefreshControl
-                          refreshing={this.state.refreshing}
-                          onRefresh={this._onRefresh}
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh}
                         />
-                      }
+                    }
                 // showsVerticalScrollIndicator={false}
                 // onScroll={this.handleScroll}
                 // scrollEventThrottle={60}
