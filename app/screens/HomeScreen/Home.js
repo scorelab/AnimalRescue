@@ -115,6 +115,14 @@ export default class Home extends Component {
                                 pendingPost: [],
                                 finishedPost: []
                             })
+                            that.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                            that.state.activePostFinal.reverse();
+
+                            hat.state.pendingPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                            that.state.pendingPostFinal.reverse();
+
+                            hat.state.finishedPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                            that.state.finishedPostFinal.reverse();
                         }
 
                     })
@@ -221,7 +229,14 @@ export default class Home extends Component {
     // }
 
     renderSection = () => {
+        this.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+        this.state.activePostFinal.reverse();
 
+        this.state.pendingPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+        this.state.pendingPostFinal.reverse();
+
+        this.state.finishedPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+        this.state.finishedPostFinal.reverse();
         const { navigate } = this.props.navigation;
 
         if (this.state.active == 0) {

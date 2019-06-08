@@ -15,6 +15,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import * as Animatable from 'react-native-animatable';
 import TouchableScale from "react-native-touchable-scale";
 import { f, auth, storage, database } from "../../config/firebaseConfig";
+import { COLOR_PRIMARY } from '../../config/styles';
 
 export default class Post extends Component {
 
@@ -40,14 +41,30 @@ export default class Post extends Component {
 
             var that = this;
 
-
+            var userId = f.auth().currentUser.uid
             database.ref('posts').child(params.id).on('value', (function (snapshot) {
                 const exist = (snapshot.val() != null);
                 // console.log(exist)
                 if (exist) {
                     var data = snapshot.val();
+                    var likes = data.likes
+                    var count = 0
+                    for (var liker in likes) {
+                        console.log(liker);
+                        if (liker == userId) {
+                            that.setState({
+                                liked: true
+                            })
+                            count +=1;
+                        }
+                    }
+                    if(count==0){
+                        that.setState({
+                            liked: false
+                        })
+                    }
                     console.log(data)
-                    let region = {
+                    const region = {
                         latitude: data.longitude,
                         longitude: data.longitude,
                         latitudeDelta: 0.00922 * 1.5,
@@ -66,7 +83,7 @@ export default class Post extends Component {
                         posted: data.posted
 
                     })
-                    that.mapView.animateToRegion(region, 1000);
+                    //that.mapView.animateToRegion(region, 1000);
                     var postArray = that.state.post
                     database.ref('users').child(data.userId).once('value').then(function (snapshot) {
                         const exsists = (snapshot.val() != null);
@@ -152,9 +169,22 @@ export default class Post extends Component {
             return 's ago'
         }
     }
-
+    setLike = (postID) => {
+        if (this.state.liked == false) {
+            var userId = f.auth().currentUser.uid;
+            var set = 1;
+            likeObj = {
+                userId: userId,
+                status: 1
+            }
+            database.ref("posts/"+postID + '/likes/' + userId).set(likeObj);
+        } else {
+            var userId = f.auth().currentUser.uid;
+            database.ref("posts/"+postID + '/likes/' + userId).remove();
+        }
+    }
     render() {
-        const { navigate } = this.props.navigation;        
+        const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
                 <HeaderImageScrollView
@@ -219,7 +249,7 @@ export default class Post extends Component {
                             zoomControlEnabled={true}
                             showsMyLocationButton={true}
                             scrollEnabled={false}
-                            ref={ref => { this.mapView = ref }}
+                            // ref={ref => { this.mapView = ref }}
                         >
 
                             {this.state.latitude != null && this.state.latitude != null ? (
@@ -282,11 +312,11 @@ export default class Post extends Component {
                         >
 
                             {this.state.liked == false ? (
-                                <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]}>
+                                <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={()=>this.setLike(this.state.id)} >
                                     <Icon name="thumbs-up" size={24} />
                                 </TouchableOpacity>
                             ) : (
-                                    <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} >
+                                    <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={()=>this.setLike(this.state.id)}>
                                         <Icon name="thumbs-up" size={24} color={COLOR_PRIMARY} />
                                     </TouchableOpacity>
                                 )}
