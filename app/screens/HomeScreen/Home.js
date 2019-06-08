@@ -44,7 +44,7 @@ export default class Home extends Component {
         const userId = f.auth().currentUser.uid;
         database.ref('posts').orderByChild('posted').on('value', (function (snapshot) {
             const exist = (snapshot.val() != null);
-            if (exist) {
+            if (exist) {                
                 var data = snapshot.val();
                 var postData = data
                 var activePostArray = that.state.activePost
@@ -52,21 +52,22 @@ export default class Home extends Component {
                 var finishedPostArray = that.state.finishedPost
                 for (var posts in postData) {
                     let postOBJ = postData[posts]
-                    console.log(postOBJ);
+                    console.log(postOBJ);                    
+                    
                     database.ref('users').child(postOBJ.userId).once('value').then(function (snapshot) {
                         const exsists = (snapshot.val() != null);
                         if (exsists) {
                             var data = snapshot.val();
-                            var likes=postOBJ.likes
+                            var likes = postOBJ.likes
                             var count = 0;
                             var userLike = 0
-                            for(var liker in likes){
+                            for (var liker in likes) {
                                 console.log(liker);
-                                if(liker == userId){
-                                   userLike+=1;
+                                if (liker == userId) {
+                                    userLike += 1;
                                 }
-                                count+=1
-                            } 
+                                count += 1
+                            }
 
                             if (postOBJ.status == 0) {
                                 activePostArray.push({
@@ -77,8 +78,8 @@ export default class Home extends Component {
                                     avatar: data.dp,
                                     name: data.first_name + " " + data.last_name,
                                     userId: postOBJ.userId,
-                                    like: userLike>0,
-                                    likecount:count                                 
+                                    like: userLike > 0,
+                                    likecount: count                                                                   
                                 })
                             } else if (postOBJ.status == 1) {
                                 pendingPostArray.push({
@@ -88,9 +89,9 @@ export default class Home extends Component {
                                     posted: postOBJ.posted,
                                     avatar: data.dp,
                                     name: data.first_name + " " + data.last_name,
-                                    userId: postOBJ.userId, 
-                                    like: userLike>0,
-                                    likecount:count                                       
+                                    userId: postOBJ.userId,
+                                    like: userLike > 0,
+                                    likecount: count
                                 })
                             } else {
                                 finishedPostArray.push({
@@ -101,8 +102,8 @@ export default class Home extends Component {
                                     avatar: data.dp,
                                     name: data.first_name + " " + data.last_name,
                                     userId: postOBJ.userId,
-                                    like:userLike>0,
-                                    likecount:count                                        
+                                    like: userLike > 0,
+                                    likecount: count
                                 })
                             }
                             console.log(activePostArray);
@@ -183,10 +184,10 @@ export default class Home extends Component {
                 userId: userId,
                 status: 1
             }
-            database.ref("posts/"+postID + '/likes/' + userId).set(likeObj);
+            database.ref("posts/" + postID + '/likes/' + userId).set(likeObj);
         } else {
             var userId = f.auth().currentUser.uid;
-            database.ref("posts/"+postID + '/likes/' + userId).remove();
+            database.ref("posts/" + postID + '/likes/' + userId).remove();
         }
     }
     // setAnimation = () => {
@@ -228,6 +229,12 @@ export default class Home extends Component {
     //     this.setAnimation();
     // }
 
+    commentCount = (id) => {
+              
+        database.ref('comments').child(id).once('value').then(function (snapshot) {
+            return snapshot.numChildren()
+        });
+    }
     renderSection = () => {
         this.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
         this.state.activePostFinal.reverse();

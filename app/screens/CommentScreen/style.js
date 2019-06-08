@@ -7,7 +7,9 @@ let deviceHeight = Dimensions.get("window").height;
 export default StyleSheet.create({
     root: {
         backgroundColor: "#ffffff",
-        marginTop: 10,
+        marginTop: 3,
+        
+        
     },
     container: {
         paddingLeft: 19,
@@ -18,7 +20,7 @@ export default StyleSheet.create({
     },
     content: {
         marginLeft: 16,
-        flex: 1,
+        // flex: 1,
     },
     contentHeader: {
         flexDirection: 'row',

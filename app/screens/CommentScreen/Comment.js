@@ -69,7 +69,7 @@ export default class Comment extends Component {
                                 var data = snapshot.val();
                                 console.log(data)
                                 commentArray.push({
-                                    id:cmtOBJ.commentId,
+                                    id: cmtOBJ.commentId,
                                     pid: that.state.postId,
                                     posted: cmtOBJ.posted,
                                     comment: cmtOBJ.comment,
@@ -77,6 +77,8 @@ export default class Comment extends Component {
                                     name: data.first_name + " " + data.last_name,
                                     userId: cmtOBJ.authorId
                                 })
+                            } else {
+
                             }
                             that.setState({
                                 commentsFinal: commentArray,
@@ -90,6 +92,10 @@ export default class Comment extends Component {
                     }
                     console.log(that.state.commentsFinal);
 
+                } else {
+                    that.setState({
+                        commentsFinal: []
+                    })
                 }
 
             }), function (errorObject) {
@@ -163,7 +169,7 @@ export default class Comment extends Component {
         var posted = Math.floor(date / 1000)
 
         var newCommentObject = {
-            commentId:newCommentId,
+            commentId: newCommentId,
             authorId: userId,
             posted: posted,
             comment: comment
@@ -176,7 +182,7 @@ export default class Comment extends Component {
         this.textInput.clear()
     }
 
-    deleteComment = (id,index) => {
+    deleteComment = (id, index) => {
         database.ref('/comments/' + this.state.postId + '/' + id).remove();
         this.onSwipeClose(index);
     }
@@ -184,7 +190,8 @@ export default class Comment extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <ModalHeader title="Comments" onPress={() => this.props.navigation.goBack()} />
-                <FlatList
+                <FlatList  
+                    inverted                  
                     style={styles.root}
                     data={this.state.commentsFinal}
                     ItemSeparatorComponent={() => {
@@ -210,7 +217,7 @@ export default class Comment extends Component {
                                 sensitivity: 100,
                                 stye: { width: 500 },
                                 underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-                                onPress: () => { this.deleteComment(comments.id,index) }
+                                onPress: () => { this.deleteComment(comments.id, index) }
                             }
 
                         ];
