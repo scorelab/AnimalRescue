@@ -57,8 +57,8 @@ export default class HomePostComponent extends Component {
           <View style={style.likeCommentDisplayArea}>
             {this.props.numberOfLikes >= 1 ? (
               <View style={style.row}>
-                <Icon name="thumbs-up" size={14} color={COLOR_PRIMARY} />
-                <Text style={style.fontColor}> {this.props.numberOfLikes}</Text>
+                <Icon name="heart" size={14} color={'#a83f39'} />
+                <Text style={style.fontColorLove}> {this.props.numberOfLikes}</Text>
               </View>
             ) : (
                 <View style={style.row}>
@@ -87,13 +87,13 @@ export default class HomePostComponent extends Component {
 
               {this.props.liked == false ? (
                 <TouchableOpacity style={style.row} onPress={this.props.like}>
-                  <Icon name="thumbs-up" size={18} />
+                  <Icon name="heart" size={18} />
                   <Text style={{ fontSize: 18 }}> Like</Text>
                 </TouchableOpacity>
               ) : (
                   <TouchableOpacity style={style.row} onPress={this.props.like}>
-                    <Icon name="thumbs-up" size={18} color={COLOR_PRIMARY} />
-                    <Text style={{ fontSize: 18, color: COLOR_PRIMARY }}> Like</Text>
+                    <Icon name="heart" size={18} color={'#a83f39'} />
+                    <Text style={{ fontSize: 18, color: '#a83f39' }}> Love</Text>
                   </TouchableOpacity>
                 )}
 

@@ -105,6 +105,9 @@ row:{
 },
 fontColor:{
     color:"#000000"
+},
+fontColorLove:{
+    color:"#a83f39"
 }
 
 });

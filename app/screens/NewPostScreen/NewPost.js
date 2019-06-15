@@ -123,6 +123,7 @@ class NewPost extends React.Component {
             longitude,
             region: region,
         });
+        // console.log(latitude)
 
         this.mapView.animateToRegion(region, 1000);
     };
@@ -156,7 +157,8 @@ class NewPost extends React.Component {
         var postId = this.state.postId;
         var re = /(?:\.([^.]+))?$/;
         var ext = re.exec(uri)[1];
-
+        var longitude= this.state.longitude;
+        var latitude= this.state.latitude;
         this.setState({
             currentFileType: ext,
             uploading: true
@@ -192,7 +194,7 @@ class NewPost extends React.Component {
             });
             // alert("done");
             uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-                that.setDatabse(downloadURL);
+                that.setDatabse(downloadURL,latitude , longitude);
                 console.log(downloadURL);
             },function(error){
                 console.log(error)
@@ -201,7 +203,7 @@ class NewPost extends React.Component {
 
     }
 
-    setDatabse = async(imageURL) => {        
+    setDatabse = async(imageURL , latitude , longitude) => {        
         var date = Date.now();
         var postId = this.state.postId
         var userID = f.auth().currentUser.uid;
@@ -211,8 +213,8 @@ class NewPost extends React.Component {
             animalType: this.state.selectedAnimal,
             userId: userID,
             image: imageURL,
-            longitude: this.state.longitude,
-            latitude: this.state.latitude,
+            longitude: longitude,
+            latitude: latitude,
             status: 0,
             id:postId,
             posted: posted,
@@ -284,6 +286,7 @@ class NewPost extends React.Component {
                             </ProgressStep>
 
                             <ProgressStep label="Location" onNext={() => this.checkLocation()} error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
+                            <Text>{this.state.longitude}</Text>
                                 <View style={styles.stepContainer}>
                                     <MapView
                                         style={styles.mapContainer}

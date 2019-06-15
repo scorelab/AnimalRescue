@@ -8,6 +8,7 @@ import { COLOR_PRIMARY, COLOR_GRAY } from "../../config/styles";
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import HomeTabBar from "../../components/HomeTabBar/HomeTabBar";
 import { f, auth, storage, database } from "../../config/firebaseConfig";
+import { getDistance } from 'geolib';
 const AnimatedHeader = Animated.createAnimatedComponent(Header);
 export default class Home extends Component {
     constructor() {
@@ -27,19 +28,25 @@ export default class Home extends Component {
             pendingPostFinal: [],
             finishedPost: [],
             finishedPostFinal: [],
-            data: [
-                { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name: "Frank Odalthh", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-                { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name: "John DoeLink", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-                { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar7.png", name: "March SoulLaComa", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar2.png", name: "Finn DoRemiFaso", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-                { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar3.png", name: "Maria More More", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-                { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name: "Clark June Boom!", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-                { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name: "The googler", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-            ],
+            latitude:'',
+            longitude:'',            
         }
 
     }
+    distance = (lat1, lon1, lat2, lon2 ) => {
+        return getDistance(
+            { latitude: lat1, longitude: lon1 },
+            { latitude: lat2, longitude: lon2 }
+        );
+    }
     componentDidMount = () => {
+        this.watchID = navigator.geolocation.watchPosition((position) => {            
+            this.setState({                
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+            })
+
+        }, (error) => console.log(error));
         var that = this;
         const userId = f.auth().currentUser.uid;
         database.ref('posts').orderByChild('posted').on('value', (function (snapshot) {
@@ -79,7 +86,8 @@ export default class Home extends Component {
                                     name: data.first_name + " " + data.last_name,
                                     userId: postOBJ.userId,
                                     like: userLike > 0,
-                                    likecount: count                                                                   
+                                    likecount: count,
+                                    distance:that.distance(that.state.latitude , that.state.longitude ,postOBJ.latitude,postOBJ.longitude)                                                                   
                                 })
                             } else if (postOBJ.status == 1) {
                                 pendingPostArray.push({
@@ -116,7 +124,7 @@ export default class Home extends Component {
                                 pendingPost: [],
                                 finishedPost: []
                             })
-                            that.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                            that.state.activePostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
                             that.state.activePostFinal.reverse();
 
                             hat.state.pendingPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
