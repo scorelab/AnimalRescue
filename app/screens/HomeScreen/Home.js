@@ -87,7 +87,7 @@ export default class Home extends Component {
                                     userId: postOBJ.userId,
                                     like: userLike > 0,
                                     likecount: count,
-                                    distance:that.distance(that.state.latitude , that.state.longitude ,postOBJ.latitude,postOBJ.longitude)                                                                   
+                                    distance:that.distance(that.state.latitude , that.state.longitude , postOBJ.latitude,postOBJ.longitude)                                                                   
                                 })
                             } else if (postOBJ.status == 1) {
                                 pendingPostArray.push({
@@ -124,10 +124,11 @@ export default class Home extends Component {
                                 pendingPost: [],
                                 finishedPost: []
                             })
-                            that.state.activePostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
+                            
+                            that.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
                             that.state.activePostFinal.reverse();
-
-                            hat.state.pendingPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                            
+                            that.state.pendingPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
                             that.state.pendingPostFinal.reverse();
 
                             hat.state.finishedPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
@@ -244,6 +245,7 @@ export default class Home extends Component {
         });
     }
     renderSection = () => {
+        
         this.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
         this.state.activePostFinal.reverse();
 
@@ -343,7 +345,7 @@ export default class Home extends Component {
                 // onScrollBeginDrag={() => this.setState({ visible: true })}
                 // onScrollEndDrag={() => this.setState({ visible: false })}
                 >
-                    <AnimatedHeader title="Home" height={50} drawer={() => this.props.navigation.openDrawer()} />
+                    <AnimatedHeader sort={true} title="Home" height={50} drawer={() => this.props.navigation.openDrawer()} />
                     <HomeTabBar
                         active={this.state.active}
                         onPress0={() => this.setState({ active: 0 })}

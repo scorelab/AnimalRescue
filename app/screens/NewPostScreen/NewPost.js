@@ -93,7 +93,7 @@ class NewPost extends React.Component {
     }
 
     selectPhoto = () => {
-        ImagePicker.showImagePicker({ title: "Pick an Image", maxWidth: 800, maxHeight: 600 }, res => {
+        ImagePicker.showImagePicker({ title: "Pick an Image", maxWidth: 800, maxHeight: 600 , mediaType:'photo'}, res => {
             if (res.didCancel) {
                 console.log("User cancelled!");
             } else if (res.error) {

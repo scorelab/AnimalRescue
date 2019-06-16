@@ -5,6 +5,7 @@ import Ionicons from "react-native-vector-icons/FontAwesome";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { COLOR_PRIMARY } from "../../config/styles";
 import ControlPanel from "../DrawerComponent/DrawerPanel"
+import BottomSheet from "../BottomSheetComponent/BottomSheet"
 
 export default class HeaderNavigationBar extends Component {
     editPro = () => {
@@ -16,10 +17,7 @@ export default class HeaderNavigationBar extends Component {
             <View style={[styles.navigationBar, { height: this.props.height }]}>
                 <View style={styles.goBackArea}>
                     <TouchableOpacity
-                        onPress={this.props.drawer}
-                        // onPress={() => {
-                        //     this.RBSheet.open();
-                        // }}
+                        onPress={this.props.drawer}                    
                     >
                         <Ionicons name={"bars"} size={25} color={"white"} />
                     </TouchableOpacity>
@@ -28,8 +26,19 @@ export default class HeaderNavigationBar extends Component {
                 <View style={styles.titleArea}>
                     <Text style={styles.titleFont}>{this.props.title}</Text>
                 </View>
-                <View style={styles.goBackArea}>
-                    <Text style={styles.titleFont}>{this.props.end}</Text>
+                <View style={styles.goBottomkArea}>
+                    {this.props.sort == true ? (
+                        <TouchableOpacity                            
+                            onPress={() => {
+                                this.RBSheet.open();
+                            }}
+                        >
+                            <Ionicons name={"sort"} size={25} color={"white"} />
+                        </TouchableOpacity>
+                    ) : (
+                            <Text style={styles.titleFont}>{this.props.end}</Text>
+                        )}
+
                 </View>
                 <RBSheet
                     ref={ref => {
@@ -37,7 +46,7 @@ export default class HeaderNavigationBar extends Component {
                     }}
                     animationType="slide"
                     closeOnSwipeDown={true}
-                    height={300}
+                    height={150}
                     duration={250}
                     customStyles={{
                         container: {
@@ -45,11 +54,10 @@ export default class HeaderNavigationBar extends Component {
                             alignItems: "center",
                             width: '100%',
                             backgroundColor: "#000",
-
                         }
                     }}
                 >
-                    <ControlPanel />
+                    <BottomSheet />
                 </RBSheet>
             </View >
         );

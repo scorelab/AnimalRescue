@@ -5,61 +5,17 @@ let deviceWidth = Dimensions.get("window").width;
 let deviceHeight = Dimensions.get("window").height;
 
 export default StyleSheet.create({
-    navigationBar: {
-        backgroundColor: COLOR_PRIMARY,
-        height: 50,
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%"
-    },
-    leftIconContainer: {
-        marginLeft: 10,
-        marginTop: 5,
-        borderRadius: 5
-    },
-    rightIconContainer: {
-        marginLeft: 10,
-        marginTop: 5,
-        borderRadius: 5
-    },
-    titleArea: {
-        justifyContent: 'center',
-        alignItems: "center",
-        width: '40%'
-    },
-    goBackArea: {
-        // alignSelf:'flex-end',
-        justifyContent: 'flex-start',
-        alignItems: "flex-start",
-        paddingLeft: 15,
-        width: '30%'
-    },
-    goBottomkArea: {
-        // alignSelf:'flex-end',
-        justifyContent: 'flex-end',
-        alignItems: "flex-end",
-        paddingRight: 15,
-        width: '30%'
-    },
-    
-    //Text
-
-    titleFont: {
-        fontSize: 18,
-        color: "white"
-    },
 
     container: {
-        width: '100%',
-        overflow: 'scroll',
-        backgroundColor: "#000"
+        width: '100%',        
+        backgroundColor: "#fff",
+        flex:1
     },
 
     body: {
         // 
-        height:'100%',
-        backgroundColor: COLOR_GRAY,
+        height: '100%',
+        backgroundColor: "#fff",
     },
     username: {
         color: "#20B2AA",
@@ -68,12 +24,13 @@ export default StyleSheet.create({
         marginLeft: 10
     },
     image: {
-        width: 50,
-        height: 50,
-        borderRadius: 20
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        marginTop:-30,
+        marginLeft:30
     },
-    box: {
-        padding: 20,
+    box: {        
         backgroundColor: 'white',
         flexDirection: 'row',
     },
@@ -84,9 +41,10 @@ export default StyleSheet.create({
         marginLeft: 10,
     },
     title: {
-        fontSize: 18,
+        fontSize: 16,
         color: "#151515",
-        marginTop: 12
+        padding:5
+        
     },
     description: {
         fontSize: 15,
@@ -123,14 +81,33 @@ export default StyleSheet.create({
         shadowOpacity: 0.37,
         shadowRadius: 7.49,
         elevation: 12,
-
+        height:75,
         // marginLeft: 20,
         // marginRight: 20,
         // marginTop: 20,
         backgroundColor: "white",
         padding: 10,
         flexDirection: 'row',
-        borderBottomWidth:1
+        // borderBottomWidth: 1
+        // borderRadius: 30,
+    },
+    cardActive: {
+        shadowColor: '#00000021',
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.37,
+        shadowRadius: 7.49,
+        elevation: 12,
+        height:75,
+        // marginLeft: 20,
+        // marginRight: 20,
+        // marginTop: 20,
+        backgroundColor: "white",
+        padding: 10,
+        flexDirection: 'row',
+        // borderBottomWidth: 1
         // borderRadius: 30,
     },
     cardContent: {
