@@ -28,20 +28,22 @@ export default class Home extends Component {
             pendingPostFinal: [],
             finishedPost: [],
             finishedPostFinal: [],
-            latitude:'',
-            longitude:'',            
+            latitude: '',
+            longitude: '',
+            distancePress: false,
+            timePress:true,
         }
 
     }
-    distance = (lat1, lon1, lat2, lon2 ) => {
+    distance = (lat1, lon1, lat2, lon2) => {
         return getDistance(
             { latitude: lat1, longitude: lon1 },
             { latitude: lat2, longitude: lon2 }
         );
     }
     componentDidMount = () => {
-        this.watchID = navigator.geolocation.watchPosition((position) => {            
-            this.setState({                
+        this.watchID = navigator.geolocation.watchPosition((position) => {
+            this.setState({
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude,
             })
@@ -51,7 +53,7 @@ export default class Home extends Component {
         const userId = f.auth().currentUser.uid;
         database.ref('posts').orderByChild('posted').on('value', (function (snapshot) {
             const exist = (snapshot.val() != null);
-            if (exist) {                
+            if (exist) {
                 var data = snapshot.val();
                 var postData = data
                 var activePostArray = that.state.activePost
@@ -59,8 +61,8 @@ export default class Home extends Component {
                 var finishedPostArray = that.state.finishedPost
                 for (var posts in postData) {
                     let postOBJ = postData[posts]
-                    console.log(postOBJ);                    
-                    
+                    console.log(postOBJ);
+
                     database.ref('users').child(postOBJ.userId).once('value').then(function (snapshot) {
                         const exsists = (snapshot.val() != null);
                         if (exsists) {
@@ -87,7 +89,7 @@ export default class Home extends Component {
                                     userId: postOBJ.userId,
                                     like: userLike > 0,
                                     likecount: count,
-                                    distance:that.distance(that.state.latitude , that.state.longitude , postOBJ.latitude,postOBJ.longitude)                                                                   
+                                    distance: that.distance(that.state.latitude, that.state.longitude, postOBJ.latitude, postOBJ.longitude)
                                 })
                             } else if (postOBJ.status == 1) {
                                 pendingPostArray.push({
@@ -124,15 +126,26 @@ export default class Home extends Component {
                                 pendingPost: [],
                                 finishedPost: []
                             })
+                            if(that.state.timePress == true){
+                                that.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                                that.state.activePostFinal.reverse();
+    
+                                that.state.pendingPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                                that.state.pendingPostFinal.reverse();
+    
+                                that.state.finishedPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                                that.state.finishedPostFinal.reverse();
+                            }else{
+                                that.state.activePostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
+                                that.state.activePostFinal.reverse();
+    
+                                that.state.pendingPostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
+                                that.state.pendingPostFinal.reverse();
+    
+                                that.state.finishedPostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
+                                that.state.finishedPostFinal.reverse();
+                            }
                             
-                            that.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
-                            that.state.activePostFinal.reverse();
-                            
-                            that.state.pendingPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
-                            that.state.pendingPostFinal.reverse();
-
-                            hat.state.finishedPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
-                            that.state.finishedPostFinal.reverse();
                         }
 
                     })
@@ -239,13 +252,13 @@ export default class Home extends Component {
     // }
 
     commentCount = (id) => {
-              
+
         database.ref('comments').child(id).once('value').then(function (snapshot) {
             return snapshot.numChildren()
         });
     }
     renderSection = () => {
-        
+
         this.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
         this.state.activePostFinal.reverse();
 
@@ -321,7 +334,101 @@ export default class Home extends Component {
         }
 
     }
+    distanceSortRender = () => {
+        const { navigate } = this.props.navigation;
 
+        if (this.state.active == 0) {
+            return this.state.activePostFinal.map((data, index) => {
+                return (
+                    <Post
+                        keyNo={index}
+                        name={data.name}
+                        avatar={data.avatar}
+                        image={data.image}
+                        description={data.description}
+                        posted={this.timeConvertor(data.posted)}
+                        press={() => navigate('Post', { id: data.id })}
+                        liked={data.like}
+                        comment={() => navigate('Comment', { id: data.id })}
+                        like={() => this.setLike(data.like, data.id)}
+                        numberOfLikes={data.likecount}
+                        numberOfComments={1}
+
+                    />
+
+                )
+            });
+
+        } else if (this.state.active == 1) {
+            return this.state.pendingPostFinal.map((data, index) => {
+                return (
+                    <Post
+                        keyNo={index}
+                        name={data.name}
+                        avatar={data.avatar}
+                        image={data.image}
+                        description={data.description}
+                        posted={this.timeConvertor(data.posted)}
+                        press={() => navigate('Post', { id: data.id })}
+                        liked={data.like}
+                        comment={() => navigate('Comment')}
+                        like={() => this.setLike(data.like, data.id)}
+                        numberOfLikes={data.likecount}
+                        numberOfComments={1}
+
+                    />
+                )
+            });
+        } else if (this.state.active == 2) {
+            return this.state.finishedPostFinal.map((data, index) => {
+                return (
+                    <Post
+                        keyNo={index}
+                        name={data.name}
+                        avatar={data.avatar}
+                        image={data.image}
+                        description={data.description}
+                        posted={this.timeConvertor(data.posted)}
+                        press={() => navigate('Post', { id: data.id })}
+                        liked={data.like}
+                        comment={() => navigate('Comment')}
+                        like={() => this.setLike(data.like, data.id)}
+                        numberOfLikes={data.likecount}
+                        numberOfComments={1}
+
+                    />
+                )
+            });
+        }
+    }
+    timeSort = () => {
+        this.setState({
+            distancePress: false,
+            timePress:true
+        })
+        this.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+        this.state.activePostFinal.reverse();
+
+        this.state.pendingPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+        this.state.pendingPostFinal.reverse();
+
+        this.state.finishedPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+        this.state.finishedPostFinal.reverse();
+    }
+    distanceSort = () => {
+        this.setState({
+            distancePress: true,
+            timePress:false
+        })
+        this.state.activePostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
+        this.state.activePostFinal.reverse();
+
+        this.state.pendingPostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
+        this.state.pendingPostFinal.reverse();
+
+        this.state.finishedPostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
+        this.state.finishedPostFinal.reverse();
+    }
 
     render() {
 
@@ -345,7 +452,7 @@ export default class Home extends Component {
                 // onScrollBeginDrag={() => this.setState({ visible: true })}
                 // onScrollEndDrag={() => this.setState({ visible: false })}
                 >
-                    <AnimatedHeader sort={true} title="Home" height={50} drawer={() => this.props.navigation.openDrawer()} />
+                    <AnimatedHeader distance={() => this.distanceSort()} time={() => this.timeSort()} sort={true} title="Home" height={50} drawer={() => this.props.navigation.openDrawer()} />
                     <HomeTabBar
                         active={this.state.active}
                         onPress0={() => this.setState({ active: 0 })}
@@ -353,7 +460,11 @@ export default class Home extends Component {
                         onPress2={() => this.setState({ active: 2 })}
                     />
 
-                    {this.state.loaded == true ? this.renderSection() :
+                    {this.state.loaded == true ?
+                        <View>
+                            {this.state.distancePress == true ? this.renderSection() : this.distanceSortRender()}                            
+                        </View>
+                        :
                         <View style={styles.overlay}>
                             <ProgressBarAndroid
                                 styleAttr="Large"

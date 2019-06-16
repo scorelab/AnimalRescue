@@ -57,7 +57,7 @@ export default class HeaderNavigationBar extends Component {
                         }
                     }}
                 >
-                    <BottomSheet />
+                    <BottomSheet distance={this.props.distance} time={this.props.time} />
                 </RBSheet>
             </View >
         );
