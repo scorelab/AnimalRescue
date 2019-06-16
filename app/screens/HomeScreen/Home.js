@@ -24,14 +24,17 @@ export default class Home extends Component {
             loaded: false,
             activePost: [],
             activePostFinal: [],
+            activePostDistance: [],
             pendingPost: [],
             pendingPostFinal: [],
+            pendingPostDistance: [],
             finishedPost: [],
             finishedPostFinal: [],
+            finishedPostDistance: [],
             latitude: '',
             longitude: '',
             distancePress: false,
-            timePress:true,
+            timePress: true,
         }
 
     }
@@ -51,6 +54,7 @@ export default class Home extends Component {
         }, (error) => console.log(error));
         var that = this;
         const userId = f.auth().currentUser.uid;
+
         database.ref('posts').orderByChild('posted').on('value', (function (snapshot) {
             const exist = (snapshot.val() != null);
             if (exist) {
@@ -61,7 +65,7 @@ export default class Home extends Component {
                 var finishedPostArray = that.state.finishedPost
                 for (var posts in postData) {
                     let postOBJ = postData[posts]
-                    console.log(postOBJ);
+                    // console.log(postOBJ);
 
                     database.ref('users').child(postOBJ.userId).once('value').then(function (snapshot) {
                         const exsists = (snapshot.val() != null);
@@ -89,7 +93,7 @@ export default class Home extends Component {
                                     userId: postOBJ.userId,
                                     like: userLike > 0,
                                     likecount: count,
-                                    distance: that.distance(that.state.latitude, that.state.longitude, postOBJ.latitude, postOBJ.longitude)
+                                    distance: parseInt(that.distance(that.state.latitude, that.state.longitude, postOBJ.latitude, postOBJ.longitude))
                                 })
                             } else if (postOBJ.status == 1) {
                                 pendingPostArray.push({
@@ -101,7 +105,9 @@ export default class Home extends Component {
                                     name: data.first_name + " " + data.last_name,
                                     userId: postOBJ.userId,
                                     like: userLike > 0,
-                                    likecount: count
+                                    likecount: count,
+                                    distance: that.distance(that.state.latitude, that.state.longitude, postOBJ.latitude, postOBJ.longitude)
+
                                 })
                             } else {
                                 finishedPostArray.push({
@@ -113,10 +119,12 @@ export default class Home extends Component {
                                     name: data.first_name + " " + data.last_name,
                                     userId: postOBJ.userId,
                                     like: userLike > 0,
-                                    likecount: count
+                                    likecount: count,
+                                    distance: that.distance(that.state.latitude, that.state.longitude, postOBJ.latitude, postOBJ.longitude)
+
                                 })
                             }
-                            console.log(activePostArray);
+                            // console.log(activePostArray);
                             that.setState({
                                 activePostFinal: activePostArray,
                                 pendingPostFinal: pendingPostArray,
@@ -126,36 +134,30 @@ export default class Home extends Component {
                                 pendingPost: [],
                                 finishedPost: []
                             })
-                            if(that.state.timePress == true){
-                                that.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
-                                that.state.activePostFinal.reverse();
-    
-                                that.state.pendingPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
-                                that.state.pendingPostFinal.reverse();
-    
-                                that.state.finishedPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
-                                that.state.finishedPostFinal.reverse();
-                            }else{
-                                that.state.activePostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
-                                that.state.activePostFinal.reverse();
-    
-                                that.state.pendingPostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
-                                that.state.pendingPostFinal.reverse();
-    
-                                that.state.finishedPostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
-                                that.state.finishedPostFinal.reverse();
-                            }
-                            
+
+                            that.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                            that.state.activePostFinal.reverse();
+
+                            that.state.pendingPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                            that.state.pendingPostFinal.reverse();
+
+                            that.state.finishedPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                            that.state.finishedPostFinal.reverse();
+
                         }
 
                     })
 
                 }
-                console.log(that.state.postFinal);
+
+
+
+                console.log(that.state.activePostDistance);
             }
         }), function (errorObject) {
             console.log("The read failed: " + errorObject.code);
         });
+
     }
 
 
@@ -259,6 +261,8 @@ export default class Home extends Component {
     }
     renderSection = () => {
 
+
+        const { navigate } = this.props.navigation;
         this.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
         this.state.activePostFinal.reverse();
 
@@ -267,13 +271,11 @@ export default class Home extends Component {
 
         this.state.finishedPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
         this.state.finishedPostFinal.reverse();
-        const { navigate } = this.props.navigation;
-
         if (this.state.active == 0) {
-            return this.state.activePostFinal.map((data, index) => {
+            return this.state.activePostFinal.sort((a, b) => b.posted - a.posted).map((data, index) => {
                 return (
                     <Post
-                        keyNo={index}
+                        keyNo={data.id}
                         name={data.name}
                         avatar={data.avatar}
                         image={data.image}
@@ -284,15 +286,14 @@ export default class Home extends Component {
                         comment={() => navigate('Comment', { id: data.id })}
                         like={() => this.setLike(data.like, data.id)}
                         numberOfLikes={data.likecount}
-                        numberOfComments={1}
+                        numberOfComments={this.commentCount(data.id)}
 
                     />
-
                 )
             });
 
         } else if (this.state.active == 1) {
-            return this.state.pendingPostFinal.map((data, index) => {
+            return this.state.pendingPostFinal.sort((a, b) => a.posted - b.posted).map((data, index) => {
                 return (
                     <Post
                         keyNo={index}
@@ -306,13 +307,13 @@ export default class Home extends Component {
                         comment={() => navigate('Comment')}
                         like={() => this.setLike(data.like, data.id)}
                         numberOfLikes={data.likecount}
-                        numberOfComments={1}
+                        numberOfComments={this.commentCount(data.id)}
 
                     />
                 )
             });
         } else if (this.state.active == 2) {
-            return this.state.finishedPostFinal.map((data, index) => {
+            return this.state.finishedPostFinal.sort((a, b) => a.posted - b.posted).map((data, index) => {
                 return (
                     <Post
                         keyNo={index}
@@ -327,18 +328,19 @@ export default class Home extends Component {
                         like={() => this.setLike(data.like, data.id)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
-
                     />
                 )
             });
         }
 
     }
+
+
     distanceSortRender = () => {
         const { navigate } = this.props.navigation;
 
         if (this.state.active == 0) {
-            return this.state.activePostFinal.map((data, index) => {
+            return this.state.activePostFinal.sort((a, b) => a.distance - b.distance).map((data, index) => {
                 return (
                     <Post
                         keyNo={index}
@@ -360,7 +362,7 @@ export default class Home extends Component {
             });
 
         } else if (this.state.active == 1) {
-            return this.state.pendingPostFinal.map((data, index) => {
+            return this.state.pendingPostFinal.sort((a, b) => a.distance - b.distance).map((data, index) => {
                 return (
                     <Post
                         keyNo={index}
@@ -380,7 +382,7 @@ export default class Home extends Component {
                 )
             });
         } else if (this.state.active == 2) {
-            return this.state.finishedPostFinal.map((data, index) => {
+            return this.state.finishedPostFinal.sort((a, b) => a.distance - b.distance).map((data, index) => {
                 return (
                     <Post
                         keyNo={index}
@@ -404,31 +406,17 @@ export default class Home extends Component {
     timeSort = () => {
         this.setState({
             distancePress: false,
-            timePress:true
+            timePress: true
         })
-        this.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
-        this.state.activePostFinal.reverse();
-
-        this.state.pendingPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
-        this.state.pendingPostFinal.reverse();
-
-        this.state.finishedPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
-        this.state.finishedPostFinal.reverse();
     }
     distanceSort = () => {
         this.setState({
             distancePress: true,
-            timePress:false
+            timePress: false,
+
         })
-        this.state.activePostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
-        this.state.activePostFinal.reverse();
-
-        this.state.pendingPostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
-        this.state.pendingPostFinal.reverse();
-
-        this.state.finishedPostFinal.sort((a, b) => (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0));
-        this.state.finishedPostFinal.reverse();
     }
+
 
     render() {
 
@@ -462,7 +450,7 @@ export default class Home extends Component {
 
                     {this.state.loaded == true ?
                         <View>
-                            {this.state.distancePress == true ? this.renderSection() : this.distanceSortRender()}                            
+                            {this.state.distancePress == true ? this.distanceSortRender() : this.renderSection()}
                         </View>
                         :
                         <View style={styles.overlay}>
