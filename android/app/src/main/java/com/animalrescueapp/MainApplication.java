@@ -3,6 +3,7 @@ package com.animalrescueapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.brentvatne.react.ReactVideoPackage;
 import ui.bottomactionsheet.RNBottomActionSheetPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.CallbackManager;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import com.facebook.appevents.AppEventsLogger;
 import android.content.Intent;
+
 public class MainApplication extends Application implements ReactApplication {
   private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
  
@@ -37,6 +39,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {      
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactVideoPackage(),
             new RNBottomActionSheetPackage(),
             new FBSDKPackage(mCallbackManager),
             new ReanimatedPackage(),

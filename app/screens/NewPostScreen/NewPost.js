@@ -38,7 +38,7 @@ class NewPost extends React.Component {
             progress: 0,
             uploading: false,
             animationState: 'rest',
-            postId:this.uniqueId()
+            postId: this.uniqueId()
         }
         this.mapRef = null;
 
@@ -93,7 +93,7 @@ class NewPost extends React.Component {
     }
 
     selectPhoto = () => {
-        ImagePicker.showImagePicker({ title: "Pick an Image", maxWidth: 800, maxHeight: 600 , mediaType:'photo'}, res => {
+        ImagePicker.showImagePicker({ title: "Pick an Image", maxWidth: 800, maxHeight: 600, mediaType: 'photo' }, res => {
             if (res.didCancel) {
                 console.log("User cancelled!");
             } else if (res.error) {
@@ -107,6 +107,7 @@ class NewPost extends React.Component {
         });
 
     };
+   
 
     handleLocationSelected = (data, { geometry }) => {
         const {
@@ -151,14 +152,14 @@ class NewPost extends React.Component {
     }
 
     uploadImage = async () => {
-        
+
         var uri = this.state.pickedImage
         var that = this;
         var postId = this.state.postId;
         var re = /(?:\.([^.]+))?$/;
         var ext = re.exec(uri)[1];
-        var longitude= this.state.longitude;
-        var latitude= this.state.latitude;
+        var longitude = this.state.longitude;
+        var latitude = this.state.latitude;
         this.setState({
             currentFileType: ext,
             uploading: true
@@ -181,7 +182,7 @@ class NewPost extends React.Component {
         var uploadTask = storage.ref('posts/images/' + this.state.selectedAnimal).child(filePath).put(blob);
 
         uploadTask.on('state_changed', function (snapshot) {
-            let progress = ((snapshot.bytesTransferred / snapshot.totalBytes)*100).toFixed(0);
+            let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
             that.setState({
                 progress: progress
             });
@@ -194,16 +195,16 @@ class NewPost extends React.Component {
             });
             // alert("done");
             uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-                that.setDatabse(downloadURL,latitude , longitude);
+                that.setDatabse(downloadURL, latitude, longitude);
                 console.log(downloadURL);
-            },function(error){
+            }, function (error) {
                 console.log(error)
             })
         })
 
     }
 
-    setDatabse = async(imageURL , latitude , longitude) => {        
+    setDatabse = async (imageURL, latitude, longitude) => {
         var date = Date.now();
         var postId = this.state.postId
         var userID = f.auth().currentUser.uid;
@@ -216,17 +217,17 @@ class NewPost extends React.Component {
             longitude: longitude,
             latitude: latitude,
             status: 0,
-            id:postId,
+            id: postId,
             posted: posted,
         };
 
         const myPostOBJ = {
             image: imageURL,
             status: 0,
-            id:postId,
+            id: postId,
             posted: posted,
         }
-        
+
         database.ref('/posts/' + postId).set(postObj);
         database.ref('users/' + userID + '/post/' + postId).set(myPostOBJ);
         this.setState({
@@ -237,7 +238,7 @@ class NewPost extends React.Component {
             selectedAnimal: '',
             photoError: true,
             pickedImage: null,
-            postId:this.uniqueId()
+            postId: this.uniqueId()
         });
         this.props.navigation.navigate('Post', { id: postId })
 
@@ -257,10 +258,10 @@ class NewPost extends React.Component {
 
     render() {
         if (this.state.uploading == true) {
-            return(
-                <Progress percentage={this.state.progress}/>
+            return (
+                <Progress percentage={this.state.progress} />
             )
-            
+
         } else {
             return (
                 <ScrollView style={{ flex: 1 }}>
@@ -275,75 +276,87 @@ class NewPost extends React.Component {
                                             <Text>Select an Image</Text>
                                             {/* </View> */}
                                         </TouchableOpacity>
-                                    ) : (
-                                            <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
+                                    
+                                    ): (
+                                            <TouchableOpacity style = {styles.imageContainer} onPress={() => this.selectPhoto()}>
                                                 <Image source={{ uri: this.state.pickedImage }} style={{ width: '100%', height: '100%' }} />
                                             </TouchableOpacity>
 
-                                        )}
+                                )}
 
                                 </View>
                             </ProgressStep>
 
-                            <ProgressStep label="Location" onNext={() => this.checkLocation()} error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
+                        <ProgressStep label="Location" onNext={() => this.checkLocation()} error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
                             <Text>{this.state.longitude}</Text>
-                                <View style={styles.stepContainer}>
-                                    <MapView
-                                        style={styles.mapContainer}
-                                        provider={PROVIDER_GOOGLE}
-                                        initialRegion={this.state.region}
-                                        showsUserLocation={true}
-                                        loadingEnabled={true}
-                                        zoomControlEnabled={true}
-                                        showsMyLocationButton={true}
-                                        ref={ref => { this.mapView = ref }}
-                                        onPress={(e) => this.setState({
-                                            longitude: e.nativeEvent.coordinate.longitude,
-                                            latitude: e.nativeEvent.coordinate.latitude,
-                                            locationError: false
-                                        })}
-                                    >
-                                        {this.state.latitude != null && this.state.latitude != null ? (
-                                            <Marker draggable
-                                                coordinate={{
-                                                    latitude: this.state.latitude,
-                                                    longitude: this.state.longitude
-                                                }}
-                                                title={"Here is the Animal"}
+                            <View style={styles.stepContainer}>
+                                <MapView
+                                    style={styles.mapContainer}
+                                    provider={PROVIDER_GOOGLE}
+                                    initialRegion={this.state.region}
+                                    showsUserLocation={true}
+                                    loadingEnabled={true}
+                                    zoomControlEnabled={true}
+                                    showsMyLocationButton={true}
+                                    ref={ref => { this.mapView = ref }}
+                                    onPress={(e) => this.setState({
+                                        longitude: e.nativeEvent.coordinate.longitude,
+                                        latitude: e.nativeEvent.coordinate.latitude,
+                                        locationError: false
+                                    })}
+                                >
+                                    {this.state.latitude != null && this.state.latitude != null ? (
+                                        <Marker draggable
+                                            coordinate={{
+                                                latitude: this.state.latitude,
+                                                longitude: this.state.longitude
+                                            }}
+                                            title={"Here is the Animal"}
 
-                                            />
-                                        ) : (
-                                                <View></View>
-                                            )}
-                                    </MapView>
-                                    <Search onLocationSelected={this.handleLocationSelected} />
-                                </View>
-                            </ProgressStep>
-                            <ProgressStep label="Information" onSubmit={() => this.submit()} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
-                                <View style={styles.stepContainer}>
-                                    {this.state.selectedAnimal == '' ? (
+                                        />
+                                    ) : (
+                                            <View></View>
+                                        )}
+                                </MapView>
+                                <Search onLocationSelected={this.handleLocationSelected} />
+                            </View>
+                        </ProgressStep>
+                        <ProgressStep label="Information" onSubmit={() => this.submit()} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
+                            <View style={styles.stepContainer}>
+                                {this.state.selectedAnimal == '' ? (
+                                    <Text
+                                        style={styles.textStyle}
+                                        onPress={() => {
+                                            this.ActionSheet.show()
+                                        }}
+                                    >
+                                        Click here to select Animal Type
+                                </Text>
+                                ) : (
                                         <Text
                                             style={styles.textStyle}
                                             onPress={() => {
                                                 this.ActionSheet.show()
                                             }}
                                         >
-                                            Click here to select Animal Type
-                                </Text>
+                                            {this.state.selectedAnimal}
+                                        </Text>
+                                    )}
+                                <KeyboardAvoidingView behavior="padding" enabled={true}>
+                                    {this.state.description.length.toString() <= 70 ? (
+                                        <TextInput
+                                            style={[styles.descriptiontStyle, { fontSize: 32 }]}
+                                            placeholder={'Enter Description Here'}
+                                            editable={true}
+                                            multiline={true}
+                                            numberOfLines={5}
+                                            maxlength={750}
+                                            value={this.state.description}
+                                            onChangeText={(text) => this.setState({ description: text })}
+                                        />
                                     ) : (
-                                            <Text
-                                                style={styles.textStyle}
-                                                onPress={() => {
-                                                    this.ActionSheet.show()
-                                                }}
-                                            >
-                                                {this.state.selectedAnimal}
-                                            </Text>
-                                        )}
-                                    <KeyboardAvoidingView behavior="padding" enabled={true}>
-                                        {this.state.description.length.toString() <= 70 ? (
                                             <TextInput
-                                                style={[styles.descriptiontStyle, { fontSize: 32 }]}
+                                                style={[styles.descriptiontStyle, { fontSize: 20 }]}
                                                 placeholder={'Enter Description Here'}
                                                 editable={true}
                                                 multiline={true}
@@ -352,23 +365,12 @@ class NewPost extends React.Component {
                                                 value={this.state.description}
                                                 onChangeText={(text) => this.setState({ description: text })}
                                             />
-                                        ) : (
-                                                <TextInput
-                                                    style={[styles.descriptiontStyle, { fontSize: 20 }]}
-                                                    placeholder={'Enter Description Here'}
-                                                    editable={true}
-                                                    multiline={true}
-                                                    numberOfLines={5}
-                                                    maxlength={750}
-                                                    value={this.state.description}
-                                                    onChangeText={(text) => this.setState({ description: text })}
-                                                />
-                                            )}
+                                        )}
 
 
-                                    </KeyboardAvoidingView>
+                                </KeyboardAvoidingView>
 
-                                    {/* <SimplePicker
+                                {/* <SimplePicker
                                     ref={'picker'}
                                     options={options}
                                     confirmTextStyle={{ color: COLOR_PRIMARY, fontSize: 16 }}
@@ -380,26 +382,26 @@ class NewPost extends React.Component {
                                         });
                                     }}
                                 /> */}
-                                </View>
-                            </ProgressStep>
+                            </View>
+                        </ProgressStep>
                         </ProgressSteps>
                     </View>
-                    <ActionSheet
-                        ref={o => this.ActionSheet = o}
-                        title={'Select The Animal Type ?'}
-                        options={options}
-                        cancelButtonIndex={0}
-                        destructiveButtonIndex={0}
-                        onPress={(index) => {
-                            if (index > 0) {
-                                this.setState({
-                                    selectedAnimal: options[index],
-                                });
-                            }
-                        }}
-                    />
-                    <DropdownAlert ref={ref => this.dropdown = ref} />
-                </ScrollView>
+                <ActionSheet
+                    ref={o => this.ActionSheet = o}
+                    title={'Select The Animal Type ?'}
+                    options={options}
+                    cancelButtonIndex={0}
+                    destructiveButtonIndex={0}
+                    onPress={(index) => {
+                        if (index > 0) {
+                            this.setState({
+                                selectedAnimal: options[index],
+                            });
+                        }
+                    }}
+                />
+                <DropdownAlert ref={ref => this.dropdown = ref} />
+                </ScrollView >
 
 
             )
