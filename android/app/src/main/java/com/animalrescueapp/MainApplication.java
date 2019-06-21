@@ -3,7 +3,6 @@ package com.animalrescueapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.brentvatne.react.ReactVideoPackage;
 import ui.bottomactionsheet.RNBottomActionSheetPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.CallbackManager;
@@ -38,8 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {      
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new ReactVideoPackage(),
+          new MainReactPackage(),            
             new RNBottomActionSheetPackage(),
             new FBSDKPackage(mCallbackManager),
             new ReanimatedPackage(),

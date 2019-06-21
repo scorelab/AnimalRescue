@@ -4,11 +4,11 @@ import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import ImagePicker from "react-native-image-picker";
 import Search from "../../components/SearchAndFixLocation/searchView.js";
-import SimplePicker from 'react-native-simple-picker';
+import { ButtonGroup } from "react-native-elements";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { COLOR_PRIMARY, COLOR_BLACK, COLOR_SECONDARY } from "../../config/styles";
 import styles from "./style";
-import Snackbar from 'react-native-snackbar';
+
 import DropdownAlert from 'react-native-dropdownalert';
 import ActionSheet from 'react-native-actionsheet'
 import { f, auth, storage, database } from "../../config/firebaseConfig";
@@ -26,6 +26,7 @@ class NewPost extends React.Component {
             Location: false,
             Information: false,
             pickedImage: null,
+            pickedVideo: null,
             region: null,
             currentPlace: null,
             markers: [],
@@ -38,12 +39,20 @@ class NewPost extends React.Component {
             progress: 0,
             uploading: false,
             animationState: 'rest',
-            postId: this.uniqueId()
+            postId: this.uniqueId(),
+            selectedIndex: 0
         }
         this.mapRef = null;
+        this.updateIndex = this.updateIndex.bind(this)
 
     }
+    updateIndex(selectedIndex) {
+        this.setState({ 
+            selectedIndex:selectedIndex,
+            photoError: true 
+        })
 
+    }
     componentDidMount = async () => {
         this.requestCameraPermission();
         this.watchID = navigator.geolocation.watchPosition((position) => {
@@ -101,13 +110,31 @@ class NewPost extends React.Component {
             } else {
                 this.setState({
                     pickedImage: res.uri,
+                    pickedVideo:null,
                     photoError: false
                 });
             }
         });
 
     };
-   
+
+    selectVideo = () => {
+        ImagePicker.showImagePicker({ title: "Pick a Video", maxWidth: 800, maxHeight: 600, mediaType: 'video' }, res => {
+            if (res.didCancel) {
+                console.log("User cancelled!");
+            } else if (res.error) {
+                console.log("Error", res.error);
+            } else {
+                this.setState({
+                    pickedVideo: res.uri,
+                    pickedImage:null,
+                    photoError: false
+                });
+            }
+        });
+
+    };
+
 
     handleLocationSelected = (data, { geometry }) => {
         const {
@@ -263,6 +290,8 @@ class NewPost extends React.Component {
             )
 
         } else {
+            const buttons = ['photo', 'Video']
+            const { selectedIndex } = this.state
             return (
                 <ScrollView style={{ flex: 1 }}>
                     <Header title="New Post" height={50} drawer={() => this.props.navigation.openDrawer()} />
@@ -270,93 +299,93 @@ class NewPost extends React.Component {
                         <ProgressSteps activeStepIconBorderColor={COLOR_PRIMARY} completedProgressBarColor={COLOR_PRIMARY} completedStepIconColor={COLOR_PRIMARY} activeLabelColor={COLOR_PRIMARY} labelColor={COLOR_BLACK}>
                             <ProgressStep label="Photo" onNext={() => this.checkPhoto()} errors={this.state.photoError} previousBtnDisabled={true} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
                                 <View style={styles.stepContainer}>
-                                    {this.state.photoError == true ? (
-                                        <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
-                                            {/* <View style={styles.imageContainer}> */}
-                                            <Text>Select an Image</Text>
-                                            {/* </View> */}
-                                        </TouchableOpacity>
-                                    
-                                    ): (
-                                            <TouchableOpacity style = {styles.imageContainer} onPress={() => this.selectPhoto()}>
+                                    <ButtonGroup
+                                        onPress={this.updateIndex}
+                                        selectedIndex={selectedIndex}
+                                        buttons={buttons}
+                                        containerStyle={{ height: 30 }}
+                                    />
+                                    {this.state.photoError == true ?
+                                        this.state.selectedIndex == 0 ? (
+                                            <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
+                                                <Text>Select an Image</Text>
+                                            </TouchableOpacity>
+                                        ) : (
+                                                <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectVideo()}>
+                                                    <Text>Select a Video</Text>
+                                                </TouchableOpacity>
+                                            )
+
+
+                                        : (
+                                            <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
                                                 <Image source={{ uri: this.state.pickedImage }} style={{ width: '100%', height: '100%' }} />
                                             </TouchableOpacity>
 
-                                )}
+                                        )}
 
                                 </View>
                             </ProgressStep>
 
-                        <ProgressStep label="Location" onNext={() => this.checkLocation()} error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
-                            <Text>{this.state.longitude}</Text>
-                            <View style={styles.stepContainer}>
-                                <MapView
-                                    style={styles.mapContainer}
-                                    provider={PROVIDER_GOOGLE}
-                                    initialRegion={this.state.region}
-                                    showsUserLocation={true}
-                                    loadingEnabled={true}
-                                    zoomControlEnabled={true}
-                                    showsMyLocationButton={true}
-                                    ref={ref => { this.mapView = ref }}
-                                    onPress={(e) => this.setState({
-                                        longitude: e.nativeEvent.coordinate.longitude,
-                                        latitude: e.nativeEvent.coordinate.latitude,
-                                        locationError: false
-                                    })}
-                                >
-                                    {this.state.latitude != null && this.state.latitude != null ? (
-                                        <Marker draggable
-                                            coordinate={{
-                                                latitude: this.state.latitude,
-                                                longitude: this.state.longitude
-                                            }}
-                                            title={"Here is the Animal"}
-
-                                        />
-                                    ) : (
-                                            <View></View>
-                                        )}
-                                </MapView>
-                                <Search onLocationSelected={this.handleLocationSelected} />
-                            </View>
-                        </ProgressStep>
-                        <ProgressStep label="Information" onSubmit={() => this.submit()} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
-                            <View style={styles.stepContainer}>
-                                {this.state.selectedAnimal == '' ? (
-                                    <Text
-                                        style={styles.textStyle}
-                                        onPress={() => {
-                                            this.ActionSheet.show()
-                                        }}
+                            <ProgressStep label="Location" onNext={() => this.checkLocation()} error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
+                                <Text>{this.state.longitude}</Text>
+                                <View style={styles.stepContainer}>
+                                    <MapView
+                                        style={styles.mapContainer}
+                                        provider={PROVIDER_GOOGLE}
+                                        initialRegion={this.state.region}
+                                        showsUserLocation={true}
+                                        loadingEnabled={true}
+                                        zoomControlEnabled={true}
+                                        showsMyLocationButton={true}
+                                        ref={ref => { this.mapView = ref }}
+                                        onPress={(e) => this.setState({
+                                            longitude: e.nativeEvent.coordinate.longitude,
+                                            latitude: e.nativeEvent.coordinate.latitude,
+                                            locationError: false
+                                        })}
                                     >
-                                        Click here to select Animal Type
-                                </Text>
-                                ) : (
+                                        {this.state.latitude != null && this.state.latitude != null ? (
+                                            <Marker draggable
+                                                coordinate={{
+                                                    latitude: this.state.latitude,
+                                                    longitude: this.state.longitude
+                                                }}
+                                                title={"Here is the Animal"}
+
+                                            />
+                                        ) : (
+                                                <View></View>
+                                            )}
+                                    </MapView>
+                                    <Search onLocationSelected={this.handleLocationSelected} />
+                                </View>
+                            </ProgressStep>
+                            <ProgressStep label="Information" onSubmit={() => this.submit()} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
+                                <View style={styles.stepContainer}>
+                                    {this.state.selectedAnimal == '' ? (
                                         <Text
                                             style={styles.textStyle}
                                             onPress={() => {
                                                 this.ActionSheet.show()
                                             }}
                                         >
-                                            {this.state.selectedAnimal}
-                                        </Text>
-                                    )}
-                                <KeyboardAvoidingView behavior="padding" enabled={true}>
-                                    {this.state.description.length.toString() <= 70 ? (
-                                        <TextInput
-                                            style={[styles.descriptiontStyle, { fontSize: 32 }]}
-                                            placeholder={'Enter Description Here'}
-                                            editable={true}
-                                            multiline={true}
-                                            numberOfLines={5}
-                                            maxlength={750}
-                                            value={this.state.description}
-                                            onChangeText={(text) => this.setState({ description: text })}
-                                        />
+                                            Click here to select Animal Type
+                                </Text>
                                     ) : (
+                                            <Text
+                                                style={styles.textStyle}
+                                                onPress={() => {
+                                                    this.ActionSheet.show()
+                                                }}
+                                            >
+                                                {this.state.selectedAnimal}
+                                            </Text>
+                                        )}
+                                    <KeyboardAvoidingView behavior="padding" enabled={true}>
+                                        {this.state.description.length.toString() <= 70 ? (
                                             <TextInput
-                                                style={[styles.descriptiontStyle, { fontSize: 20 }]}
+                                                style={[styles.descriptiontStyle, { fontSize: 32 }]}
                                                 placeholder={'Enter Description Here'}
                                                 editable={true}
                                                 multiline={true}
@@ -365,42 +394,41 @@ class NewPost extends React.Component {
                                                 value={this.state.description}
                                                 onChangeText={(text) => this.setState({ description: text })}
                                             />
-                                        )}
+                                        ) : (
+                                                <TextInput
+                                                    style={[styles.descriptiontStyle, { fontSize: 20 }]}
+                                                    placeholder={'Enter Description Here'}
+                                                    editable={true}
+                                                    multiline={true}
+                                                    numberOfLines={5}
+                                                    maxlength={750}
+                                                    value={this.state.description}
+                                                    onChangeText={(text) => this.setState({ description: text })}
+                                                />
+                                            )}
 
 
-                                </KeyboardAvoidingView>
+                                    </KeyboardAvoidingView>
 
-                                {/* <SimplePicker
-                                    ref={'picker'}
-                                    options={options}
-                                    confirmTextStyle={{ color: COLOR_PRIMARY, fontSize: 16 }}
-                                    cancelTextStyle={{ color: 'red' }}
-                                    itemStyle={styles.textStyle}
-                                    onSubmit={(option) => {
-                                        this.setState({
-                                            selectedAnimal: option,
-                                        });
-                                    }}
-                                /> */}
-                            </View>
-                        </ProgressStep>
+                                </View>
+                            </ProgressStep>
                         </ProgressSteps>
                     </View>
-                <ActionSheet
-                    ref={o => this.ActionSheet = o}
-                    title={'Select The Animal Type ?'}
-                    options={options}
-                    cancelButtonIndex={0}
-                    destructiveButtonIndex={0}
-                    onPress={(index) => {
-                        if (index > 0) {
-                            this.setState({
-                                selectedAnimal: options[index],
-                            });
-                        }
-                    }}
-                />
-                <DropdownAlert ref={ref => this.dropdown = ref} />
+                    <ActionSheet
+                        ref={o => this.ActionSheet = o}
+                        title={'Select The Animal Type ?'}
+                        options={options}
+                        cancelButtonIndex={0}
+                        destructiveButtonIndex={0}
+                        onPress={(index) => {
+                            if (index > 0) {
+                                this.setState({
+                                    selectedAnimal: options[index],
+                                });
+                            }
+                        }}
+                    />
+                    <DropdownAlert ref={ref => this.dropdown = ref} />
                 </ScrollView >
 
 
