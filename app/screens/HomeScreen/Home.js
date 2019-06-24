@@ -93,6 +93,7 @@ export default class Home extends Component {
                                     userId: postOBJ.userId,
                                     like: userLike > 0,
                                     likecount: count,
+                                    type:postOBJ.type,
                                     distance: parseInt(that.distance(that.state.latitude, that.state.longitude, postOBJ.latitude, postOBJ.longitude))
                                 })
                             } else if (postOBJ.status == 1) {
@@ -106,6 +107,7 @@ export default class Home extends Component {
                                     userId: postOBJ.userId,
                                     like: userLike > 0,
                                     likecount: count,
+                                    type:postOBJ.type,
                                     distance: that.distance(that.state.latitude, that.state.longitude, postOBJ.latitude, postOBJ.longitude)
 
                                 })
@@ -120,6 +122,7 @@ export default class Home extends Component {
                                     userId: postOBJ.userId,
                                     like: userLike > 0,
                                     likecount: count,
+                                    type:postOBJ.type,
                                     distance: that.distance(that.state.latitude, that.state.longitude, postOBJ.latitude, postOBJ.longitude)
 
                                 })
@@ -287,6 +290,7 @@ export default class Home extends Component {
                         like={() => this.setLike(data.like, data.id)}
                         numberOfLikes={data.likecount}
                         numberOfComments={this.commentCount(data.id)}
+                        type={data.type}
 
                     />
                 )
@@ -308,7 +312,7 @@ export default class Home extends Component {
                         like={() => this.setLike(data.like, data.id)}
                         numberOfLikes={data.likecount}
                         numberOfComments={this.commentCount(data.id)}
-
+                        type={data.type}
                     />
                 )
             });
@@ -328,6 +332,7 @@ export default class Home extends Component {
                         like={() => this.setLike(data.like, data.id)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
+                        type={data.type}
                     />
                 )
             });
@@ -355,6 +360,7 @@ export default class Home extends Component {
                         like={() => this.setLike(data.like, data.id)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
+                        type={data.type}
 
                     />
 
@@ -377,6 +383,7 @@ export default class Home extends Component {
                         like={() => this.setLike(data.like, data.id)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
+                        type={data.type}
 
                     />
                 )
@@ -397,7 +404,7 @@ export default class Home extends Component {
                         like={() => this.setLike(data.like, data.id)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
-
+                        type={data.type}
                     />
                 )
             });

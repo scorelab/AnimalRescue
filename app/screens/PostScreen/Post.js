@@ -16,7 +16,7 @@ import * as Animatable from 'react-native-animatable';
 import TouchableScale from "react-native-touchable-scale";
 import { f, auth, storage, database } from "../../config/firebaseConfig";
 import { COLOR_PRIMARY } from '../../config/styles';
-
+import Video from 'react-native-video';
 export default class Post extends Component {
 
     constructor(props) {
@@ -30,8 +30,10 @@ export default class Post extends Component {
             post: [],
             loaded: false,
             id: null,
-            authorId: f.auth().currentUser.uid
-        }
+            authorId: f.auth().currentUser.uid,
+            control: false       
+        }        
+        this.video = Video;
         this.mapRef = null;
     }
     componentDidMount = async () => {
@@ -80,7 +82,8 @@ export default class Post extends Component {
                         loaded: true,
                         userId: data.userId,
                         id: data.id,
-                        posted: data.posted
+                        posted: data.posted,
+                        type: data.type
 
                     })
                     //that.mapView.animateToRegion(region, 1000);
@@ -190,15 +193,44 @@ export default class Post extends Component {
                 <HeaderImageScrollView
                     maxHeight={200}
                     minHeight={50}
-                    headerImage={{ uri: this.state.image }}
+                    // headerImage={{ uri: this.state.image }}
                     fadeOutForeground
                     style={{ marginBottom: 10 }}
-                    // renderHeader={() => <Image source={require("../../images/dog.jpg")} style={styles.image} />}
-                    // renderForeground={() => (
-                    //     <View style={styles.titleContainer}>
-                    //         <Text style={styles.imageTitle}>Dog</Text>
-                    //     </View>
-                    // )}
+                    renderHeader={() => {
+                        if (this.state.type == 0) {
+                            return (
+                                <Image source={{ uri: this.state.image }} style={styles.image} />
+                            )
+                        } else {
+                            return (
+                                // <View style={{alignItems:'center', justifyContent:'center', width:'100%', backgroundColor:COLOR_GRAY}}>
+                                <Video
+                                    ref={(ref) => {
+                                        this.player = ref
+                                    }}
+                                    source={{ uri: this.state.image }}
+                                    volume={10}
+                                    repeat={true}
+                                    fullscreen={true}                                   
+                                    controls={true}
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        bottom: 0,
+                                        right: 0,
+                                        width: '100%',
+                                        alignSelf: 'center'
+                                    }} />
+                                // </View>
+
+
+                            )
+
+                        }
+
+                    }
+                    }
 
                     renderFixedForeground={() => (
                         <Animatable.View

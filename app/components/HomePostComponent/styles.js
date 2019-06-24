@@ -68,13 +68,22 @@ cardViewBody: {
 postImageArea: {
     width:'100%',
     marginTop: 5,
-    backgroundColor:COLOR_GRAY
+    backgroundColor:COLOR_GRAY,
+    
     
 },
 postImage: {
     width:'100%',
     height:225,        
     backgroundColor:COLOR_GRAY
+    // resizeMode:"center"
+},
+postVideo: {
+    width:'100%',
+    height:225,
+    aspectRatio: 1,
+            
+    //backgroundColor:COLOR_GRAY
     // resizeMode:"center"
 },
 

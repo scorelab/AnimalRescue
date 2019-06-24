@@ -119,7 +119,7 @@ class NewPost extends React.Component {
     };
 
     selectVideo = () => {
-        ImagePicker.showImagePicker({ title: "Pick a Video", maxWidth: 800, maxHeight: 600, mediaType: 'video' }, res => {
+        ImagePicker.showImagePicker({ title: "Pick a Video", minWidth: 1920, minHeight: 1080, mediaType: 'video' }, res => {
             if (res.didCancel) {
                 console.log("User cancelled!");
             } else if (res.error) {
@@ -179,56 +179,105 @@ class NewPost extends React.Component {
     }
 
     uploadImage = async () => {
-
-        var uri = this.state.pickedImage
-        var that = this;
-        var postId = this.state.postId;
-        var re = /(?:\.([^.]+))?$/;
-        var ext = re.exec(uri)[1];
-        var longitude = this.state.longitude;
-        var latitude = this.state.latitude;
-        this.setState({
-            currentFileType: ext,
-            uploading: true
-        });
-        const blob = await new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.onload = function () {
-                resolve(xhr.response);
-            };
-            xhr.onerror = function (e) {
-                console.log(e);
-                reject(new TypeError('Network request failed'));
-            };
-            xhr.responseType = 'blob';
-            xhr.open('GET', uri, true);
-            xhr.send(null);
-        });
-        var filePath = postId + '.' + that.state.currentFileType;
-
-        var uploadTask = storage.ref('posts/images/' + this.state.selectedAnimal).child(filePath).put(blob);
-
-        uploadTask.on('state_changed', function (snapshot) {
-            let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
-            that.setState({
-                progress: progress
+        if (this.state.selectedIndex == 0) {
+            var uri = this.state.pickedImage
+            var that = this;
+            var postId = this.state.postId;
+            var re = /(?:\.([^.]+))?$/;
+            var ext = re.exec(uri)[1];
+            var longitude = this.state.longitude;
+            var latitude = this.state.latitude;
+            this.setState({
+                currentFileType: ext,
+                uploading: true
             });
-        }, function (error) {
-            console.log(error);
-
-        }, function () {
-            that.setState({
-                progress: 100
+            const blob = await new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.onload = function () {
+                    resolve(xhr.response);
+                };
+                xhr.onerror = function (e) {
+                    console.log(e);
+                    reject(new TypeError('Network request failed'));
+                };
+                xhr.responseType = 'blob';
+                xhr.open('GET', uri, true);
+                xhr.send(null);
             });
-            // alert("done");
-            uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-                that.setDatabse(downloadURL, latitude, longitude);
-                console.log(downloadURL);
+            var filePath = postId + '.' + that.state.currentFileType;
+
+            var uploadTask = storage.ref('posts/images/' + this.state.selectedAnimal).child(filePath).put(blob);
+
+            uploadTask.on('state_changed', function (snapshot) {
+                let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
+                that.setState({
+                    progress: progress
+                });
             }, function (error) {
-                console.log(error)
-            })
-        })
+                console.log(error);
 
+            }, function () {
+                that.setState({
+                    progress: 100
+                });
+                // alert("done");
+                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                    that.setDatabse(downloadURL, latitude, longitude);
+                    console.log(downloadURL);
+                }, function (error) {
+                    console.log(error)
+                })
+            })
+        } else {
+            var uri = this.state.pickedVideo
+            var that = this;
+            var postId = this.state.postId;
+            var re = /(?:\.([^.]+))?$/;
+            var ext = re.exec(uri)[1];
+            var longitude = this.state.longitude;
+            var latitude = this.state.latitude;
+            this.setState({
+                currentFileType: ext,
+                uploading: true
+            });
+            const blob = await new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.onload = function () {
+                    resolve(xhr.response);
+                };
+                xhr.onerror = function (e) {
+                    console.log(e);
+                    reject(new TypeError('Network request failed'));
+                };
+                xhr.responseType = 'blob';
+                xhr.open('GET', uri, true);
+                xhr.send(null);
+            });
+            var filePath = postId + '.' + that.state.currentFileType;
+
+            var uploadTask = storage.ref('posts/videos/' + this.state.selectedAnimal).child(filePath).put(blob);
+
+            uploadTask.on('state_changed', function (snapshot) {
+                let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
+                that.setState({
+                    progress: progress
+                });
+            }, function (error) {
+                console.log(error);
+
+            }, function () {
+                that.setState({
+                    progress: 100
+                });
+                // alert("done");
+                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                    that.setDatabse(downloadURL, latitude, longitude);
+                    console.log(downloadURL);
+                }, function (error) {
+                    console.log(error)
+                })
+            })
+        }        
     }
 
     setDatabse = async (imageURL, latitude, longitude) => {
@@ -246,6 +295,7 @@ class NewPost extends React.Component {
             status: 0,
             id: postId,
             posted: posted,
+            type: this.state.selectedIndex
         };
 
         const myPostOBJ = {

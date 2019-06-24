@@ -1,15 +1,20 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Image } from 'react-native-elements';
 import style from "./styles";
 import { BallIndicator } from 'react-native-indicators';
 import { COLOR_PRIMARY } from "../../config/styles";
 import TouchableScale from "react-native-touchable-scale";
+import Video from 'react-native-video';
 export default class HomePostComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.video = Video;
 
+  }
   plural = (number) => {
-    if(number > 1){
+    if (number > 1) {
       return "s"
     }
   }
@@ -21,7 +26,7 @@ export default class HomePostComponent extends Component {
         <View style={style.cardTitleBar}>
           <TouchableOpacity style={style.userAvatarArea} onPress={this.props.profile}>
             <Image
-              source={{uri : this.props.avatar}}
+              source={{ uri: this.props.avatar }}
               style={style.userAvatarImage}
             />
           </TouchableOpacity>
@@ -38,14 +43,31 @@ export default class HomePostComponent extends Component {
         <View style={style.cardViewBody}>
           <TouchableScale style={style.cardViewBody} onPress={this.props.press}>
             <Text style={style.postContentFont} numberOfLines={3} ellipsizeMode={'tail'}>
-             {this.props.description}
-          </Text>
+              {this.props.description}
+            </Text>
             <View style={style.postImageArea}>
-              <Image
-                source={{uri : this.props.image}}
-                style={style.postImage}
-                PlaceholderContent={<BallIndicator color={COLOR_PRIMARY} />}
-              />
+              {this.props.type == 0 ? (
+                <Image
+                  source={{ uri: this.props.image }}
+                  style={style.postImage}
+                  PlaceholderContent={<BallIndicator color={COLOR_PRIMARY} />}
+                />
+              ) : (
+
+                  <Video
+                    ref={(ref) => {
+                      this.player = ref
+                    }}
+                    source={{ uri: this.props.image }}
+                    repeat={true}
+                    fullscreen={true}
+                    controls={false}
+                    playWhenInactive={true}
+                    style={style.postVideo}
+
+                  />
+                )}
+
             </View>
             <View
               style={{
