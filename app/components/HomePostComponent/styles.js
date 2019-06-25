@@ -69,7 +69,16 @@ postImageArea: {
     width:'100%',
     marginTop: 5,
     backgroundColor:COLOR_GRAY,
-    
+        
+},
+
+postVideoArea: {
+    width:'100%',
+    marginTop: 5,
+    //backgroundColor:COLOR_GRAY,
+    justifyContent:'center',
+    alignItems:'center', 
+    overflow: 'hidden'    
     
 },
 postImage: {
@@ -81,8 +90,8 @@ postImage: {
 postVideo: {
     width:'100%',
     height:225,
-    aspectRatio: 1,
-            
+    paddingHorizontal:10,
+    overflow: 'hidden',
     //backgroundColor:COLOR_GRAY
     // resizeMode:"center"
 },

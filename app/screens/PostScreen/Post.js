@@ -211,8 +211,9 @@ export default class Post extends Component {
                                     source={{ uri: this.state.image }}
                                     volume={10}
                                     repeat={true}
+                                    resizeMode="cover"
                                     fullscreen={true}                                   
-                                    controls={true}
+                                    controls={false}
                                     style={{
                                         position: 'absolute',
                                         top: 0,
