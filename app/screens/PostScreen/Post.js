@@ -5,7 +5,8 @@ import {
     View,
     TouchableOpacity,
     Image,
-    Linking
+    Linking,
+    StatusBar
 } from 'react-native';
 import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";
 import styles from "./style";
@@ -190,6 +191,7 @@ export default class Post extends Component {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
+                <StatusBar backgroundColor="#00063f" barStyle="light-content"/>
                 <HeaderImageScrollView
                     maxHeight={200}
                     minHeight={50}

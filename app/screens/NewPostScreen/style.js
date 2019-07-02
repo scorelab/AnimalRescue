@@ -50,7 +50,13 @@ export default StyleSheet.create({
         borderWidth: 0.8,
         borderStyle: 'dashed',
         width: '90%',
-        minHeight: deviceHeight * 0.45
+        height: deviceHeight * 0.45
+
+    },
+    videoContainer: {        
+        width: '90%',
+        minHeight: deviceHeight * 0.45,
+        overflow: 'hidden'
 
     },
     textStyle: {

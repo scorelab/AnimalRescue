@@ -10,6 +10,7 @@ import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_GRAY } from "../../config/styles"
 const { width, height } = Dimensions.get('window');
 import { f, auth, storage, database } from "../../config/firebaseConfig";
 import TouchableScale from "react-native-touchable-scale";
+import Video from 'react-native-video';
 class Profile extends React.Component {
 
     constructor() {
@@ -52,6 +53,7 @@ class Profile extends React.Component {
                 { id: 10, image: "https://bootdey.com/img/Content/avatar/avatar3.png" },
             ]
         }
+        this.video = Video;
 
     }
     requestCameraPermission = async () => {
@@ -105,7 +107,8 @@ class Profile extends React.Component {
                         image: postOBJ.image,
                         status: postOBJ.status,
                         posted: postOBJ.posted,
-                        id: postOBJ.id
+                        id: postOBJ.id,
+                        type: postOBJ.type
                     })
                 }
                 that.setState({
@@ -249,7 +252,7 @@ class Profile extends React.Component {
         }, function () {
             that.setState({
                 progress: 100
-            });            
+            });
             uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
                 database.ref('users').child(userId).update({ cover: downloadURL });
                 that.setState({
@@ -266,43 +269,60 @@ class Profile extends React.Component {
     }
 
 
-    renderSection = () => {        
+    renderSection = () => {
         if (this.state.active == 1) {
             this.state.postFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
             this.state.postFinal.reverse();
             return this.state.postFinal.map((data, index) => {
                 if (data.status == 0) {
                     return (
-                        <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id})}>
-                            <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 },{backgroundColor:COLOR_GRAY}]}>
-                                <ImageBackground source={{ uri: data.image }} style={styles.imageSquare}>
-                                    <View style={[styles.imageLabel,{backgroundColor:'red'}]}>
-                                        <Text style={styles.imageLabelText}>Active</Text>
-                                    </View>
-                                </ImageBackground>
+                        <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id })}>
+                            <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }, { backgroundColor: COLOR_GRAY }]}>
+                                {data.type == 0 ? (
+                                    <ImageBackground source={{ uri: data.image }} style={styles.imageSquare}>
+                                        {/* <View style={[styles.imageLabel, { backgroundColor: 'red' }]}>
+                                            <Text style={styles.imageLabelText}>Active</Text>
+                                        </View> */}
+                                    </ImageBackground>
+                                ) : (
+                                    <Video
+                                    ref={(ref) => {
+                                        this.player = ref
+                                    }}
+                                    source={{ uri: data.image }}
+                                    volume={10}
+                                    repeat={true}
+                                    resizeMode="cover"
+                                    // fullscreen={true}                                   
+                                    controls={false}
+                                    style={styles.imageSquare}
+                                     />
+                                        
+                                    )}
+
                             </View>
                         </TouchableScale>
                     )
                 } else if (data.status == 1) {
                     return (
-                        <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id})}>
+                        <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id })}>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
                                 <ImageBackground source={{ uri: data.image }} style={styles.imageSquare}>
-                                    <View style={[styles.imageLabel,{backgroundColor:'#4885ed'}]}>
+                                    {/* <View style={[styles.imageLabel, { backgroundColor: '#4885ed' }]}>
                                         <Text style={styles.imageLabelText}>Ongoing</Text>
-                                    </View>
+                                    </View> */}
                                 </ImageBackground>
                             </View>
                         </TouchableScale>
                     )
                 } else {
                     return (
-                        <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id})}>
+                        <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id })}>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
                                 <ImageBackground source={{ uri: data.image }} style={styles.imageSquare}>
-                                    <View style={[styles.imageLabel,{backgroundColor:'green'}]}>
+                                    {/* <View style={[styles.imageLabel, { backgroundColor: 'green' }]}>
                                         <Text style={styles.imageLabelText}>Finished</Text>
-                                    </View>
+                                    </View> */}
                                 </ImageBackground>
                             </View>
                         </TouchableScale>
@@ -367,14 +387,14 @@ class Profile extends React.Component {
                                     <Ionicons name={'check'} size={20} color={'#000'} />
                                     <Text> Save</Text>
                                 </TouchableScale >
-                                <TouchableScale style={styles.cancleCover} onPress={() => this.setState({newCoverPhoto:null})}>
+                                <TouchableScale style={styles.cancleCover} onPress={() => this.setState({ newCoverPhoto: null })}>
                                     <Ionicons name={'times'} size={20} color={'#000'} />
                                     <Text> Cancel</Text>
                                 </TouchableScale >
                             </View>
                         )}
 
-                    {this.state.newProfileImage == null  ? (
+                    {this.state.newProfileImage == null ? (
                         <Image style={styles.avatar} source={{ uri: this.state.profilePicture }} />
                     ) : (
                             <Image style={styles.avatar} source={{ uri: this.state.newProfileImage }} />
