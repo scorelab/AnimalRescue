@@ -13,6 +13,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 import ActionSheet from 'react-native-actionsheet'
 import { f, auth, storage, database } from "../../config/firebaseConfig";
 import Progress from "../../components/Progress/Progress"
+import Video from 'react-native-video';
 // Labels is optional
 const labels = ['Cat', 'Dog', 'Monkey'];
 const options = ['Cancel', 'Cat', 'Dog', 'Monkey', 'Bird', 'Fish', 'Pig', 'Cow', 'Goat'];
@@ -43,13 +44,14 @@ class NewPost extends React.Component {
             selectedIndex: 0
         }
         this.mapRef = null;
+        this.video = Video;
         this.updateIndex = this.updateIndex.bind(this)
 
     }
     updateIndex(selectedIndex) {
-        this.setState({ 
-            selectedIndex:selectedIndex,
-            photoError: true 
+        this.setState({
+            selectedIndex: selectedIndex,
+            photoError: true
         })
 
     }
@@ -99,6 +101,27 @@ class NewPost extends React.Component {
         } catch (err) {
             console.warn(err);
         }
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: 'Location Permission',
+                    message:
+                        'Animal Rescue App needs access to your Location ' +
+                        'so you can filter animals easily.',
+                    buttonNeutral: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log('You can use the camera');
+            } else {
+                console.log('Camera permission denied');
+            }
+        } catch (err) {
+            console.warn(err);
+        }
     }
 
     selectPhoto = () => {
@@ -110,7 +133,7 @@ class NewPost extends React.Component {
             } else {
                 this.setState({
                     pickedImage: res.uri,
-                    pickedVideo:null,
+                    pickedVideo: null,
                     photoError: false
                 });
             }
@@ -127,7 +150,7 @@ class NewPost extends React.Component {
             } else {
                 this.setState({
                     pickedVideo: res.uri,
-                    pickedImage:null,
+                    pickedImage: null,
                     photoError: false
                 });
             }
@@ -277,7 +300,7 @@ class NewPost extends React.Component {
                     console.log(error)
                 })
             })
-        }        
+        }
     }
 
     setDatabse = async (imageURL, latitude, longitude) => {
@@ -303,6 +326,7 @@ class NewPost extends React.Component {
             status: 0,
             id: postId,
             posted: posted,
+            type: this.state.selectedIndex
         }
 
         database.ref('/posts/' + postId).set(postObj);
@@ -315,6 +339,7 @@ class NewPost extends React.Component {
             selectedAnimal: '',
             photoError: true,
             pickedImage: null,
+            pickedVideo: null,
             postId: this.uniqueId()
         });
         this.props.navigation.navigate('Post', { id: postId })
@@ -368,9 +393,17 @@ class NewPost extends React.Component {
 
 
                                         : (
-                                            <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
-                                                <Image source={{ uri: this.state.pickedImage }} style={{ width: '100%', height: '100%' }} />
-                                            </TouchableOpacity>
+                                            this.state.selectedIndex == 0 ? (
+                                                <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
+                                                    <Image source={{ uri: this.state.pickedImage }} style={{ width: '100%', height: '100%' }} />
+                                                </TouchableOpacity>
+                                            ) : (
+                                                    <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
+                                                        <Image source={{ uri: this.state.pickedVideo }} style={{ width: '100%', height: '100%' }} />
+                                                    </TouchableOpacity>
+                                                )
+
+
 
                                         )}
 
@@ -378,7 +411,7 @@ class NewPost extends React.Component {
                             </ProgressStep>
 
                             <ProgressStep label="Location" onNext={() => this.checkLocation()} error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
-                                <Text>{this.state.longitude}</Text>
+                                
                                 <View style={styles.stepContainer}>
                                     <MapView
                                         style={styles.mapContainer}

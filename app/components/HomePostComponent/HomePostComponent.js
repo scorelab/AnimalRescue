@@ -45,15 +45,17 @@ export default class HomePostComponent extends Component {
             <Text style={style.postContentFont} numberOfLines={3} ellipsizeMode={'tail'}>
               {this.props.description}
             </Text>
-            <View style={style.postImageArea}>
-              {this.props.type == 0 ? (
+
+            {this.props.type == 0 ? (
+              <View style={style.postImageArea}>
                 <Image
                   source={{ uri: this.props.image }}
                   style={style.postImage}
                   PlaceholderContent={<BallIndicator color={COLOR_PRIMARY} />}
                 />
-              ) : (
-
+              </View>
+            ) : (
+                <View style={style.postVideoArea}>                  
                   <Video
                     ref={(ref) => {
                       this.player = ref
@@ -62,78 +64,79 @@ export default class HomePostComponent extends Component {
                     repeat={true}
                     fullscreen={true}
                     controls={false}
-                    playWhenInactive={true}
+                    resizeMode='cover'
+                    playWhenInactive={false}
                     style={style.postVideo}
 
                   />
-                )}
-
-            </View>
-            <View
-              style={{
-                borderBottomColor: { COLOR_PRIMARY },
-                borderBottomWidth: 1
-              }}
-            />
-          </TouchableScale>
-          <View style={style.likeCommentDisplayArea}>
-            {this.props.numberOfLikes >= 1 ? (
-              <View style={style.row}>
-                <Icon name="heart" size={14} color={'#a83f39'} />
-                <Text style={style.fontColorLove}> {this.props.numberOfLikes}</Text>
-              </View>
-            ) : (
-                <View style={style.row}>
-
                 </View>
               )}
-
-            {this.props.numberOfComments > 0 ? (
-              <Text style={style.fontColor}>{this.props.numberOfComments} comment{this.plural(this.props.numberOfComments)}</Text>
-            ) : (
-                <Text style={style.fontColor}></Text>
-              )}
-
-          </View>
+            
           <View
             style={{
               borderBottomColor: { COLOR_PRIMARY },
-              borderBottomWidth: 0.5
+              borderBottomWidth: 1
             }}
           />
-
-          <View style={style.row}>
-            <View
-              style={style.likeCommentArea}
-            >
-
-              {this.props.liked == false ? (
-                <TouchableOpacity style={style.row} onPress={this.props.like}>
-                  <Icon name="heart" size={18} />
-                  <Text style={{ fontSize: 18 }}> Like</Text>
-                </TouchableOpacity>
-              ) : (
-                  <TouchableOpacity style={style.row} onPress={this.props.like}>
-                    <Icon name="heart" size={18} color={'#a83f39'} />
-                    <Text style={{ fontSize: 18, color: '#a83f39' }}> Love</Text>
-                  </TouchableOpacity>
-                )}
-
-
+          </TouchableScale>
+        <View style={style.likeCommentDisplayArea}>
+          {this.props.numberOfLikes >= 1 ? (
+            <View style={style.row}>
+              <Icon name="heart" size={14} color={'#a83f39'} />
+              <Text style={style.fontColorLove}> {this.props.numberOfLikes}</Text>
             </View>
+          ) : (
+              <View style={style.row}>
 
-            <View
-              style={style.likeCommentArea}
-            >
-              <TouchableOpacity style={style.row} onPress={this.props.comment}>
-                <Icon name="comment" size={18} />
-                <Text style={{ fontSize: 18 }}> Comment</Text>
+              </View>
+            )}
+
+          {this.props.numberOfComments > 0 ? (
+            <Text style={style.fontColor}>{this.props.numberOfComments} comment{this.plural(this.props.numberOfComments)}</Text>
+          ) : (
+              <Text style={style.fontColor}></Text>
+            )}
+
+        </View>
+        <View
+          style={{
+            borderBottomColor: { COLOR_PRIMARY },
+            borderBottomWidth: 0.5
+          }}
+        />
+
+        <View style={style.row}>
+          <View
+            style={style.likeCommentArea}
+          >
+
+            {this.props.liked == false ? (
+              <TouchableOpacity style={style.row} onPress={this.props.like}>
+                <Icon name="heart" size={18} />
+                <Text style={{ fontSize: 18 }}> Like</Text>
               </TouchableOpacity>
-            </View>
+            ) : (
+                <TouchableOpacity style={style.row} onPress={this.props.like}>
+                  <Icon name="heart" size={18} color={'#a83f39'} />
+                  <Text style={{ fontSize: 18, color: '#a83f39' }}> Love</Text>
+                </TouchableOpacity>
+              )}
+
+
+          </View>
+
+          <View
+            style={style.likeCommentArea}
+          >
+            <TouchableOpacity style={style.row} onPress={this.props.comment}>
+              <Icon name="comment" size={18} />
+              <Text style={{ fontSize: 18 }}> Comment</Text>
+            </TouchableOpacity>
           </View>
         </View>
-
       </View>
+
+      </View >
 
     );
   }
