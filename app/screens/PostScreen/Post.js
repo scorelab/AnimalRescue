@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     Image,
     Linking,
-    StatusBar
+    StatusBar,
+    Alert
 } from 'react-native';
 import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";
 import styles from "./style";
@@ -187,6 +188,20 @@ export default class Post extends Component {
             database.ref("posts/"+postID + '/likes/' + userId).remove();
         }
     }
+
+    handlePost = (id) =>{
+        var userId = f.auth().currentUser.uid;
+
+    }
+
+    deletePost = (id) => {
+        database.ref("posts/" + id).remove();
+        database.ref("comments/" + id).remove();
+        database.ref("users/post/" + id).remove();
+        this.props.navigation.goBack();
+
+    }
+
     render() {
         const { navigate } = this.props.navigation;
         return (
@@ -390,13 +405,41 @@ export default class Post extends Component {
                     </View> */}
                     <View style={styles.separator}></View>
                     <View style={styles.addToCarContainer}>
-                        {this.state.userId != this.state.authorId ? (
-                            <TouchableOpacity style={styles.shareButton} onPress={() => this.clickEventListener()}>
-                                <Text style={styles.shareButtonText}>I Will Handle</Text>
+                        {this.state.userId == this.state.authorId ? (
+                            <TouchableOpacity style={styles.shareButton} onPress={() =>
+                                Alert.alert(
+                                    'Delete Post',
+                                    'Are you sure you want to Delete This post',
+                                    [                                          
+                                      {
+                                        text: 'Cancel',
+                                        onPress: () => console.log("Canceled"),
+                                        style: 'cancel',
+                                      },
+                                      {text: 'OK', onPress: () => this.deletePost(this.state.id)},
+                                    ],
+                                    {cancelable: false},
+                                  )
+                            }>
+                                <Text style={styles.shareButtonText}>Delete</Text>
                             </TouchableOpacity>
                         ) : (
-                                <TouchableOpacity style={styles.shareButton} onPress={() => this.clickEventListener()}>
-                                    <Text style={styles.shareButtonText}>Edit</Text>
+                                <TouchableOpacity style={styles.shareButton} onPress={() => 
+                                    Alert.alert(
+                                        'Confirming the Handling',
+                                        'Are you sure you want to handle this',
+                                        [                                          
+                                          {
+                                            text: 'Cancel',
+                                            onPress: () => console.log("canceled"),
+                                            style: 'cancel',
+                                          },
+                                          {text: 'OK', onPress: () => this.handlePost(this.state.id)},
+                                        ],
+                                        {cancelable: false},
+                                      )
+                                }>
+                                    <Text style={styles.shareButtonText}>I will Handle</Text>
                                 </TouchableOpacity>
                             )}
 
