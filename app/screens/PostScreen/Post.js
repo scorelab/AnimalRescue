@@ -195,9 +195,10 @@ export default class Post extends Component {
     }
 
     deletePost = (id) => {
+        var userId = f.auth().currentUser.uid;
         database.ref("posts/" + id).remove();
         database.ref("comments/" + id).remove();
-        database.ref("users/post/" + id).remove();
+        database.ref("users/"+userId+"/post/" + id).remove();
         this.props.navigation.goBack();
 
     }
