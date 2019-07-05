@@ -188,9 +188,27 @@ export default class Post extends Component {
             database.ref("posts/"+postID + '/likes/' + userId).remove();
         }
     }
+    s4 = () => {
+        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    }
 
+    uniqueId = () => {
+        return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4();
+    }
     handlePost = (id) =>{
         var userId = f.auth().currentUser.uid;
+        var ownerId = this.state.userId;
+        var date = Date.now();        
+        var posted = Math.floor(date / 1000)
+        var handleId = this.uniqueId();
+        const accept = {
+            handlerId: userId,
+            posted: posted,
+            image: this.state.image
+        }
+        database.ref('/posts/'+id+'/handle').set(accept);
+        // database.ref('/posts/'+id+'/handle').update({status:1});
+        // database.ref('/posts/'+id+'/handle').update({status:1});
 
     }
 
