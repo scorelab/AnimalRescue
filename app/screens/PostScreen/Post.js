@@ -214,9 +214,9 @@ export default class Post extends Component {
             status: 1,
             id: id
         }
-        database.ref('/posts/' + id + '/handle').set(accept);
         database.ref('/posts/' + id).update({ status: 1 });
         database.ref('users/' + ownerId + '/post/' + id).update({ status: 1 });
+        database.ref('/ongoing/' + id ).set(accept);        
         database.ref('users/' + userId + '/handle/' + id).set(mentor);
 
     }
