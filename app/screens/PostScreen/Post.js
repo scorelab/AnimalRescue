@@ -33,8 +33,8 @@ export default class Post extends Component {
             loaded: false,
             id: null,
             authorId: f.auth().currentUser.uid,
-            control: false       
-        }        
+            control: false
+        }
         this.video = Video;
         this.mapRef = null;
     }
@@ -59,10 +59,10 @@ export default class Post extends Component {
                             that.setState({
                                 liked: true
                             })
-                            count +=1;
+                            count += 1;
                         }
                     }
-                    if(count==0){
+                    if (count == 0) {
                         that.setState({
                             liked: false
                         })
@@ -85,7 +85,8 @@ export default class Post extends Component {
                         userId: data.userId,
                         id: data.id,
                         posted: data.posted,
-                        type: data.type
+                        type: data.type,
+                        status: data.status
 
                     })
                     //that.mapView.animateToRegion(region, 1000);
@@ -182,10 +183,10 @@ export default class Post extends Component {
                 userId: userId,
                 status: 1
             }
-            database.ref("posts/"+postID + '/likes/' + userId).set(likeObj);
+            database.ref("posts/" + postID + '/likes/' + userId).set(likeObj);
         } else {
             var userId = f.auth().currentUser.uid;
-            database.ref("posts/"+postID + '/likes/' + userId).remove();
+            database.ref("posts/" + postID + '/likes/' + userId).remove();
         }
     }
     s4 = () => {
@@ -195,20 +196,28 @@ export default class Post extends Component {
     uniqueId = () => {
         return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4();
     }
-    handlePost = (id) =>{
+    handlePost = (id) => {
         var userId = f.auth().currentUser.uid;
         var ownerId = this.state.userId;
-        var date = Date.now();        
+        var date = Date.now();
         var posted = Math.floor(date / 1000)
         var handleId = this.uniqueId();
         const accept = {
             handlerId: userId,
             posted: posted,
-            image: this.state.image
+            image: this.state.image,
+            status: 1
         }
-        database.ref('/posts/'+id+'/handle').set(accept);
-        // database.ref('/posts/'+id+'/handle').update({status:1});
-        // database.ref('/posts/'+id+'/handle').update({status:1});
+        var mentor = {
+            posted: posted,
+            image: this.state.image,
+            status: 1,
+            id: id
+        }
+        database.ref('/posts/' + id + '/handle').set(accept);
+        database.ref('/posts/' + id).update({ status: 1 });
+        database.ref('users/' + ownerId + '/post/' + id).update({ status: 1 });
+        database.ref('users/' + userId + '/handle/' + id).set(mentor);
 
     }
 
@@ -216,7 +225,7 @@ export default class Post extends Component {
         var userId = f.auth().currentUser.uid;
         database.ref("posts/" + id).remove();
         database.ref("comments/" + id).remove();
-        database.ref("users/"+userId+"/post/" + id).remove();
+        database.ref("users/" + userId + "/post/" + id).remove();
         this.props.navigation.goBack();
 
     }
@@ -225,7 +234,7 @@ export default class Post extends Component {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
-                <StatusBar backgroundColor="#00063f" barStyle="light-content"/>
+                <StatusBar backgroundColor="#00063f" barStyle="light-content" />
                 <HeaderImageScrollView
                     maxHeight={200}
                     minHeight={50}
@@ -248,7 +257,7 @@ export default class Post extends Component {
                                     volume={10}
                                     repeat={true}
                                     resizeMode="cover"
-                                    fullscreen={true}                                   
+                                    fullscreen={true}
                                     controls={false}
                                     style={{
                                         position: 'absolute',
@@ -318,7 +327,7 @@ export default class Post extends Component {
                             zoomControlEnabled={true}
                             showsMyLocationButton={true}
                             scrollEnabled={false}
-                            // ref={ref => { this.mapView = ref }}
+                        // ref={ref => { this.mapView = ref }}
                         >
 
                             {this.state.latitude != null && this.state.latitude != null ? (
@@ -381,11 +390,11 @@ export default class Post extends Component {
                         >
 
                             {this.state.liked == false ? (
-                                <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={()=>this.setLike(this.state.id)} >
+                                <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={() => this.setLike(this.state.id)} >
                                     <Icon name="thumbs-up" size={24} />
                                 </TouchableOpacity>
                             ) : (
-                                    <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={()=>this.setLike(this.state.id)}>
+                                    <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={() => this.setLike(this.state.id)}>
                                         <Icon name="thumbs-up" size={24} color={COLOR_PRIMARY} />
                                     </TouchableOpacity>
                                 )}
@@ -429,37 +438,42 @@ export default class Post extends Component {
                                 Alert.alert(
                                     'Delete Post',
                                     'Are you sure you want to Delete This post',
-                                    [                                          
-                                      {
-                                        text: 'Cancel',
-                                        onPress: () => console.log("Canceled"),
-                                        style: 'cancel',
-                                      },
-                                      {text: 'OK', onPress: () => this.deletePost(this.state.id)},
+                                    [
+                                        {
+                                            text: 'Cancel',
+                                            onPress: () => console.log("Canceled"),
+                                            style: 'cancel',
+                                        },
+                                        { text: 'OK', onPress: () => this.deletePost(this.state.id) },
                                     ],
-                                    {cancelable: false},
-                                  )
+                                    { cancelable: false },
+                                )
                             }>
                                 <Text style={styles.shareButtonText}>Delete</Text>
                             </TouchableOpacity>
                         ) : (
-                                <TouchableOpacity style={styles.shareButton} onPress={() => 
-                                    Alert.alert(
-                                        'Confirming the Handling',
-                                        'Are you sure you want to handle this',
-                                        [                                          
-                                          {
-                                            text: 'Cancel',
-                                            onPress: () => console.log("canceled"),
-                                            style: 'cancel',
-                                          },
-                                          {text: 'OK', onPress: () => this.handlePost(this.state.id)},
-                                        ],
-                                        {cancelable: false},
-                                      )
-                                }>
-                                    <Text style={styles.shareButtonText}>I will Handle</Text>
-                                </TouchableOpacity>
+                                this.state.status == 0 ? (
+                                    <TouchableOpacity style={styles.shareButton} onPress={() =>
+                                        Alert.alert(
+                                            'Confirming the Handling',
+                                            'Are you sure you want to handle this',
+                                            [
+                                                {
+                                                    text: 'Cancel',
+                                                    onPress: () => console.log("canceled"),
+                                                    style: 'cancel',
+                                                },
+                                                { text: 'OK', onPress: () => this.handlePost(this.state.id) },
+                                            ],
+                                            { cancelable: false },
+                                        )
+                                    }>
+                                        <Text style={styles.shareButtonText}>I will Handle</Text>
+                                    </TouchableOpacity>
+                                ):(
+                                    <View></View>
+                                )
+                                
                             )}
 
                     </View>
