@@ -129,6 +129,9 @@ export default class Home extends Component {
                             }
                             // console.log(activePostArray);
                             that.setState({
+                                activePostFinal:[],
+                                pendingPostFinal:[],
+                                finishedPostFinal:[],
                                 activePostFinal: activePostArray,
                                 pendingPostFinal: pendingPostArray,
                                 finishedPostFinal: finishedPostArray,
