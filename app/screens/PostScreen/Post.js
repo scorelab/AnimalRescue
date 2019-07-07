@@ -89,6 +89,39 @@ export default class Post extends Component {
                         status: data.status
 
                     })
+
+                    if (data.status == 1) {
+                        database.ref('ongoing').child(params.id).child('handlerId').once('value').then(function (snapshot) {
+                            const exist = (snapshot.val() != null);
+                            if (exist) {
+                                hData = snapshot.val();
+                                database.ref('users').child(hData).once('value').then(function (snapshot) {
+                                    const exsists = (snapshot.val() != null);
+                                    if (exsists) {
+                                        var data = snapshot.val();
+                                        that.setState({
+                                            handlerAvatar: data.dp,
+                                            handlerName: data.first_name + " " + data.last_name,
+
+                                        })
+                                    }
+
+                                })
+                                that.setState({
+                                    handlerId: hData,
+                                });
+                            }
+                        }).catch((error) => console.log(error))
+                        database.ref('ongoing').child(params.id).child('posted').once('value').then(function (snapshot) {
+                            const exist = (snapshot.val() != null);
+                            if (exist) {
+                                hData = snapshot.val();
+                                that.setState({
+                                    handlerPosted: hData,
+                                });
+                            }
+                        }).catch((error) => console.log(error))
+                    }
                     //that.mapView.animateToRegion(region, 1000);
                     var postArray = that.state.post
                     database.ref('users').child(data.userId).once('value').then(function (snapshot) {
@@ -216,7 +249,7 @@ export default class Post extends Component {
         }
         database.ref('/posts/' + id).update({ status: 1 });
         database.ref('users/' + ownerId + '/post/' + id).update({ status: 1 });
-        database.ref('/ongoing/' + id ).set(accept);        
+        database.ref('/ongoing/' + id).set(accept);
         database.ref('users/' + userId + '/handle/' + id).set(mentor);
 
     }
@@ -470,10 +503,21 @@ export default class Post extends Component {
                                     }>
                                         <Text style={styles.shareButtonText}>I will Handle</Text>
                                     </TouchableOpacity>
-                                ):(
-                                    <View></View>
-                                )
-                                
+                                ) : (
+                                        <View style={styles.profile}>
+                                            <Text style={{fontSize:18 , marginHorizontal:10}}>Rescuer</Text>
+                                            <Image style={styles.avatar}
+                                                source={{ uri: this.state.handlerAvatar }} />
+
+                                            <Text style={styles.profileName}>
+                                                {this.state.handlerName}
+                                            </Text>
+                                            <Text style={{ marginLeft: 20 }}>                                                 
+                                                Started to work on  {this.timeConvertor(this.state.handlerPosted)}
+                                            </Text>
+                                        </View>
+                                    )
+
                             )}
 
                     </View>
