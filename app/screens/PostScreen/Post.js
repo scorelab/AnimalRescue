@@ -437,11 +437,11 @@ export default class Post extends Component {
 
                             {this.state.liked == false ? (
                                 <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={() => this.setLike(this.state.id)} >
-                                    <Icon name="thumbs-up" size={24} />
+                                    <Icon name="heart" size={24} />
                                 </TouchableOpacity>
                             ) : (
                                     <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={() => this.setLike(this.state.id)}>
-                                        <Icon name="thumbs-up" size={24} color={COLOR_PRIMARY} />
+                                        <Icon name="heart" size={24} color={'#a83f39'} />
                                     </TouchableOpacity>
                                 )}
 
