@@ -33,7 +33,8 @@ export default class Post extends Component {
             loaded: false,
             id: null,
             authorId: f.auth().currentUser.uid,
-            control: false
+            control: false,
+            proof: false
         }
         this.video = Video;
         this.mapRef = null;
@@ -102,6 +103,7 @@ export default class Post extends Component {
                                         that.setState({
                                             handlerAvatar: data.dp,
                                             handlerName: data.first_name + " " + data.last_name,
+                                            handlerId: data.uid
 
                                         })
                                     }
@@ -263,12 +265,23 @@ export default class Post extends Component {
 
     }
 
+    submitProof = () => {
+        this.setState({
+            proof: true
+        })
+    }
     render() {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
                 <StatusBar backgroundColor="#00063f" barStyle="light-content" />
                 <HeaderImageScrollView
+                    ref={ref => this.scrollView = ref}
+                    onContentSizeChange={(contentWidth, contentHeight) => {
+                        if (this.state.proof == true) {
+                            this.scrollView.scrollToEnd({ animated: true });
+                        }
+                    }}
                     maxHeight={200}
                     minHeight={50}
                     // headerImage={{ uri: this.state.image }}
@@ -505,19 +518,35 @@ export default class Post extends Component {
                                     </TouchableOpacity>
                                 ) : (
                                         <View style={styles.profile}>
-                                            <Text style={{fontSize:18 , marginHorizontal:10}}>Rescuer</Text>
+                                            <Text style={{ fontSize: 18, marginHorizontal: 10 }}>Rescuer</Text>
                                             <Image style={styles.avatar}
                                                 source={{ uri: this.state.handlerAvatar }} />
 
                                             <Text style={styles.profileName}>
                                                 {this.state.handlerName}
                                             </Text>
-                                            <Text style={{ marginLeft: 20 }}>                                                 
+                                            <Text style={{ marginLeft: 20 }}>
                                                 Started to work on  {this.timeConvertor(this.state.handlerPosted)}
                                             </Text>
+
+                                            {f.auth().currentUser.uid == this.state.handlerId ? (
+                                                <TouchableOpacity style={styles.shareButton} onPress={() => this.submitProof()}>
+                                                    <Text style={styles.shareButtonText}>    Submit Proof    </Text>
+                                                </TouchableOpacity>
+
+                                            ) : (
+                                                    <View></View>
+                                                )}
                                         </View>
                                     )
 
+                            )}
+                        {this.state.proof == true ? (
+                            <View>
+                                <Text>View Goes Here...</Text>
+                            </View>
+                        ) : (
+                                <View></View>
                             )}
 
                     </View>
