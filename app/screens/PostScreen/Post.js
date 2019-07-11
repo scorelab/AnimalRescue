@@ -7,7 +7,9 @@ import {
     Image,
     Linking,
     StatusBar,
-    Alert
+    Alert,
+    KeyboardAvoidingView,
+    TextInput
 } from 'react-native';
 import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";
 import styles from "./style";
@@ -19,6 +21,7 @@ import TouchableScale from "react-native-touchable-scale";
 import { f, auth, storage, database } from "../../config/firebaseConfig";
 import { COLOR_PRIMARY } from '../../config/styles';
 import Video from 'react-native-video';
+import ImagePicker from "react-native-image-picker";
 export default class Post extends Component {
 
     constructor(props) {
@@ -34,7 +37,9 @@ export default class Post extends Component {
             id: null,
             authorId: f.auth().currentUser.uid,
             control: false,
-            proof: false
+            proof: false,
+            pickedImage: null,
+            proofDescription: ''
         }
         this.video = Video;
         this.mapRef = null;
@@ -270,6 +275,20 @@ export default class Post extends Component {
             proof: true
         })
     }
+    selectPhoto = () => {
+        ImagePicker.showImagePicker({ title: "Pick an Image", maxWidth: 800, maxHeight: 600, mediaType: 'photo' }, res => {
+            if (res.didCancel) {
+                console.log("User cancelled!");
+            } else if (res.error) {
+                console.log("Error", res.error);
+            } else {
+                this.setState({
+                    pickedImage: res.uri,
+                });
+            }
+        });
+
+    };
     render() {
         const { navigate } = this.props.navigation;
         return (
@@ -529,7 +548,7 @@ export default class Post extends Component {
                                                 Started to work on  {this.timeConvertor(this.state.handlerPosted)}
                                             </Text>
 
-                                            {f.auth().currentUser.uid == this.state.handlerId ? (
+                                            {f.auth().currentUser.uid == this.state.handlerId && this.state.proof == false ? (
                                                 <TouchableOpacity style={styles.shareButton} onPress={() => this.submitProof()}>
                                                     <Text style={styles.shareButtonText}>    Submit Proof    </Text>
                                                 </TouchableOpacity>
@@ -542,8 +561,39 @@ export default class Post extends Component {
 
                             )}
                         {this.state.proof == true ? (
-                            <View>
-                                <Text>View Goes Here...</Text>
+                            <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 5 }}>
+                                <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
+                                    <Text>Select an Image</Text>
+                                </TouchableOpacity>
+                                <KeyboardAvoidingView behavior="padding" enabled={true}>
+                                    {this.state.proofDescription.length.toString() <= 50 ? (
+                                        <TextInput
+                                            style={[styles.descriptiontStyle, { fontSize: 28 }]}
+                                            placeholder={'Enter Description Here'}
+                                            editable={true}
+                                            multiline={true}
+                                            numberOfLines={5}
+                                            maxlength={750}
+                                            value={this.state.proofDescription}
+                                            onChangeText={(text) => this.setState({ proofDescription: text })}
+                                        />
+                                    ) : (
+                                            <TextInput
+                                                style={[styles.descriptiontStyle, { fontSize: 18 }]}
+                                                editable={true}
+                                                multiline={true}
+                                                numberOfLines={5}
+                                                maxlength={750}
+                                                value={this.state.proofDescription}
+                                                onChangeText={(text) => this.setState({ proofDescription: text })}
+                                            />
+                                        )}
+
+
+                                </KeyboardAvoidingView>
+                                <TouchableOpacity style={styles.shareButton} onPress={() => this.submitProof()}>
+                                    <Text style={styles.shareButtonText}>     Submit Proof     </Text>
+                                </TouchableOpacity>
                             </View>
                         ) : (
                                 <View></View>
