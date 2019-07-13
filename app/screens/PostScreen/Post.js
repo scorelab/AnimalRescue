@@ -39,7 +39,9 @@ export default class Post extends Component {
             control: false,
             proof: false,
             pickedImage: null,
-            proofDescription: ''
+            proofDescription: '',
+            progress: 0,
+            uploading: false
         }
         this.video = Video;
         this.mapRef = null;
@@ -236,6 +238,55 @@ export default class Post extends Component {
     uniqueId = () => {
         return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4();
     }
+
+    uploadImage = async () => {
+        var uri = this.state.pickedImage
+        var that = this;
+        var postId = this.state.id;
+        var re = /(?:\.([^.]+))?$/;
+        var ext = re.exec(uri)[1];
+        this.setState({
+            currentFileType: ext,
+            uploading: true
+        });
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                resolve(xhr.response);
+            };
+            xhr.onerror = function (e) {
+                console.log(e);
+                reject(new TypeError('Network request failed'));
+            };
+            xhr.responseType = 'blob';
+            xhr.open('GET', uri, true);
+            xhr.send(null);
+        });
+        var filePath = postId + '.' + that.state.currentFileType;
+
+        var uploadTask = storage.ref('posts/images/' + this.state.animal).child(filePath).put(blob);
+
+        uploadTask.on('state_changed', function (snapshot) {
+            let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
+            that.setState({
+                progress: progress
+            });
+        }, function (error) {
+            console.log(error);
+
+        }, function () {
+            that.setState({
+                progress: 100
+            });
+            // alert("done");
+            uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                that.submitProofDatabase(downloadURL);
+                console.log(downloadURL);
+            }, function (error) {
+                console.log(error)
+            })
+        })
+    }
     handlePost = (id) => {
         var userId = f.auth().currentUser.uid;
         var ownerId = this.state.userId;
@@ -246,11 +297,13 @@ export default class Post extends Component {
             handlerId: userId,
             posted: posted,
             image: this.state.image,
+            description: this.state.proofDescription,
             status: 1
         }
         var mentor = {
             posted: posted,
             image: this.state.image,
+            description: this.state.proofDescription,
             status: 1,
             id: id
         }
@@ -289,6 +342,35 @@ export default class Post extends Component {
         });
 
     };
+
+    submitProofDatabase = (image) => {
+        var id = this.state.id;
+        var userId = f.auth().currentUser.uid;
+        var ownerId = this.state.userId;
+        var date = Date.now();
+        var posted = Math.floor(date / 1000);
+        const done = {
+            handlerId: userId,
+            posted: posted,
+            image: image,
+            status: 2
+        }
+        var finished = {
+            posted: posted,
+            image: image,
+            status: 2,
+            id: id
+        }
+        database.ref('/posts/' + id).update({ status: 2 });
+        database.ref('users/' + ownerId + '/post/' + id).update({ status: 2 });
+        database.ref('users/' + userId + '/handle/' + id).remove();
+        database.ref('/ongoing/' + id).remove();
+        database.ref('/finshed/' + id).set(done);
+        database.ref('users/' + userId + '/finished/' + id).set(finished);
+        this.setState({
+            uploading: false
+        })
+    }
     render() {
         const { navigate } = this.props.navigation;
         return (
@@ -562,9 +644,16 @@ export default class Post extends Component {
                             )}
                         {this.state.proof == true ? (
                             <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 5 }}>
-                                <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
-                                    <Text>Select an Image</Text>
-                                </TouchableOpacity>
+                                {this.state.pickedImage == null ? (
+                                    <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
+                                        <Text>Select an Image</Text>
+                                    </TouchableOpacity>
+                                ) : (
+                                        <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
+                                            <Image source={{ uri: this.state.pickedImage }} style={{ width: '100%', height: '100%' }} />
+                                        </TouchableOpacity>
+                                    )}
+
                                 <KeyboardAvoidingView behavior="padding" enabled={true}>
                                     {this.state.proofDescription.length.toString() <= 50 ? (
                                         <TextInput
@@ -591,7 +680,7 @@ export default class Post extends Component {
 
 
                                 </KeyboardAvoidingView>
-                                <TouchableOpacity style={styles.shareButton} onPress={() => this.submitProof()}>
+                                <TouchableOpacity style={styles.shareButton} onPress={() => this.uploadImage()}>
                                     <Text style={styles.shareButtonText}>     Submit Proof     </Text>
                                 </TouchableOpacity>
                             </View>
