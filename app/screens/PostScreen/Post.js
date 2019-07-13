@@ -9,7 +9,8 @@ import {
     StatusBar,
     Alert,
     KeyboardAvoidingView,
-    TextInput
+    TextInput,
+    ProgressBarAndroid
 } from 'react-native';
 import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";
 import styles from "./style";
@@ -373,302 +374,308 @@ export default class Post extends Component {
     }
     render() {
         const { navigate } = this.props.navigation;
-        return (
-            <View style={styles.container}>
-                <StatusBar backgroundColor="#00063f" barStyle="light-content" />
-                <HeaderImageScrollView
-                    ref={ref => this.scrollView = ref}
-                    onContentSizeChange={(contentWidth, contentHeight) => {
-                        if (this.state.proof == true) {
-                            this.scrollView.scrollToEnd({ animated: true });
-                        }
-                    }}
-                    maxHeight={200}
-                    minHeight={50}
-                    // headerImage={{ uri: this.state.image }}
-                    fadeOutForeground
-                    style={{ marginBottom: 10 }}
-                    renderHeader={() => {
-                        if (this.state.type == 0) {
-                            return (
-                                <Image source={{ uri: this.state.image }} style={styles.image} />
-                            )
-                        } else {
-                            return (
-                                // <View style={{alignItems:'center', justifyContent:'center', width:'100%', backgroundColor:COLOR_GRAY}}>
-                                <Video
-                                    ref={(ref) => {
-                                        this.player = ref
-                                    }}
-                                    source={{ uri: this.state.image }}
-                                    volume={10}
-                                    repeat={true}
-                                    resizeMode="cover"
-                                    fullscreen={true}
-                                    controls={false}
-                                    style={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        bottom: 0,
-                                        right: 0,
-                                        width: '100%',
-                                        alignSelf: 'center'
-                                    }} />
-                                // </View>
 
-
-                            )
-
-                        }
-
-                    }
-                    }
-
-                    renderFixedForeground={() => (
-                        <Animatable.View
-                            style={{ height: 'auto', width: "100%" }}
-                            ref={navTitleView => {
-                                this.navTitleView = navTitleView;
-                            }}
-                        >
-                            {this.state.showNavTitle == true ? (
-                                <ModalHeader title="Post" onPress={() => this.props.navigation.goBack()} />
-                            ) : (
-                                    <TouchableOpacity>
-
-                                    </TouchableOpacity>
-                                )}
-
-                        </Animatable.View>
-                    )}
-                >
-
-                    <TriggeringView
-                        onHide={() => this.navBar()}
-                        onDisplay={() => this.navTitleView.fadeOut(200)}
-                    >
-                    </TriggeringView>
-                    <View style={styles.topView}>
-                        <View style={styles.informationArea}>
-                            <Text style={styles.name}>{this.state.animal}</Text>
-                            <Text style={styles.description}>
-                                {this.state.description}
-                            </Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.topView}>
-
-                        <MapView
-                            style={styles.mapContainer}
-                            provider={PROVIDER_GOOGLE}
-                            initialRegion={{
-                                latitude: this.state.latitude,
-                                longitude: this.state.longitude,
-                                latitudeDelta: 0.00922 * 1.5,
-                                longitudeDelta: 0.00421 * 1.5,
-                            }}
-                            showsUserLocation={true}
-                            loadingEnabled={true}
-                            zoomControlEnabled={true}
-                            showsMyLocationButton={true}
-                            scrollEnabled={false}
-                        // ref={ref => { this.mapView = ref }}
-                        >
-
-                            {this.state.latitude != null && this.state.latitude != null ? (
-                                <Marker
-                                    coordinate={{
-                                        latitude: this.state.latitude,
-                                        longitude: this.state.longitude,
-                                        latitudeDelta: 0.00922 * 1.5,
-                                        longitudeDelta: 0.00421 * 1.5,
-                                    }}
-                                    title={"Here is the Animal"}
-
-                                />
-
-                            ) : (
-                                    <View></View>
-                                )}
-
-                        </MapView>
-
-
-
-                        <TouchableScale onPress={() => this.openMap()}
-                            style={{
-                                position: 'absolute',//use absolute position to show button on top of the map
-                                top: '70%', //for center align
-                                right: 5,
-                                alignSelf: 'flex-end', //for align to right                                                               
-                                width: 'auto',
-                                borderRadius: 15,
-                                paddingHorizontal: 10,
-                                paddingVertical: 10,
-                                backgroundColor: '#192f6a',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexDirection: 'row'
-                            }}
-                        >
-                            <Icon name="compass" size={24} color={'#fff'} style={{ alignSelf: 'center' }} />
-                            <Text style={{ color: '#fff', fontSize: 14, marginLeft: 2 }}> Get Direction</Text>
-                        </TouchableScale>
-
-
-                    </View>
-
-                    <View style={styles.profile}>
-                        <Image style={styles.avatar}
-                            source={{ uri: this.state.avatar }} />
-
-                        <Text style={styles.profileName}>
-                            {this.state.name}
-                        </Text>
-                        <Text style={{ marginLeft: 20 }}>
-                            {this.timeConvertor(this.state.posted)}
-                        </Text>
-                    </View>
-                    <View style={styles.row}>
-                        <View
-                            style={styles.likeCommentArea}
-                        >
-
-                            {this.state.liked == false ? (
-                                <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={() => this.setLike(this.state.id)} >
-                                    <Icon name="heart" size={24} />
-                                </TouchableOpacity>
-                            ) : (
-                                    <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={() => this.setLike(this.state.id)}>
-                                        <Icon name="heart" size={24} color={'#a83f39'} />
-                                    </TouchableOpacity>
-                                )}
-
-
-                        </View>
-
-                        <View
-                            style={styles.likeCommentArea}
-                        >
-                            <TouchableOpacity style={[styles.row, { alignItems: 'flex-start' }]} onPress={() => navigate('Comment', { id: this.state.id })}>
-                                <Icon name="comment" size={24} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    {/* <View style={styles.starContainer}>
-                        <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
-                        <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
-                        <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
-                        <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
-                        <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
-                    </View>
-                    <View style={styles.contentColors}>
-                        <TouchableOpacity style={[styles.btnColor, { backgroundColor: "#00BFFF" }]}></TouchableOpacity>
-                        <TouchableOpacity style={[styles.btnColor, { backgroundColor: "#FF1493" }]}></TouchableOpacity>
-                        <TouchableOpacity style={[styles.btnColor, { backgroundColor: "#00CED1" }]}></TouchableOpacity>
-                        <TouchableOpacity style={[styles.btnColor, { backgroundColor: "#228B22" }]}></TouchableOpacity>
-                        <TouchableOpacity style={[styles.btnColor, { backgroundColor: "#20B2AA" }]}></TouchableOpacity>
-                        <TouchableOpacity style={[styles.btnColor, { backgroundColor: "#FF4500" }]}></TouchableOpacity>
-                    </View>
-                    <View style={styles.contentSize}>
-                        <TouchableOpacity style={styles.btnSize}><Text>S</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.btnSize}><Text>M</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.btnSize}><Text>L</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.btnSize}><Text>XL</Text></TouchableOpacity>
-                    </View> */}
-                    <View style={styles.separator}></View>
-                    <View style={styles.addToCarContainer}>
-                        {this.state.userId == this.state.authorId ? (
-                            <TouchableOpacity style={styles.shareButton} onPress={() =>
-                                Alert.alert(
-                                    'Delete Post',
-                                    'Are you sure you want to Delete This post',
-                                    [
-                                        {
-                                            text: 'Cancel',
-                                            onPress: () => console.log("Canceled"),
-                                            style: 'cancel',
-                                        },
-                                        { text: 'OK', onPress: () => this.deletePost(this.state.id) },
-                                    ],
-                                    { cancelable: false },
+        if (this.state.uploading == true) {
+            <View style={styles.overlay}>
+                <ProgressBarAndroid
+                    styleAttr="Large"
+                    indeterminate={false}
+                    style={{ height: 80, borderRadius: 50 }}
+                    color="#fff"
+                />
+            </View>
+        } else {
+            return (
+                <View style={styles.container}>
+                    <StatusBar backgroundColor="#00063f" barStyle="light-content" />
+                    <HeaderImageScrollView
+                        ref={ref => this.scrollView = ref}
+                        onContentSizeChange={(contentWidth, contentHeight) => {
+                            if (this.state.proof == true) {
+                                this.scrollView.scrollToEnd({ animated: true });
+                            }
+                        }}
+                        maxHeight={200}
+                        minHeight={50}
+                        // headerImage={{ uri: this.state.image }}
+                        fadeOutForeground
+                        style={{ marginBottom: 10 }}
+                        renderHeader={() => {
+                            if (this.state.type == 0) {
+                                return (
+                                    <Image source={{ uri: this.state.image }} style={styles.image} />
                                 )
-                            }>
-                                <Text style={styles.shareButtonText}>Delete</Text>
-                            </TouchableOpacity>
-                        ) : (
-                                this.state.status == 0 ? (
-                                    <TouchableOpacity style={styles.shareButton} onPress={() =>
-                                        Alert.alert(
-                                            'Confirming the Handling',
-                                            'Are you sure you want to handle this',
-                                            [
-                                                {
-                                                    text: 'Cancel',
-                                                    onPress: () => console.log("canceled"),
-                                                    style: 'cancel',
-                                                },
-                                                { text: 'OK', onPress: () => this.handlePost(this.state.id) },
-                                            ],
-                                            { cancelable: false },
-                                        )
-                                    }>
-                                        <Text style={styles.shareButtonText}>I will Handle</Text>
-                                    </TouchableOpacity>
+                            } else {
+                                return (
+                                    // <View style={{alignItems:'center', justifyContent:'center', width:'100%', backgroundColor:COLOR_GRAY}}>
+                                    <Video
+                                        ref={(ref) => {
+                                            this.player = ref
+                                        }}
+                                        source={{ uri: this.state.image }}
+                                        volume={10}
+                                        repeat={true}
+                                        resizeMode="cover"
+                                        fullscreen={true}
+                                        controls={false}
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            bottom: 0,
+                                            right: 0,
+                                            width: '100%',
+                                            alignSelf: 'center'
+                                        }} />
+                                    // </View>
+
+
+                                )
+
+                            }
+
+                        }
+                        }
+
+                        renderFixedForeground={() => (
+                            <Animatable.View
+                                style={{ height: 'auto', width: "100%" }}
+                                ref={navTitleView => {
+                                    this.navTitleView = navTitleView;
+                                }}
+                            >
+                                {this.state.showNavTitle == true ? (
+                                    <ModalHeader title="Post" onPress={() => this.props.navigation.goBack()} />
                                 ) : (
-                                        <View style={styles.profile}>
-                                            <Text style={{ fontSize: 18, marginHorizontal: 10 }}>Rescuer</Text>
-                                            <Image style={styles.avatar}
-                                                source={{ uri: this.state.handlerAvatar }} />
+                                        <TouchableOpacity>
 
-                                            <Text style={styles.profileName}>
-                                                {this.state.handlerName}
-                                            </Text>
-                                            <Text style={{ marginLeft: 20 }}>
-                                                Started to work on  {this.timeConvertor(this.state.handlerPosted)}
-                                            </Text>
-
-                                            {f.auth().currentUser.uid == this.state.handlerId && this.state.proof == false ? (
-                                                <TouchableOpacity style={styles.shareButton} onPress={() => this.submitProof()}>
-                                                    <Text style={styles.shareButtonText}>    Submit Proof    </Text>
-                                                </TouchableOpacity>
-
-                                            ) : (
-                                                    <View></View>
-                                                )}
-                                        </View>
-                                    )
-
-                            )}
-                        {this.state.proof == true ? (
-                            <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 5 }}>
-                                {this.state.pickedImage == null ? (
-                                    <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
-                                        <Text>Select an Image</Text>
-                                    </TouchableOpacity>
-                                ) : (
-                                        <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
-                                            <Image source={{ uri: this.state.pickedImage }} style={{ width: '100%', height: '100%' }} />
                                         </TouchableOpacity>
                                     )}
 
-                                <KeyboardAvoidingView behavior="padding" enabled={true}>
-                                    {this.state.proofDescription.length.toString() <= 50 ? (
-                                        <TextInput
-                                            style={[styles.descriptiontStyle, { fontSize: 28 }]}
-                                            placeholder={'Enter Description Here'}
-                                            editable={true}
-                                            multiline={true}
-                                            numberOfLines={5}
-                                            maxlength={750}
-                                            value={this.state.proofDescription}
-                                            onChangeText={(text) => this.setState({ proofDescription: text })}
-                                        />
+                            </Animatable.View>
+                        )}
+                    >
+
+                        <TriggeringView
+                            onHide={() => this.navBar()}
+                            onDisplay={() => this.navTitleView.fadeOut(200)}
+                        >
+                        </TriggeringView>
+                        <View style={styles.topView}>
+                            <View style={styles.informationArea}>
+                                <Text style={styles.name}>{this.state.animal}</Text>
+                                <Text style={styles.description}>
+                                    {this.state.description}
+                                </Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.topView}>
+
+                            <MapView
+                                style={styles.mapContainer}
+                                provider={PROVIDER_GOOGLE}
+                                initialRegion={{
+                                    latitude: this.state.latitude,
+                                    longitude: this.state.longitude,
+                                    latitudeDelta: 0.00922 * 1.5,
+                                    longitudeDelta: 0.00421 * 1.5,
+                                }}
+                                showsUserLocation={true}
+                                loadingEnabled={true}
+                                zoomControlEnabled={true}
+                                showsMyLocationButton={true}
+                                scrollEnabled={false}
+                            // ref={ref => { this.mapView = ref }}
+                            >
+
+                                {this.state.latitude != null && this.state.latitude != null ? (
+                                    <Marker
+                                        coordinate={{
+                                            latitude: this.state.latitude,
+                                            longitude: this.state.longitude,
+                                            latitudeDelta: 0.00922 * 1.5,
+                                            longitudeDelta: 0.00421 * 1.5,
+                                        }}
+                                        title={"Here is the Animal"}
+
+                                    />
+
+                                ) : (
+                                        <View></View>
+                                    )}
+
+                            </MapView>
+
+
+
+                            <TouchableScale onPress={() => this.openMap()}
+                                style={{
+                                    position: 'absolute',//use absolute position to show button on top of the map
+                                    top: '70%', //for center align
+                                    right: 5,
+                                    alignSelf: 'flex-end', //for align to right                                                               
+                                    width: 'auto',
+                                    borderRadius: 15,
+                                    paddingHorizontal: 10,
+                                    paddingVertical: 10,
+                                    backgroundColor: '#192f6a',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    flexDirection: 'row'
+                                }}
+                            >
+                                <Icon name="compass" size={24} color={'#fff'} style={{ alignSelf: 'center' }} />
+                                <Text style={{ color: '#fff', fontSize: 14, marginLeft: 2 }}> Get Direction</Text>
+                            </TouchableScale>
+
+
+                        </View>
+
+                        <View style={styles.profile}>
+                            <Image style={styles.avatar}
+                                source={{ uri: this.state.avatar }} />
+
+                            <Text style={styles.profileName}>
+                                {this.state.name}
+                            </Text>
+                            <Text style={{ marginLeft: 20 }}>
+                                {this.timeConvertor(this.state.posted)}
+                            </Text>
+                        </View>
+                        <View style={styles.row}>
+                            <View
+                                style={styles.likeCommentArea}
+                            >
+
+                                {this.state.liked == false ? (
+                                    <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={() => this.setLike(this.state.id)} >
+                                        <Icon name="heart" size={24} />
+                                    </TouchableOpacity>
+                                ) : (
+                                        <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={() => this.setLike(this.state.id)}>
+                                            <Icon name="heart" size={24} color={'#a83f39'} />
+                                        </TouchableOpacity>
+                                    )}
+
+
+                            </View>
+
+                            <View
+                                style={styles.likeCommentArea}
+                            >
+                                <TouchableOpacity style={[styles.row, { alignItems: 'flex-start' }]} onPress={() => navigate('Comment', { id: this.state.id })}>
+                                    <Icon name="comment" size={24} />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        {/* <View style={styles.starContainer}>
+                            <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
+                            <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
+                            <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
+                            <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
+                            <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
+                        </View>
+                        <View style={styles.contentColors}>
+                            <TouchableOpacity style={[styles.btnColor, { backgroundColor: "#00BFFF" }]}></TouchableOpacity>
+                            <TouchableOpacity style={[styles.btnColor, { backgroundColor: "#FF1493" }]}></TouchableOpacity>
+                            <TouchableOpacity style={[styles.btnColor, { backgroundColor: "#00CED1" }]}></TouchableOpacity>
+                            <TouchableOpacity style={[styles.btnColor, { backgroundColor: "#228B22" }]}></TouchableOpacity>
+                            <TouchableOpacity style={[styles.btnColor, { backgroundColor: "#20B2AA" }]}></TouchableOpacity>
+                            <TouchableOpacity style={[styles.btnColor, { backgroundColor: "#FF4500" }]}></TouchableOpacity>
+                        </View>
+                        <View style={styles.contentSize}>
+                            <TouchableOpacity style={styles.btnSize}><Text>S</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.btnSize}><Text>M</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.btnSize}><Text>L</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.btnSize}><Text>XL</Text></TouchableOpacity>
+                        </View> */}
+                        <View style={styles.separator}></View>
+                        <View style={styles.addToCarContainer}>
+                            {this.state.userId == this.state.authorId ? (
+                                <TouchableOpacity style={styles.shareButton} onPress={() =>
+                                    Alert.alert(
+                                        'Delete Post',
+                                        'Are you sure you want to Delete This post',
+                                        [
+                                            {
+                                                text: 'Cancel',
+                                                onPress: () => console.log("Canceled"),
+                                                style: 'cancel',
+                                            },
+                                            { text: 'OK', onPress: () => this.deletePost(this.state.id) },
+                                        ],
+                                        { cancelable: false },
+                                    )
+                                }>
+                                    <Text style={styles.shareButtonText}>Delete</Text>
+                                </TouchableOpacity>
+                            ) : (
+                                    this.state.status == 0 ? (
+                                        <TouchableOpacity style={styles.shareButton} onPress={() =>
+                                            Alert.alert(
+                                                'Confirming the Handling',
+                                                'Are you sure you want to handle this',
+                                                [
+                                                    {
+                                                        text: 'Cancel',
+                                                        onPress: () => console.log("canceled"),
+                                                        style: 'cancel',
+                                                    },
+                                                    { text: 'OK', onPress: () => this.handlePost(this.state.id) },
+                                                ],
+                                                { cancelable: false },
+                                            )
+                                        }>
+                                            <Text style={styles.shareButtonText}>I will Handle</Text>
+                                        </TouchableOpacity>
                                     ) : (
+                                            this.state.status == 1 ? (
+                                                <View style={styles.profile}>
+                                                    <Text style={{ fontSize: 18, marginHorizontal: 10 }}>Rescuer</Text>
+                                                    <Image style={styles.avatar}
+                                                        source={{ uri: this.state.handlerAvatar }} />
+
+                                                    <Text style={styles.profileName}>
+                                                        {this.state.handlerName}
+                                                    </Text>
+                                                    <Text style={{ marginLeft: 20 }}>
+                                                        Started to work on  {this.timeConvertor(this.state.handlerPosted)}
+                                                    </Text>
+
+                                                    {f.auth().currentUser.uid == this.state.handlerId && this.state.proof == false ? (
+                                                        <TouchableOpacity style={styles.shareButton} onPress={() => this.submitProof()}>
+                                                            <Text style={styles.shareButtonText}>    Submit Proof    </Text>
+                                                        </TouchableOpacity>
+
+                                                    ) : (
+                                                            <View></View>
+                                                        )}
+                                                </View>
+                                            ):(
+                                                <View/>
+                                            )
+                                            
+                                        )
+
+                                )}
+                            {this.state.proof == true ? (
+                                <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 5 }}>
+                                    {this.state.pickedImage == null ? (
+                                        <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
+                                            <Text>Select an Image</Text>
+                                        </TouchableOpacity>
+                                    ) : (
+                                            <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
+                                                <Image source={{ uri: this.state.pickedImage }} style={{ width: '100%', height: '100%' }} />
+                                            </TouchableOpacity>
+                                        )}
+
+                                    <KeyboardAvoidingView behavior="padding" enabled={true}>
+                                        {this.state.proofDescription.length.toString() <= 50 ? (
                                             <TextInput
-                                                style={[styles.descriptiontStyle, { fontSize: 18 }]}
+                                                style={[styles.descriptiontStyle, { fontSize: 28 }]}
+                                                placeholder={'Enter Description Here'}
                                                 editable={true}
                                                 multiline={true}
                                                 numberOfLines={5}
@@ -676,22 +683,35 @@ export default class Post extends Component {
                                                 value={this.state.proofDescription}
                                                 onChangeText={(text) => this.setState({ proofDescription: text })}
                                             />
-                                        )}
+                                        ) : (
+                                                <TextInput
+                                                    style={[styles.descriptiontStyle, { fontSize: 18 }]}
+                                                    editable={true}
+                                                    multiline={true}
+                                                    numberOfLines={5}
+                                                    maxlength={750}
+                                                    value={this.state.proofDescription}
+                                                    onChangeText={(text) => this.setState({ proofDescription: text })}
+                                                />
+                                            )}
 
 
-                                </KeyboardAvoidingView>
-                                <TouchableOpacity style={styles.shareButton} onPress={() => this.uploadImage()}>
-                                    <Text style={styles.shareButtonText}>     Submit Proof     </Text>
-                                </TouchableOpacity>
-                            </View>
-                        ) : (
-                                <View></View>
-                            )}
+                                    </KeyboardAvoidingView>
+                                    <TouchableOpacity style={styles.shareButton} onPress={() => this.uploadImage()}>
+                                        <Text style={styles.shareButtonText}>     Submit Proof     </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            ) : (
+                                    <View></View>
+                                )}
 
-                    </View>
+                        </View>
 
-                </HeaderImageScrollView>
-            </View>
-        );
+
+                    </HeaderImageScrollView>
+                </View>
+            );
+        }
+
     }
 }

@@ -178,5 +178,14 @@ export default StyleSheet.create({
         padding: 5,
         minHeight: deviceHeight * 0.2        
     },
+    overlay: {
+        // 
+        flex:1,
+        width:'100%',
+        height:deviceHeight,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
 
 });
