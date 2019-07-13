@@ -132,6 +132,52 @@ export default class Post extends Component {
                             }
                         }).catch((error) => console.log(error))
                     }
+
+                    if (data.status == 2) {
+                        database.ref('finshed').child(params.id).once('value').then(function (snapshot) {
+                            const exist = (snapshot.val() != null);
+                            if (exist) {
+                                hData = snapshot.val();
+                                database.ref('users').child(hData.handlerId).once('value').then(function (snapshot) {
+                                    const exsists = (snapshot.val() != null);
+                                    if (exsists) {
+                                        var data = snapshot.val();
+                                        that.setState({
+                                            handlerAvatar: data.dp,
+                                            handlerName: data.first_name + " " + data.last_name,
+                                            handlerId: data.uid,
+                                            handlerPosted: hData.posted,
+                                            handlerImages: hData.image,
+                                            handlerDescription: hData.description
+
+                                        })
+                                    }
+
+                                })
+                                that.setState({
+                                    handlerId: hData.handlerId,
+                                });
+                            }
+                        }).catch((error) => console.log(error))
+                        // database.ref('finshed').child(params.id).child('posted').once('value').then(function (snapshot) {
+                        //     const exist = (snapshot.val() != null);
+                        //     if (exist) {
+                        //         hData = snapshot.val();
+                        //         that.setState({
+                        //             handlerPosted: hData,
+                        //         });
+                        //     }
+                        // }).catch((error) => console.log(error))
+                        // database.ref('finshed').child(params.id).child('image').once('value').then(function (snapshot) {
+                        //     const exist = (snapshot.val() != null);
+                        //     if (exist) {
+                        //         hData = snapshot.val();
+                        //         that.setState({
+                        //             handlerImages: hData,
+                        //         });
+                        //     }
+                        // }).catch((error) => console.log(error))
+                    }
                     //that.mapView.animateToRegion(region, 1000);
                     var postArray = that.state.post
                     database.ref('users').child(data.userId).once('value').then(function (snapshot) {
@@ -241,15 +287,15 @@ export default class Post extends Component {
     }
 
     uploadImage = async () => {
+        this.setState({
+            currentFileType: ext,
+            uploading: true
+        });
         var uri = this.state.pickedImage
         var that = this;
         var postId = this.state.id;
         var re = /(?:\.([^.]+))?$/;
         var ext = re.exec(uri)[1];
-        this.setState({
-            currentFileType: ext,
-            uploading: true
-        });
         const blob = await new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.onload = function () {
@@ -298,13 +344,11 @@ export default class Post extends Component {
             handlerId: userId,
             posted: posted,
             image: this.state.image,
-            description: this.state.proofDescription,
             status: 1
         }
         var mentor = {
             posted: posted,
             image: this.state.image,
-            description: this.state.proofDescription,
             status: 1,
             id: id
         }
@@ -354,13 +398,15 @@ export default class Post extends Component {
             handlerId: userId,
             posted: posted,
             image: image,
-            status: 2
+            status: 2,
+            description: this.state.proofDescription,
         }
         var finished = {
             posted: posted,
             image: image,
             status: 2,
-            id: id
+            id: id,
+            description: this.state.proofDescription,
         }
         database.ref('/posts/' + id).update({ status: 2 });
         database.ref('users/' + ownerId + '/post/' + id).update({ status: 2 });
@@ -369,22 +415,25 @@ export default class Post extends Component {
         database.ref('/finshed/' + id).set(done);
         database.ref('users/' + userId + '/finished/' + id).set(finished);
         this.setState({
-            uploading: false
+            uploading: false,
+            proof: false
         })
     }
     render() {
         const { navigate } = this.props.navigation;
 
         if (this.state.uploading == true) {
-            <View style={styles.overlay}>
-                <ProgressBarAndroid
-                    styleAttr="Large"
-                    indeterminate={false}
-                    style={{ height: 80, borderRadius: 50 }}
-                    color="#fff"
-                />
-            </View>
-        } else {
+            return (
+                <View style={styles.overlay}>
+                    <ProgressBarAndroid
+                        styleAttr="Large"
+                        indeterminate={false}
+                        style={{ height: 80, borderRadius: 50 }}
+                        color="#fff"
+                    />
+                </View>
+            );
+        } else if (this.state.uploading == false) {
             return (
                 <View style={styles.container}>
                     <StatusBar backgroundColor="#00063f" barStyle="light-content" />
@@ -652,10 +701,25 @@ export default class Post extends Component {
                                                             <View></View>
                                                         )}
                                                 </View>
-                                            ):(
-                                                <View/>
-                                            )
-                                            
+                                            ) : (
+                                                    <View style={styles.profile}>
+                                                        <Text style={{ fontSize: 18, marginHorizontal: 10 }}>Rescuer</Text>
+                                                        <Image style={styles.avatar}
+                                                            source={{ uri: this.state.handlerAvatar }} />
+
+                                                        <Text style={styles.profileName}>
+                                                            {this.state.handlerName}
+                                                        </Text>
+                                                        <Text style={{ marginLeft: 20 }}>
+                                                            Finished  {this.timeConvertor(this.state.handlerPosted)}
+                                                        </Text>
+                                                        <Text style={styles.description}>
+                                                            {this.state.handlerDescription}
+                                                        </Text>
+                                                        <Image source={{ uri: this.state.handlerImages }} style={{ width: '100%', height: 200, marginTop: 10 }} />
+                                                    </View>
+                                                )
+
                                         )
 
                                 )}
@@ -710,6 +774,10 @@ export default class Post extends Component {
 
                     </HeaderImageScrollView>
                 </View>
+            );
+        } else {
+            return (
+                <View />
             );
         }
 

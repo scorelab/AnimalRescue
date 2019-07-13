@@ -114,7 +114,7 @@ export default StyleSheet.create({
         fontSize: 20,
     },
     addToCarContainer: {
-        marginHorizontal: 30
+        marginHorizontal: 5
     },
     avatar: {
         width: 50,
