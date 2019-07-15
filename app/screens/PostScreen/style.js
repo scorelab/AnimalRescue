@@ -1,6 +1,8 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_LIGHT } from "../../config/styles";
+import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_LIGHT, COLOR_GRAY } from "../../config/styles";
 
+let deviceWidth = Dimensions.get("window").width;
+let deviceHeight = Dimensions.get("window").height;
 
 export default StyleSheet.create({
     container: {
@@ -112,7 +114,7 @@ export default StyleSheet.create({
         fontSize: 20,
     },
     addToCarContainer: {
-        marginHorizontal: 30
+        marginHorizontal: 5
     },
     avatar: {
         width: 50,
@@ -123,9 +125,9 @@ export default StyleSheet.create({
     },
     profile: {
         flexDirection: 'column',
-        marginTop: 15,        
-        alignItems:'center',
-        justifyContent:'center'
+        marginTop: 15,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     profileName: {
         fontSize: 18,
@@ -142,16 +144,48 @@ export default StyleSheet.create({
     },
     likeCommentArea: {
         width: "auto",
-        height: 25,        
+        height: 25,
         marginTop: 10,
-        
-    },    
-    row:{ 
-        flexDirection: 'row',
-        width:'60%' , 
-        justifyContent:'center',
-        alignItems:'center',
-        alignSelf:'center'       
+
     },
-    
+    row: {
+        flexDirection: 'row',
+        width: '60%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center'
+    },
+    imageContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: COLOR_GRAY,
+        borderWidth: 0.8,
+        borderStyle: 'dashed',
+        width: '90%',
+        height: deviceHeight * 0.45,
+        marginVertical: 5
+
+    },
+    descriptiontStyle: {
+        alignSelf: 'flex-start',
+        flexWrap: 'wrap',
+        textAlignVertical: 'top',
+        textAlign: 'left',
+        fontSize: 14,
+        marginHorizontal: 5,
+        marginTop: 10,
+        padding: 5,
+        minHeight: deviceHeight * 0.2        
+    },
+    overlay: {
+        // 
+        flex:1,
+        width:'100%',
+        height:deviceHeight,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
+
 });
