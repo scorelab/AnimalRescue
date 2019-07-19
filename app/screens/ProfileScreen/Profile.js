@@ -24,6 +24,8 @@ class Profile extends React.Component {
             active: 0,
             post: [],
             postFinal: [],
+            finish: [],
+            finishedFinal: [],
             uploading: false,
             progress: 0,
             data1: [
@@ -100,7 +102,9 @@ class Profile extends React.Component {
 
                 });
                 var postData = data.post
+                var finishedData = data.finished
                 var postArray = that.state.post
+                var finishedFinal = that.state.finish
                 for (var posts in postData) {
                     let postOBJ = postData[posts]
                     postArray.push({
@@ -111,8 +115,17 @@ class Profile extends React.Component {
                         type: postOBJ.type
                     })
                 }
+                for (var finish in finishedData) {
+                    let postOBJ = finishedData[finish]
+                    finishedFinal.push({
+                        image: postOBJ.image,                        
+                        posted: postOBJ.posted,
+                        id: postOBJ.id,                        
+                    })
+                }
                 that.setState({
-                    postFinal: that.state.post
+                    postFinal: that.state.post,
+                    finishedFinal: that.state.finish
                 })
                 // console.log(that.state.post);
             }
@@ -273,6 +286,9 @@ class Profile extends React.Component {
         if (this.state.active == 1) {
             this.state.postFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
             this.state.postFinal.reverse();
+
+            this.state.finishedFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+            this.state.finishedFinal.reverse();
             return this.state.postFinal.map((data, index) => {
                 if (data.status == 0) {
                     return (
@@ -331,7 +347,7 @@ class Profile extends React.Component {
 
             });
         } else if (this.state.active == 2) {
-            return this.state.data1.map((data, index) => {
+            return this.state.finishedFinal.map((data, index) => {
                 return (
                     <TouchableScale>
                         <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
@@ -341,9 +357,9 @@ class Profile extends React.Component {
                 )
             });
         } else if (this.state.active == 3) {
-            return this.state.data3.map((data, index) => {
+            return this.state.finishedFinal.map((data, index) => {
                 return (
-                    <TouchableScale>
+                    <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id })}>
                         <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
                             <Image source={{ uri: data.image }} style={styles.imageSquare} />
                         </View>
