@@ -24,34 +24,12 @@ class Profile extends React.Component {
             active: 0,
             post: [],
             postFinal: [],
+            pending: [],
+            pendingFinal: [],
+            finish: [],
+            finishedFinal: [],
             uploading: false,
             progress: 0,
-            data1: [
-                { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", status: 0 },
-                { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar2.png", status: 1 },
-                { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar3.png", status: 2 },
-                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar4.png", status: 2 },
-                { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar5.png", status: 1 },
-                { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar6.png", status: 1 },
-                { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar7.png", status: 1 },
-                { id: 8, image: "https://bootdey.com/img/Content/avatar/avatar1.png", status: 2 },
-                { id: 9, image: "https://bootdey.com/img/Content/avatar/avatar2.png", status: 0 },
-                { id: 10, image: "https://bootdey.com/img/Content/avatar/avatar3.png", status: 0 },
-            ],
-            data2: [
-                { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png" },
-                { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar2.png" },
-                { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar3.png" },
-                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar4.png" },
-            ],
-            data3: [
-                { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar5.png" },
-                { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar6.png" },
-                { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar7.png" },
-                { id: 8, image: "https://bootdey.com/img/Content/avatar/avatar1.png" },
-                { id: 9, image: "https://bootdey.com/img/Content/avatar/avatar2.png" },
-                { id: 10, image: "https://bootdey.com/img/Content/avatar/avatar3.png" },
-            ]
         }
         this.video = Video;
 
@@ -100,7 +78,13 @@ class Profile extends React.Component {
 
                 });
                 var postData = data.post
+                var finishedData = data.finished
+                var handleData = data.handle
+
                 var postArray = that.state.post
+                var handleFinal = that.state.pending
+                var finishedFinal = that.state.finish
+
                 for (var posts in postData) {
                     let postOBJ = postData[posts]
                     postArray.push({
@@ -111,8 +95,29 @@ class Profile extends React.Component {
                         type: postOBJ.type
                     })
                 }
+
+                for (var handles in handleData) {
+                    let handleOBJ = handleData[handles]
+                    handleFinal.push({
+                        image: handleOBJ.image,
+                        posted: handleOBJ.posted,
+                        id: handleOBJ.id,
+                        type: handleOBJ.type
+                    })
+                }
+
+                for (var finish in finishedData) {
+                    let postOBJ = finishedData[finish]
+                    finishedFinal.push({
+                        image: postOBJ.image,
+                        posted: postOBJ.posted,
+                        id: postOBJ.id,
+                    })
+                }
                 that.setState({
-                    postFinal: that.state.post
+                    postFinal: that.state.post,
+                    finishedFinal: that.state.finish,
+                    pendingFinal: that.state.pending
                 })
                 // console.log(that.state.post);
             }
@@ -273,8 +278,15 @@ class Profile extends React.Component {
         if (this.state.active == 1) {
             this.state.postFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
             this.state.postFinal.reverse();
+
+            this.state.pendingFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+            this.state.pendingFinal.reverse();
+
+            this.state.finishedFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+            this.state.finishedFinal.reverse();
+
             return this.state.postFinal.map((data, index) => {
-                if (data.status == 0) {
+                if (data.status <= 2) {
                     return (
                         <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id })}>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }, { backgroundColor: COLOR_GRAY }]}>
@@ -285,19 +297,19 @@ class Profile extends React.Component {
                                         </View> */}
                                     </ImageBackground>
                                 ) : (
-                                    <Video
-                                    ref={(ref) => {
-                                        this.player = ref
-                                    }}
-                                    source={{ uri: data.image }}
-                                    volume={10}
-                                    repeat={true}
-                                    resizeMode="cover"
-                                    // fullscreen={true}                                   
-                                    controls={false}
-                                    style={styles.imageSquare}
-                                     />
-                                        
+                                        <Video
+                                            ref={(ref) => {
+                                                this.player = ref
+                                            }}
+                                            source={{ uri: data.image }}
+                                            volume={10}
+                                            repeat={true}
+                                            resizeMode="cover"
+                                            // fullscreen={true}                                   
+                                            controls={false}
+                                            style={styles.imageSquare}
+                                        />
+
                                     )}
 
                             </View>
@@ -331,19 +343,36 @@ class Profile extends React.Component {
 
             });
         } else if (this.state.active == 2) {
-            return this.state.data1.map((data, index) => {
+            return this.state.pendingFinal.map((data, index) => {
                 return (
                     <TouchableScale>
                         <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
-                            <Image source={{ uri: data.image }} style={styles.imageSquare} />
+                            {data.type == 0 ? (
+                                <Image source={{ uri: data.image }} style={styles.imageSquare} />
+                            ) : (
+                                    <Video
+                                        ref={(ref) => {
+                                            this.player = ref
+                                        }}
+                                        source={{ uri: data.image }}
+                                        volume={10}
+                                        repeat={true}
+                                        resizeMode="cover"
+                                        // fullscreen={true}                                   
+                                        controls={false}
+                                        style={styles.imageSquare}
+                                    />
+
+                                )}
+
                         </View>
                     </TouchableScale>
                 )
             });
         } else if (this.state.active == 3) {
-            return this.state.data3.map((data, index) => {
+            return this.state.finishedFinal.map((data, index) => {
                 return (
-                    <TouchableScale>
+                    <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id })}>
                         <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
                             <Image source={{ uri: data.image }} style={styles.imageSquare} />
                         </View>

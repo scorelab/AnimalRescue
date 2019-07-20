@@ -55,7 +55,7 @@ export default class HomePostComponent extends Component {
                 />
               </View>
             ) : (
-                <View style={style.postVideoArea}>                  
+                <View style={style.postVideoArea}>
                   <Video
                     ref={(ref) => {
                       this.player = ref
@@ -71,70 +71,70 @@ export default class HomePostComponent extends Component {
                   />
                 </View>
               )}
-            
+
+            <View
+              style={{
+                borderBottomColor: { COLOR_PRIMARY },
+                borderBottomWidth: 1
+              }}
+            />
+          </TouchableScale>
+          <View style={style.likeCommentDisplayArea}>
+            {this.props.numberOfLikes >= 1 ? (
+              <View style={style.row}>
+                <Icon name="heart" size={14} color={'#a83f39'} />
+                <Text style={style.fontColorLove}> {this.props.numberOfLikes}</Text>
+              </View>
+            ) : (
+                <View style={style.row}>
+
+                </View>
+              )}
+
+            {this.props.numberOfComments > 0 ? (
+              <Text style={style.fontColor}>{this.props.numberOfComments} comment{this.plural(this.props.numberOfComments)}</Text>
+            ) : (
+                <Text style={style.fontColor}></Text>
+              )}
+
+          </View>
           <View
             style={{
               borderBottomColor: { COLOR_PRIMARY },
-              borderBottomWidth: 1
+              borderBottomWidth: 0.5
             }}
           />
-          </TouchableScale>
-        <View style={style.likeCommentDisplayArea}>
-          {this.props.numberOfLikes >= 1 ? (
-            <View style={style.row}>
-              <Icon name="heart" size={14} color={'#a83f39'} />
-              <Text style={style.fontColorLove}> {this.props.numberOfLikes}</Text>
-            </View>
-          ) : (
-              <View style={style.row}>
 
-              </View>
-            )}
+          <View style={style.row}>
+            <View
+              style={style.likeCommentArea}
+            >
 
-          {this.props.numberOfComments > 0 ? (
-            <Text style={style.fontColor}>{this.props.numberOfComments} comment{this.plural(this.props.numberOfComments)}</Text>
-          ) : (
-              <Text style={style.fontColor}></Text>
-            )}
-
-        </View>
-        <View
-          style={{
-            borderBottomColor: { COLOR_PRIMARY },
-            borderBottomWidth: 0.5
-          }}
-        />
-
-        <View style={style.row}>
-          <View
-            style={style.likeCommentArea}
-          >
-
-            {this.props.liked == false ? (
-              <TouchableOpacity style={style.row} onPress={this.props.like}>
-                <Icon name="heart" size={18} />
-                <Text style={{ fontSize: 18 }}> Like</Text>
-              </TouchableOpacity>
-            ) : (
+              {this.props.liked == false ? (
                 <TouchableOpacity style={style.row} onPress={this.props.like}>
-                  <Icon name="heart" size={18} color={'#a83f39'} />
-                  <Text style={{ fontSize: 18, color: '#a83f39' }}> Love</Text>
+                  <Icon name="heart" size={18} />
+                  <Text style={{ fontSize: 18 }}> Like</Text>
                 </TouchableOpacity>
-              )}
+              ) : (
+                  <TouchableOpacity style={style.row} onPress={this.props.like}>
+                    <Icon name="heart" size={18} color={'#a83f39'} />
+                    <Text style={{ fontSize: 18, color: '#a83f39' }}> Love</Text>
+                  </TouchableOpacity>
+                )}
 
 
-          </View>
+            </View>
 
-          <View
-            style={style.likeCommentArea}
-          >
-            <TouchableOpacity style={style.row} onPress={this.props.comment}>
-              <Icon name="comment" size={18} />
-              <Text style={{ fontSize: 18 }}> Comment</Text>
-            </TouchableOpacity>
+            <View
+              style={style.likeCommentArea}
+            >
+              <TouchableOpacity style={style.row} onPress={this.props.comment}>
+                <Icon name="comment" size={18} />
+                <Text style={{ fontSize: 18 }}> Comment</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
 
       </View >
 
