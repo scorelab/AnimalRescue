@@ -350,7 +350,8 @@ export default class Post extends Component {
             posted: posted,
             image: this.state.image,
             status: 1,
-            id: id
+            id: id,
+            type:this.state.type
         }
         database.ref('/posts/' + id).update({ status: 1 });
         database.ref('users/' + ownerId + '/post/' + id).update({ status: 1 });
