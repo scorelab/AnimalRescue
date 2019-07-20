@@ -24,19 +24,16 @@ cardView: {
     padding:10
 
 },
-cardTitleBar: {
-    // backgroundColor: COLOR_LIGHT,
+cardTitleBar: {    
     height: cardTitleBarHeight,
     width: cardViewWidth,
     flexDirection: "row",
     justifyContent: "flex-start",
     marginBottom:5,
-    paddingLeft:10,
-    // borderRadius:5,
+    paddingLeft:10,   
 
 },
-userAvatarArea: {
-    // backgroundColor: COLOR_LIGHT,
+userAvatarArea: {    
     height: userAvatarImageHeight,
     width: userAvatarImageWidth
 },
@@ -59,11 +56,8 @@ dateTimeLine: {
     backgroundColor: COLOR_LIGHT
 },
 cardViewBody: {
-    backgroundColor: COLOR_LIGHT,
-    // paddingLeft:10,
-    // paddingRight:10,
-    width:'100%'
-    // marginRight:10
+    backgroundColor: COLOR_LIGHT,    
+    width:'100%'    
 },
 postImageArea: {
     width:'100%',
@@ -74,8 +68,7 @@ postImageArea: {
 
 postVideoArea: {
     width:'100%',
-    marginTop: 5,
-    //backgroundColor:COLOR_GRAY,
+    marginTop: 5,    
     justifyContent:'center',
     alignItems:'center', 
     overflow: 'hidden'    
@@ -84,19 +77,15 @@ postVideoArea: {
 postImage: {
     width:'100%',
     height:225,        
-    backgroundColor:COLOR_GRAY
-    // resizeMode:"center"
+    backgroundColor:COLOR_GRAY   
 },
 postVideo: {
     width:'100%',
     height:225,
     paddingHorizontal:10,
-    overflow: 'hidden',
-    //backgroundColor:COLOR_GRAY
-    // resizeMode:"center"
+    overflow: 'hidden',    
 },
 
-// Font Styles
 nameFont: {
     fontSize:16,
     lineHeight:16,

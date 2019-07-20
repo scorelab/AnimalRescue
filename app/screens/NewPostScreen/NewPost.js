@@ -8,7 +8,6 @@ import { ButtonGroup } from "react-native-elements";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { COLOR_PRIMARY, COLOR_BLACK, COLOR_SECONDARY } from "../../config/styles";
 import styles from "./style";
-
 import DropdownAlert from 'react-native-dropdownalert';
 import ActionSheet from 'react-native-actionsheet'
 import { f, auth, storage, database } from "../../config/firebaseConfig";
@@ -411,7 +410,7 @@ class NewPost extends React.Component {
                             </ProgressStep>
 
                             <ProgressStep label="Location" onNext={() => this.checkLocation()} error={this.state.locationError} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
-                                
+
                                 <View style={styles.stepContainer}>
                                     <MapView
                                         style={styles.mapContainer}
