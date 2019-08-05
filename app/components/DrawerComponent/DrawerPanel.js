@@ -6,8 +6,8 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { COLOR_PRIMARY } from "../../config/styles";
 import { f, auth, storage, database } from "../../config/firebaseConfig";
 export default class DrawerPanel extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {            
             profilePicture: null,
             coverPicture: null         
@@ -34,6 +34,11 @@ export default class DrawerPanel extends Component {
 
 
     }
+
+    logout = () => {        
+        f.auth().signOut();
+        this.props.navigation.navigate('Auth')
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -41,12 +46,12 @@ export default class DrawerPanel extends Component {
                 <View style={styles.box}>
                     <Image style={styles.image} source={{ uri: this.state.profilePicture }} />
                     <View style={styles.boxContent}>
-                        <Text style={styles.title}>Wathsara Daluwatta</Text>
+                        <Text style={styles.title}>{f.auth().currentUser.displayName}</Text>
                     </View>
                 </View>
                 
                 <ScrollView style={styles.body}>
-                    <TouchableOpacity style={styles.card} onPress={() => this.editPro()}>
+                    <TouchableOpacity style={styles.card}>
                         <Ionicons name={"edit"} size={30} color={"#192f6a"} style={{ marginLeft: 20 }} />
                         <View style={styles.cardContent}>
                             <Text style={styles.name}>Edit Profile</Text>
@@ -64,7 +69,7 @@ export default class DrawerPanel extends Component {
                             <Text style={styles.name}>Help Center</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.card}>
+                    <TouchableOpacity style={styles.card} onPress={() => this.logout()}>
                         <Ionicons name={"sign-out"} size={30} color={"#192f6a"} style={{ marginLeft: 20 }} />
                         <View style={styles.cardContent}>
                             <Text style={styles.name}>LogOut</Text>

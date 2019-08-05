@@ -24,15 +24,6 @@ export default class Comment extends Component {
             comments: [],
             commentsFinal: [],
             loaded: false,
-            data: [
-                { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name: "Frank Odalthh", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-                { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name: "John DoeLink", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-                { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar7.png", name: "March SoulLaComa", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-                { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar2.png", name: "Finn DoRemiFaso", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-                { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar3.png", name: "Maria More More", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-                { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name: "Clark June Boom!", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-                { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name: "The googler", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-            ],
             comment: '',
             rowIndex: null
         }
@@ -190,8 +181,8 @@ export default class Comment extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <ModalHeader title="Comments" onPress={() => this.props.navigation.goBack()} />
-                <FlatList  
-                    inverted                  
+                <FlatList
+                    inverted
                     style={styles.root}
                     data={this.state.commentsFinal}
                     ItemSeparatorComponent={() => {
@@ -221,6 +212,7 @@ export default class Comment extends Component {
                             }
 
                         ];
+
                         return (
                             <Swipeout
                                 rowIndex={index}
@@ -229,7 +221,8 @@ export default class Comment extends Component {
                                 close={this.state.rowIndex !== index}
                                 onClose={() => this.onSwipeClose(index)}
                                 style={{ width: '100%', backgroundColor: 'transparent' }}
-                                right={swipeBtns}>
+                                right={this.state.authorId == f.auth().currentUser.uid || f.auth().currentUser.uid == comments.userId ? swipeBtns : ''}
+                            >
                                 <View style={styles.container}>
                                     <TouchableOpacity onPress={() => { }}>
                                         <Image style={styles.image} source={{ uri: comments.avatar }} />
@@ -246,6 +239,7 @@ export default class Comment extends Component {
                                 </View>
                             </Swipeout>
                         );
+
                     }} />
                 <View style={styles.footer}>
                     <KeyboardAvoidingView style={styles.inputContainer} behavior="padding" enabled>
