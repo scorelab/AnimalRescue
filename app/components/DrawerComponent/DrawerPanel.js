@@ -4,15 +4,42 @@ import styles from "./styles";
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { COLOR_PRIMARY } from "../../config/styles";
-
+import { f, auth, storage, database } from "../../config/firebaseConfig";
 export default class DrawerPanel extends Component {
-    
+    constructor() {
+        super()
+        this.state = {            
+            profilePicture: null,
+            coverPicture: null         
+        }        
+
+    }
+    componentDidMount() {      
+        
+        var that = this;
+        let userId = f.auth().currentUser.uid;
+        database.ref('users').child(userId).on('value', (function (snapshot) {            
+            const exist = (snapshot.val() != null);
+            var data = snapshot.val();
+            if (exist) {
+                that.setState({                    
+                    profilePicture: data.dp,
+                    coverPicture: data.cover,
+                });
+            }
+
+        }), function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+
+
+    }
     render() {
         return (
             <View style={styles.container}>
-                <Image style={{width:'100%', height:120}} source={require('../../images/dog.jpg')}/>                    
+                <Image style={{width:'100%', height:120}} source={{ uri: this.state.coverPicture }}/>                    
                 <View style={styles.box}>
-                    <Image style={styles.image} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar1.png' }} />
+                    <Image style={styles.image} source={{ uri: this.state.profilePicture }} />
                     <View style={styles.boxContent}>
                         <Text style={styles.title}>Wathsara Daluwatta</Text>
                     </View>
