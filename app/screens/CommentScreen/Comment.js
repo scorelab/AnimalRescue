@@ -42,6 +42,15 @@ export default class Comment extends Component {
                 });
             });
 
+            database.ref('posts').child(this.state.postId).child('image').once('value').then(function (snapshot) {
+                const exist = (snapshot.val() != null);
+                if (exist) data = snapshot.val();
+                // console.log(data)
+                that.setState({
+                    image: data
+                });
+            });
+
             var that = this;
             let userId = f.auth().currentUser.uid;
             database.ref('comments').child(this.state.postId).on('value', (function (snapshot) {
@@ -156,6 +165,7 @@ export default class Comment extends Component {
         var postId = this.state.postId;
         var newCommentId = this.uniqueId();
         var authorId = this.state.authorId;
+        var image = this.state.image;
         var date = Date.now();
         var posted = Math.floor(date / 1000)
 
@@ -170,6 +180,41 @@ export default class Comment extends Component {
         this.setState({
             comment: ''
         })
+        if (authorId != f.auth().currentUser.uid) {
+            database.ref('notifications').child(authorId).child('comments').child(postId).once('value').then(function (snapshot) {
+                const exsists = (snapshot.val() != null);
+                if (exsists) {
+                    var data = snapshot.val();
+                    var count = data.count
+                    var date = Date.now();
+                    var posted = Math.floor(date / 1000)
+                    notification = {
+                        id: postId,
+                        status: 0,
+                        posted: posted,
+                        notification: f.auth().currentUser.displayName + " and " + count + " others commented on your post",
+                        count: count + 1,
+                        image: image,
+                        flag: 'c'
+                    }
+                    database.ref("notifications/" + authorId + '/comments/' + postId).set(notification);
+                } else {
+                    var date = Date.now();
+                    var posted = Math.floor(date / 1000)
+                    notification = {
+                        id: postId,
+                        status: 0,
+                        posted: posted,
+                        notification: f.auth().currentUser.displayName + " commented on your post",
+                        count: 1,
+                        image: image,
+                        flag: 'c'
+                    }
+                    console.log(notification)
+                    database.ref("notifications/" + authorId + '/comments/' + postId).set(notification);
+                }
+            })
+        }
         this.textInput.clear()
     }
 
