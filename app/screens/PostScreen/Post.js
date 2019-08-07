@@ -273,9 +273,73 @@ export default class Post extends Component {
                 status: 1
             }
             database.ref("posts/" + postID + '/likes/' + userId).set(likeObj);
+            //adding notifications
+            var that = this
+            if(that.state.userId != f.auth().currentUser.uid){                
+                database.ref('notifications').child(that.state.userId).child('likes').child(postID).once('value').then(function (snapshot) {
+                    const exsists = (snapshot.val() != null);
+                    if(exsists){                        
+                        var data = snapshot.val();
+                        var count = data.count
+                        var date = Date.now();
+                        var posted = Math.floor(date / 1000)                    
+                        notification = {
+                            id: postID,
+                            status: 0,
+                            posted:posted,                       
+                            notification: f.auth().currentUser.displayName+" and "+count+" others loved your post",
+                            count: count+1,
+                            image:that.state.image,
+                            flag:'l'
+                        }
+                        database.ref("notifications/" + that.state.userId + '/likes/' + postID).set(notification);
+                    }else{                        
+                        var date = Date.now();
+                        var posted = Math.floor(date / 1000)                        
+                        notification = {
+                            id: postID,
+                            status: 0,
+                            posted:posted,                       
+                            notification: f.auth().currentUser.displayName+" loved your post",
+                            count: 1,
+                            image:that.state.image,
+                            flag:'l'
+                        }
+                        console.log(notification)
+                        database.ref("notifications/" + that.state.userId + '/likes/' + postID).set(notification);
+                    }
+                })
+            }
         } else {
             var userId = f.auth().currentUser.uid;
             database.ref("posts/" + postID + '/likes/' + userId).remove();
+            var that = this
+            if(that.state.userId != f.auth().currentUser.uid){
+                database.ref('notifications').child(that.state.userId).child('likes').child(postID).once('value').then(function (snapshot) {
+                    const exsists = (snapshot.val() != null);
+                    if(exsists){
+                        var data = snapshot.val();
+                        var count = data.count
+                        var date = Date.now();
+                        var posted = Math.floor(date / 1000)  
+                        if(count>1){
+                            notification = {
+                                id: postID,
+                                status: 0,
+                                posted:posted,                       
+                                notification: count-1+" users loved your post",
+                                count: count-1,
+                                image:that.state.image,
+                                flag:'l'
+                            }
+                            database.ref("notifications/" + that.state.userId + '/likes/' + postID).set(notification);
+                        }else{
+                            database.ref("notifications/" + that.state.userId + '/likes/' + postID).remove();
+                        }                  
+                       
+                    }
+                })
+            }
         }
     }
     s4 = () => {
