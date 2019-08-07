@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Dimensions, ImageBackground, Alert, Image, StatusBar } from 'react-native';
+import { Text, View, TouchableOpacity, Dimensions, Alert, Image, StatusBar , PermissionsAndroid } from 'react-native';
 import Carousel from 'react-native-looped-carousel';
 import { SocialIcon } from 'react-native-elements';
 const { width, height } = Dimensions.get('window');
@@ -19,7 +19,31 @@ class Auth extends React.Component {
         };
     }
 
+    requestLocationPermision = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+                {
+                    title: 'Camera Permission',
+                    message:
+                        'Animal Rescue App needs access to your Location ' +
+                        'so you can find animals near you.',
+                    buttonNeutral: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log('You can use the camera');
+            } else {
+                console.log('Camera permission denied');
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
     componentDidMount() {
+        this.requestLocationPermision();
         GoogleSignin.configure({
             webClientId: webClinetID,
             offlineAccess: true
@@ -145,7 +169,8 @@ class Auth extends React.Component {
           dp,
           ageRange: [20, 30],
           ratings: 5,
-          numOfChcances: 1
+          numOfChcances: 1,
+          cover: 'https://firebasestorage.googleapis.com/v0/b/animal-res-app.appspot.com/o/Cover%2Fdog.jpg?alt=media&token=1ad5a80a-b436-4288-8f7c-a5b8c80edda0'
         };
         f.database()
           .ref("users")

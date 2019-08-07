@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, View, ProgressBarAndroid, FlatList, StatusBar, Animated, RefreshControl } from 'react-native';
+import { ScrollView, View, ProgressBarAndroid, FlatList, StatusBar, Animated, RefreshControl , PermissionsAndroid } from 'react-native';
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import Post from "../../components/HomePostComponent/HomePostComponent";
 import styles from "./style";
@@ -44,7 +44,9 @@ export default class Home extends Component {
             { latitude: lat2, longitude: lon2 }
         );
     }
-    componentDidMount = () => {
+
+    
+    componentDidMount = () => {        
         this.watchID = navigator.geolocation.watchPosition((position) => {
             this.setState({
                 latitude: position.coords.latitude,
@@ -334,7 +336,7 @@ export default class Home extends Component {
                         comment={() => navigate('Comment', { id: data.id })}
                         like={() => this.setLike(data.like, data.id)}
                         numberOfLikes={data.likecount}
-                        numberOfComments={1}
+                        numberOfComments={this.commentCount(data.id)}
                         type={data.type}
                     />
                 )
