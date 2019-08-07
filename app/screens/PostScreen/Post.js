@@ -417,6 +417,19 @@ export default class Post extends Component {
             id: id,
             type:this.state.type
         }
+        
+        var date = Date.now();
+        var posted = Math.floor(date / 1000)
+        notification = {
+            id: id,
+            status: 0,
+            posted: posted,
+            notification: f.auth().currentUser.displayName + " started to work on your post",            
+            image: this.state.image,
+            flag: 'h'
+        }
+        database.ref("notifications/" + ownerId + '/handle/' + id).set(notification);
+
         database.ref('/posts/' + id).update({ status: 1 });
         database.ref('users/' + ownerId + '/post/' + id).update({ status: 1 });
         database.ref('/ongoing/' + id).set(accept);
@@ -473,6 +486,21 @@ export default class Post extends Component {
             id: id,
             description: this.state.proofDescription,
         }
+
+        //notification start
+        var date = Date.now();
+        var posted = Math.floor(date / 1000)
+        notification = {
+            id: id,
+            status: 0,
+            posted: posted,
+            notification: f.auth().currentUser.displayName + " rescued the animal.",            
+            image: this.state.image,
+            flag: 'f'
+        }
+        database.ref("notifications/" + ownerId + '/finish/' + id).set(notification);
+        //notification ends 
+
         database.ref('/posts/' + id).update({ status: 2 });
         database.ref('users/' + ownerId + '/post/' + id).update({ status: 2 });
         database.ref('users/' + userId + '/handle/' + id).remove();
