@@ -6,7 +6,8 @@ const { width, height } = Dimensions.get('window');
 import styles from "./style";
 import PreLoader from "../../components/PreLoader/PreLoader"
 import { AccessToken, LoginManager } from "react-native-fbsdk";
-import { f, auth } from "../../config/firebaseConfig.js";
+import { f, auth, webClinetID } from "../../config/firebaseConfig.js";
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 class Auth extends React.Component {
 
     constructor(props) {
@@ -19,6 +20,10 @@ class Auth extends React.Component {
     }
 
     componentDidMount() {
+        GoogleSignin.configure({
+            webClientId: webClinetID,
+            offlineAccess: true
+        });
         var that = this;
         f.auth().onAuthStateChanged(function (user) {
             if (user) {
@@ -57,8 +62,8 @@ class Auth extends React.Component {
                         const facebookID = json.id;
                         const fbImage = `https://graph.facebook.com/${facebookID}/picture?height=${imageSize}`;
                         this.authenticate(data.accessToken).then(function (result) {
-                            const { uid } = result;                           
-                            _this.createUser(uid, json, token, fbImage);                            
+                            const { uid } = result;
+                            _this.createUser(uid, json, token, fbImage);
                         });
                     })
                     .catch(function (err) {
@@ -77,13 +82,13 @@ class Auth extends React.Component {
 
     createUser = (uid, userData, token, dp) => {
         this.setState({
-            loggedin:"checking"
+            loggedin: "checking"
         })
         const defaults = {
             uid,
             token,
             dp,
-            cover:'https://firebasestorage.googleapis.com/v0/b/animal-res-app.appspot.com/o/Cover%2Fdog.jpg?alt=media&token=1ad5a80a-b436-4288-8f7c-a5b8c80edda0'
+            cover: 'https://firebasestorage.googleapis.com/v0/b/animal-res-app.appspot.com/o/Cover%2Fdog.jpg?alt=media&token=1ad5a80a-b436-4288-8f7c-a5b8c80edda0'
 
         };
         f.database()
@@ -95,6 +100,61 @@ class Auth extends React.Component {
 
     };
 
+    _signIn = async () => {
+        var that = this;
+        try {
+            await GoogleSignin.hasPlayServices();
+            GoogleSignin.signIn()
+                .then(data => {
+                    const credential = f.auth.GoogleAuthProvider.credential(
+                        data.idToken,
+                        data.accessToken
+                    );
+                    console.log(data)
+                    f.auth()
+                        .signInWithCredential(credential)
+                        .then(user => {
+                            const newUser = {
+                                first_name: user.displayName,
+                                last_name: "",
+                                uid: user.uid
+                            };
+
+                            that.createGoogleUser(user.uid, newUser, user.photoURL);
+                        });
+                })               
+                .catch(error => {
+                    console.log(error);                                        
+                  });
+        } catch (error) {
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                console.log(error);
+            } else if (error.code === statusCodes.IN_PROGRESS) {
+                console.log(error);
+            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                console.log(error);
+            } else {
+                console.log(error);
+            }
+        }
+    };
+
+    createGoogleUser = (uid, userData, dp) => {
+        const defaults = {
+          uid,
+          dp,
+          ageRange: [20, 30],
+          ratings: 5,
+          numOfChcances: 1
+        };
+        f.database()
+          .ref("users")
+          .child(uid)
+          .update({ ...userData, ...defaults });
+
+          this.props.navigation.navigate("App");
+      };
+
     render() {
         const { navigate } = this.props.navigation;
         if (this.state.loggedin == "checking") {
@@ -105,7 +165,7 @@ class Auth extends React.Component {
             return (
                 // <PreLoader/>
                 <View style={styles.scrollContainer}>
-                    <StatusBar backgroundColor="#00063f" barStyle="light-content"/>
+                    <StatusBar backgroundColor="#00063f" barStyle="light-content" />
                     <View style={styles.container}>
                         <Image style={styles.logo} source={require("../../images/ara.png")} />
                         <Text style={styles.companyName}>Animal Rescue App</Text>
@@ -119,6 +179,12 @@ class Auth extends React.Component {
                         <TouchableOpacity onPress={() => this.onPressLogin()} style={[styles.buttonContainer]}>
                             <SocialIcon style={{ width: 200, alignSelf: 'center' }} title='Continue With Facebook' button type='facebook' />
                         </TouchableOpacity>
+                        <GoogleSigninButton
+                            style={{ width: 200, height: 48, borderRadius: 50 }}
+                            size={GoogleSigninButton.Size.Wide}
+                            color={GoogleSigninButton.Color.Dark}
+                            onPress={this._signIn}
+                            disabled={this.state.isSigninInProgress} />
                     </View>
                 </View>
 

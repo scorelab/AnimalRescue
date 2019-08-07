@@ -37,7 +37,7 @@ export default class DrawerPanel extends Component {
 
     logout = () => {        
         f.auth().signOut();
-        this.props.navigation.navigate('Auth')
+        // this.props.navigation.navigate('Auth')
     }
     render() {
         return (
