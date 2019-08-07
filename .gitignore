@@ -37,6 +37,8 @@ node_modules/*
 npm-debug.log
 yarn-error.log
 app/config/firebaseConfig.js
+android/app/google-services.json
+android/app/my-upload-key.keystore
 
 # BUCK
 buck-out/
