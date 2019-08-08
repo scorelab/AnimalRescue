@@ -155,6 +155,21 @@ export default class NotificationScreen extends Component {
                         return 's ago'
                 }
         }
+
+        markRead = (id,flag) => {
+                var userId = f.auth().currentUser.uid;
+                if(flag == "l"){
+                        database.ref('notifications/'+userId+"/likes/"+id).update({status:1})
+                }else if (flag == "c"){
+                        database.ref('notifications/'+userId+"/comments/"+id).update({status:1})
+                }else if(flag == "h"){
+                        database.ref('notifications/'+userId+"/handle/"+id).update({status:1})
+                }else if(flag == "f"){
+                        database.ref('notifications/'+userId+"/finish/"+id).update({status:1})
+                }               
+
+        }
+
         render() {
 
                 return (
@@ -190,7 +205,7 @@ export default class NotificationScreen extends Component {
                                                                         component: <Ionicons name={"check"} size={20} color={"#0D47A1"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
                                                                         backgroundColor: '#fff',
                                                                         underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-                                                                        onPress: () => { alert(item.name) }
+                                                                        onPress: () => { this.markRead(item.id, item.flag) }
                                                                 }
 
                                                         ];
@@ -204,7 +219,7 @@ export default class NotificationScreen extends Component {
                                                                 }
                                                         ];
 
-                                                        if (item.status == 1) {
+                                                        if (item.status == 1) {                                                                
                                                                 return (
                                                                         <Swipeout
                                                                                 rowIndex={index}
