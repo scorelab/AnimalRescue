@@ -1,13 +1,14 @@
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, Image, ScrollView, } from "react-native";
+import { Text, View, TouchableOpacity, Image, ScrollView } from "react-native";
 import styles from "./styles";
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { COLOR_PRIMARY } from "../../config/styles";
 import { f, auth, storage, database } from "../../config/firebaseConfig";
-export default class DrawerPanel extends Component {
-    constructor(props) {
-        super(props)
+import {NavigationActions,withNavigation } from 'react-navigation';
+class DrawerPanel extends Component {
+    constructor() {
+        super()
         this.state = {            
             profilePicture: null,
             coverPicture: null         
@@ -35,6 +36,11 @@ export default class DrawerPanel extends Component {
 
     }
 
+   
+    logout = () => {
+        this.props.navigation.navigate('Auth')      
+        f.auth().signOut();
+    }
    
     render() {
         return (
@@ -66,7 +72,7 @@ export default class DrawerPanel extends Component {
                             <Text style={styles.name}>Help Center</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.card} onPress={this.props.logout}>
+                    <TouchableOpacity style={styles.card} onPress={()=> this.logout()}>
                         <Ionicons name={"sign-out"} size={30} color={"#192f6a"} style={{ marginLeft: 20 }} />
                         <View style={styles.cardContent}>
                             <Text style={styles.name}>LogOut</Text>
@@ -77,3 +83,4 @@ export default class DrawerPanel extends Component {
         );
     }
 }
+export default withNavigation(DrawerPanel);
