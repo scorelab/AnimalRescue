@@ -1,7 +1,7 @@
 
 import React from 'react';
-import {createStackNavigator, createSwitchNavigator, createAppContainer, createMaterialTopTabNavigator, createDrawerNavigator, DrawerItem } from "react-navigation";
-import { StyleSheet, SafeAreaView, View, Container ,ScrollView} from 'react-native';
+import { createStackNavigator, createSwitchNavigator, createAppContainer, createMaterialTopTabNavigator, createDrawerNavigator, DrawerItem } from "react-navigation";
+import { StyleSheet, SafeAreaView, View, Container, ScrollView } from 'react-native';
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import Home from "./app/screens/HomeScreen/Home";
 import Auth from "./app/screens/AuthScreen/Auth";
@@ -12,7 +12,7 @@ import Post from "./app/screens/PostScreen/Post";
 import Comment from "./app/screens/CommentScreen/Comment";
 import ContronPanel from "./app/components/DrawerComponent/DrawerPanel"
 import { Badge } from 'react-native-elements';
-
+import {f} from "./app/config/firebaseConfig";
 console.disableYellowBox = true;
 
 export default class App extends React.Component {
@@ -30,6 +30,12 @@ export default class App extends React.Component {
   }
   componentDidMount() {
 
+  }
+
+  logout = () => {
+    // alert("pressed")
+    //this.props.navigation.navigate('Auth');
+    f.auth().signOut();
   }
   render() {
     const AppStack = createMaterialTopTabNavigator(
@@ -92,16 +98,18 @@ export default class App extends React.Component {
       }
     );
 
+    
+   
     const CustumDrawerComponent = (props) => (
-      <SafeAreaView style={{flex:1,backgroundColor:'#fff'}}>
-        <ContronPanel/>        
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <ContronPanel logout={() => this.logout()} />
       </SafeAreaView>
     )
     const AppDrawerNavigator = createDrawerNavigator({
       Dashboard: AppStack
-    },{
-      contentComponent:CustumDrawerComponent
-    }
+    }, {
+        contentComponent: CustumDrawerComponent
+      }
     );
 
     const Stack = createStackNavigator(
@@ -117,7 +125,7 @@ export default class App extends React.Component {
       }, {
         initialRouteName: "App",
         headerMode: "none"
-      }      
+      }
     )
 
     const SwitchNav = createSwitchNavigator({

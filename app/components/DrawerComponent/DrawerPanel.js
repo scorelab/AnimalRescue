@@ -35,10 +35,7 @@ export default class DrawerPanel extends Component {
 
     }
 
-    logout = () => {        
-        f.auth().signOut();
-        // this.props.navigation.navigate('Auth')
-    }
+   
     render() {
         return (
             <View style={styles.container}>
@@ -69,7 +66,7 @@ export default class DrawerPanel extends Component {
                             <Text style={styles.name}>Help Center</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.card} onPress={() => this.logout()}>
+                    <TouchableOpacity style={styles.card} onPress={this.props.logout}>
                         <Ionicons name={"sign-out"} size={30} color={"#192f6a"} style={{ marginLeft: 20 }} />
                         <View style={styles.cardContent}>
                             <Text style={styles.name}>LogOut</Text>

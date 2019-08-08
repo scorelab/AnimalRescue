@@ -373,7 +373,7 @@ export default class Post extends Component {
             xhr.open('GET', uri, true);
             xhr.send(null);
         });
-        var filePath = postId + '.' + that.state.currentFileType;
+        var filePath = postId + 'finished.' + that.state.currentFileType;
 
         var uploadTask = storage.ref('posts/images/' + this.state.animal).child(filePath).put(blob);
 

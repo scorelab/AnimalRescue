@@ -6,6 +6,7 @@ import styles from './style';
 import Swipeout from 'react-native-swipeout';
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import RNBottomActionSheet from 'react-native-bottom-action-sheet';
+import { f, auth, storage, database } from "../../config/firebaseConfig";
 export default class NotificationScreen extends Component {
         constructor(props) {
                 super(props);
@@ -21,7 +22,9 @@ export default class NotificationScreen extends Component {
                         ],
                         comment: '',
                         rowIndex: null,
-                        alterView: false
+                        alterView: false,
+                        notifications: [],
+                        notificationFinal: []
 
 
                 }
@@ -37,11 +40,126 @@ export default class NotificationScreen extends Component {
                 }
         }
 
+        componentDidMount = () => {
+                var userId = f.auth().currentUser.uid;
+                var that = this;                
+                database.ref('notifications').child(userId).on('value', (function (snapshot) {
+                        const exsists = (snapshot.val() != null);
+                        if (exsists) {
+                                data = snapshot.val();
+                                //console.log(data)
+                                likes = data.likes;
+                                // console.log(likes)
+                                comments = data.comments;
+                                handles = data.handle;
+                                finishes = data.finish;
+                                notificationArray = that.state.notifications
+                                for (var like in likes) {                                        
+                                        // console.log(like)
+                                        notificationArray.push({
+                                                id: likes[like].id,
+                                                flag: likes[like].flag,
+                                                status: likes[like].status,
+                                                notification: likes[like].notification,
+                                                posted: likes[like].posted,
+                                                image: likes[like].image
+                                        })
+                                }
+                                console.log(notificationArray)
+                                for (var comment in comments) {                                        
+                                        notificationArray.push({
+                                                id: comments[comment].id,
+                                                flag: comments[comment].flag,
+                                                status: comments[comment].status,
+                                                notification: comments[comment].notification,
+                                                posted: comments[comment].posted,
+                                                image: comments[comment].image
+                                        })
+                                }
+
+                                for (var handle in handles) {                                       
+                                        notificationArray.push({
+                                                id: handles[handle].id,
+                                                flag: handles[handle].flag,
+                                                status: handles[handle].status,
+                                                notification: handles[handle].notification,
+                                                posted: handles[handle].posted,
+                                                image: handles[handle].image
+                                        })
+                                }
+                                // console.log(notificationArray)
+                                for (var finish in finishes) {                                       
+                                        notificationArray.push({
+                                                id: finishes[finish].id,
+                                                flag: finishes[finish].flag,
+                                                status: finishes[finish].status,
+                                                notification: finishes[finish].notification,
+                                                posted: finishes[finish].posted,
+                                                image: finishes[finish].image
+                                        })
+                                }
+
+
+                                // console.log(that.state.notificationFinal)
+                                that.state.notifications.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                                that.state.notifications.reverse();
+                                that.setState({
+                                        notificationFinal: [],
+                                        notificationFinal: notificationArray,
+                                        notifications: []
+                                })
+                                that.state.notificationFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                                that.state.notificationFinal.reverse();
+                        }
+
+                       
+                }), function (errorObject) {
+                        console.log("The read failed: " + errorObject.code);
+                });
+        }
+        timeConvertor = (timestamp) => {
+                var a = new Date(timestamp * 1000);
+                var seconds = Math.floor((new Date() - a) / 1000);
+
+                var interval = Math.floor(seconds / 31536000);
+                if (interval >= 1) {
+                        return interval + ' Year' + this.timePlural(interval);
+                }
+
+                var interval = Math.floor(seconds / 2592000);
+                if (interval >= 1) {
+                        return interval + ' Month' + this.timePlural(interval);
+                }
+
+                var interval = Math.floor(seconds / 86400);
+                if (interval >= 1) {
+                        return interval + ' Day' + this.timePlural(interval);
+                }
+
+                var interval = Math.floor(seconds / 3600);
+                if (interval >= 1) {
+                        return interval + ' Hour' + this.timePlural(interval);
+                }
+
+                var interval = Math.floor(seconds / 60);
+                if (interval >= 1) {
+                        return interval + ' Minute' + this.timePlural(interval);
+                }
+
+                return Math.floor(seconds) + ' Second' + this.timePlural(seconds)
+        }
+        timePlural = (s) => {
+                if (s == 1) {
+                        return ' ago'
+                } else {
+                        return 's ago'
+                }
+        }
         render() {
 
                 return (
                         <View style={{ flex: 1, flexDirection: 'column', }}>
-                                <Header title={"Notifications"} height={50} drawer={() => this.props.navigation.openDrawer()}/>
+                                <Header title={"Notifications"} height={50} drawer={() => this.props.navigation.openDrawer()} />
                                 {/* <TouchableOpacity onPress={() => this.setState({ alterView: true })} style={{ justifyContent: 'flex-end', marginVertical: 10, flexDirection: 'row', marginRight: 10 }}>
                                         <Text style={{ color: "#007bff" }}>Mark All As Read</Text>
                                         <Ionicons name={"check-double"} size={12} color={"#007bff"} />
@@ -50,7 +168,7 @@ export default class NotificationScreen extends Component {
                                 <View style={styles.container}>
                                         <FlatList
                                                 style={styles.scrollView}
-                                                data={this.state.data}
+                                                data={this.state.notificationFinal}
                                                 extraData={this.state.rowIndex}
                                                 ItemSeparatorComponent={() => {
                                                         return (
@@ -86,7 +204,7 @@ export default class NotificationScreen extends Component {
                                                                 }
                                                         ];
 
-                                                        if (item.read == 1) {
+                                                        if (item.status == 1) {
                                                                 return (
                                                                         <Swipeout
                                                                                 rowIndex={index}
@@ -99,11 +217,10 @@ export default class NotificationScreen extends Component {
                                                                                 style={{ width: '100%', backgroundColor: 'transparent' }}
                                                                                 right={read}>
                                                                                 <NotificationBanner
-                                                                                        read={item.read}
+                                                                                        read={item.status}
                                                                                         image={{ uri: item.image }}
-                                                                                        name={item.name}
-                                                                                        posted={item.posted}
-                                                                                        text={item.text}
+                                                                                        posted={this.timeConvertor(item.posted)}
+                                                                                        text={item.notification}
                                                                                 />
                                                                         </Swipeout>
                                                                 );
@@ -120,11 +237,10 @@ export default class NotificationScreen extends Component {
                                                                                 style={{ width: '100%', backgroundColor: 'transparent' }}
                                                                                 right={unRead}>
                                                                                 <NotificationBanner
-                                                                                        read={item.read}
+                                                                                        read={item.status}
                                                                                         image={{ uri: item.image }}
-                                                                                        name={item.name}
-                                                                                        posted={item.posted}
-                                                                                        text={item.text}
+                                                                                        posted={this.timeConvertor(item.posted)}
+                                                                                        text={item.notification}
                                                                                 />
                                                                         </Swipeout>
                                                                 );
