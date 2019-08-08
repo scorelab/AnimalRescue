@@ -35,7 +35,6 @@ export default class Home extends Component {
             longitude: '',
             distancePress: false,
             timePress: true,
-            y:0
         }
 
     }
@@ -130,6 +129,29 @@ export default class Home extends Component {
 
                                 })
                             }
+                            // console.log(activePostArray);
+
+                            that.setState({
+                                activePostFinal: [],
+                                pendingPostFinal: [],
+                                finishedPostFinal: [],
+                                activePostFinal: activePostArray,
+                                pendingPostFinal: pendingPostArray,
+                                finishedPostFinal: finishedPostArray,
+                                loaded: true,
+                                activePost: [],
+                                pendingPost: [],
+                                finishedPost: []
+                            })
+
+                            that.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                            that.state.activePostFinal.reverse();
+
+                            that.state.pendingPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                            that.state.pendingPostFinal.reverse();
+
+                            that.state.finishedPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+                            that.state.finishedPostFinal.reverse();
 
                         }
 
@@ -137,18 +159,7 @@ export default class Home extends Component {
 
                 }
 
-                that.setState({
-                    activePostFinal: [],
-                    pendingPostFinal: [],
-                    finishedPostFinal: [],
-                    activePostFinal: activePostArray,
-                    pendingPostFinal: pendingPostArray,
-                    finishedPostFinal: finishedPostArray,
-                    loaded: true,
-                    activePost: [],
-                    pendingPost: [],
-                    finishedPost: []
-                })
+
 
                 console.log(that.state.activePostDistance);
             }
@@ -157,7 +168,20 @@ export default class Home extends Component {
         });
 
     }
+    handleScroll = (event) => {
+        this.scroll = event.nativeEvent.contentOffset.y
+        if (this.ready && this.scroll < SCROLL_TRIGGER) {
+            // load more stuff here
+        }
+    }
 
+    handleSize = (width, height) => {
+        if (this.scroll) {
+            const position = this.scroll + height - this.height
+            this.refs.sv.scrollTo({ x: 0, y: position, animated: true })
+        }
+        this.height = height
+    }
 
     timeConvertor = (timestamp) => {
         var a = new Date(timestamp * 1000);
@@ -323,16 +347,18 @@ export default class Home extends Component {
             return snapshot.numChildren()
         });
     }
-    handleScroll = (event) => {
-        this.setLike({
-            y:event.nativeEvent.contentOffset.y
-        })
-        console.log(event.nativeEvent.contentOffset.y);
-    }
     renderSection = () => {
 
 
         const { navigate } = this.props.navigation;
+        this.state.activePostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+        this.state.activePostFinal.reverse();
+
+        this.state.pendingPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+        this.state.pendingPostFinal.reverse();
+
+        this.state.finishedPostFinal.sort((a, b) => (a.posted > b.posted) ? 1 : ((b.posted > a.posted) ? -1 : 0));
+        this.state.finishedPostFinal.reverse();
         if (this.state.active == 0) {
             return this.state.activePostFinal.sort((a, b) => b.posted - a.posted).map((data, index) => {
                 return (
@@ -416,7 +442,7 @@ export default class Home extends Component {
                         press={() => navigate('Post', { id: data.id })}
                         liked={data.like}
                         comment={() => navigate('Comment', { id: data.id })}
-                        like={() => this.setLike(data.like, data.id, data.userId, data.image)}
+                        like={() => this.setLike(data.like, data.id)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
                         type={data.type}
@@ -439,7 +465,7 @@ export default class Home extends Component {
                         press={() => navigate('Post', { id: data.id })}
                         liked={data.like}
                         comment={() => navigate('Comment')}
-                        like={() => this.setLike(data.like, data.id, data.userId, data.image)}
+                        like={() => this.setLike(data.like, data.id)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
                         type={data.type}
@@ -460,7 +486,7 @@ export default class Home extends Component {
                         press={() => navigate('Post', { id: data.id })}
                         liked={data.like}
                         comment={() => navigate('Comment')}
-                        like={() => this.setLike(data.like, data.id, data.userId, data.image)}
+                        like={() => this.setLike(data.like, data.id)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
                         type={data.type}
@@ -491,18 +517,13 @@ export default class Home extends Component {
             <View style={styles.container}>
                 <StatusBar backgroundColor="#00063f" barStyle="light-content" />
                 <ScrollView
-                    
-                    scrollTo={({x: 0, y: this.state.y, animated: true})}
-                    onScroll={this.handleScroll}
                     style={{ backgroundColor: 'transparent', alignSelf: 'center' }}
                     contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
                     stickyHeaderIndices={[1]}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.refreshing}
-                            onRefresh={this._onRefresh}
-                        />
-                    }
+                    ref="sv"
+                    scrollEventThrottle={60}
+                    onScroll={this.handleScroll}
+                    onContentSizeChange={this.handleSize}
                 // showsVerticalScrollIndicator={false}
                 // onScroll={this.handleScroll}
                 // scrollEventThrottle={60}
