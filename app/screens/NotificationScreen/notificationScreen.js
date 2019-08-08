@@ -170,6 +170,25 @@ export default class NotificationScreen extends Component {
 
         }
 
+        viewNotification = (id,flag) => {
+                var userId = f.auth().currentUser.uid;
+                const { navigate } = this.props.navigation;
+                if(flag == "l"){
+                        database.ref('notifications/'+userId+"/likes/"+id).update({status:1})
+                        navigate('Post', { id: id });
+                }else if (flag == "c"){
+                        database.ref('notifications/'+userId+"/comments/"+id).update({status:1})
+                        navigate('Comment', { id: id })
+                }else if(flag == "h"){
+                        database.ref('notifications/'+userId+"/handle/"+id).update({status:1})
+                        navigate('Post', { id: id })
+                }else if(flag == "f"){
+                        database.ref('notifications/'+userId+"/finish/"+id).update({status:1})
+                        navigate('Post', { id: id })
+                }               
+
+        }
+
         render() {
 
                 return (
@@ -236,6 +255,7 @@ export default class NotificationScreen extends Component {
                                                                                         image={{ uri: item.image }}
                                                                                         posted={this.timeConvertor(item.posted)}
                                                                                         text={item.notification}
+                                                                                        onPress={()=> this.viewNotification(item.id, item.flag)}
                                                                                 />
                                                                         </Swipeout>
                                                                 );
@@ -256,6 +276,7 @@ export default class NotificationScreen extends Component {
                                                                                         image={{ uri: item.image }}
                                                                                         posted={this.timeConvertor(item.posted)}
                                                                                         text={item.notification}
+                                                                                        onPress={()=> this.viewNotification(item.id, item.flag)}
                                                                                 />
                                                                         </Swipeout>
                                                                 );

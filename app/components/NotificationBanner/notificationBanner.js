@@ -8,16 +8,16 @@ export default class CardView extends Component {
       return (
         <View style={styles.cardContainerRead}>
           <View style={styles.cardHedear}>
-            <TouchableOpacity style={styles.profilePicArea}>
+            <View style={styles.profilePicArea}>
               <Image style={styles.userImage} source={this.props.image} />
-            </TouchableOpacity>
+            </View>
             <View style={styles.userDetailArea}>
               <View style={styles.meaasageRow}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
-                  <Text style={styles.name}>{this.props.name}</Text>
+                  {/* <Text style={styles.name}>{this.props.name}</Text> */}
                   <Text style={styles.time}>{this.props.posted}</Text>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.props.onPress}>
                   <Text style={styles.meaasageText}>{this.props.text}</Text>
                 </TouchableOpacity>
               </View>
@@ -29,16 +29,16 @@ export default class CardView extends Component {
       return (
         <View style={styles.cardContainer}>
           <View style={styles.cardHedear}>
-            <TouchableOpacity style={styles.profilePicArea}>
+            <View style={styles.profilePicArea}>
               <Image style={styles.userImage} source={this.props.image} />
-            </TouchableOpacity>
+            </View>
             <View style={styles.userDetailArea}>
               <View style={styles.meaasageRow}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
-                  <Text style={styles.name}>{this.props.name}</Text>
+                  {/* <Text style={styles.name}>{this.props.name}</Text> */}
                   <Text style={styles.time}>{this.props.posted}</Text>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.props.onPress}>
                   <Text style={styles.meaasageText}>{this.props.text}</Text>
                 </TouchableOpacity>
               </View>
