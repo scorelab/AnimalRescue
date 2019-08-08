@@ -170,6 +170,20 @@ export default class NotificationScreen extends Component {
 
         }
 
+        deleteNotification = (id,flag) => {
+                var userId = f.auth().currentUser.uid;
+                if(flag == "l"){
+                        database.ref('notifications/'+userId+"/likes/"+id).update({status:2})
+                }else if (flag == "c"){
+                        database.ref('notifications/'+userId+"/comments/"+id).update({status:2})
+                }else if(flag == "h"){
+                        database.ref('notifications/'+userId+"/handle/"+id).update({status:2})
+                }else if(flag == "f"){
+                        database.ref('notifications/'+userId+"/finish/"+id).update({status:2})
+                }               
+
+        }
+
         viewNotification = (id,flag) => {
                 var userId = f.auth().currentUser.uid;
                 const { navigate } = this.props.navigation;
@@ -217,7 +231,7 @@ export default class NotificationScreen extends Component {
                                                                         component: <Ionicons name={"trash"} size={20} color={"#b00020"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
                                                                         backgroundColor: '#fff',
                                                                         underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-                                                                        onPress: () => { alert(item.name) }
+                                                                        onPress: () => { this.deleteNotification(item.id, item.flag) }
                                                                 },
                                                                 {
                                                                         text: 'Mark As Read',
@@ -234,7 +248,7 @@ export default class NotificationScreen extends Component {
                                                                         component: <Ionicons name={"trash"} size={20} color={"#b00020"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
                                                                         backgroundColor: '#fff',
                                                                         underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-                                                                        onPress: () => { alert(item.name) }
+                                                                        onPress: () => { this.deleteNotification(item.id, item.flag) }
                                                                 }
                                                         ];
 
@@ -259,7 +273,7 @@ export default class NotificationScreen extends Component {
                                                                                 />
                                                                         </Swipeout>
                                                                 );
-                                                        } else {
+                                                        } else if(item.status == 0) {
                                                                 return (
                                                                         <Swipeout
                                                                                 rowIndex={index}

@@ -1,14 +1,36 @@
 import React, { Component } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity , ImageBackground} from "react-native";
 import styles from "./style";
+import Video from 'react-native-video';
 
 export default class CardView extends Component {
+  constructor(props) {
+    super(props);
+    this.video = Video;
+
+  }
   render() {
     if (this.props.read == 1) {
       return (
         <View style={styles.cardContainerRead}>
           <View style={styles.cardHedear}>
             <View style={styles.profilePicArea}>
+              
+              {/* <Video
+                ref={(ref) => {
+                  this.player = ref
+                }}
+                source={this.props.image}
+                repeat={true}
+                fullscreen={true}
+                controls={false}
+                resizeMode='cover'
+                playWhenInactive={false}
+                muted={true}
+                paused={true}
+                style={styles.userImage}
+
+              /> */}
               <Image style={styles.userImage} source={this.props.image} />
             </View>
             <View style={styles.userDetailArea}>

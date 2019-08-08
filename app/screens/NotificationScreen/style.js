@@ -15,7 +15,7 @@ export default StyleSheet.create({
     },
     scrollView:{
         width:'100%',
-        backgroundColor:COLOR_GRAY,
+        backgroundColor:"#ffffff",
        
         
     },
