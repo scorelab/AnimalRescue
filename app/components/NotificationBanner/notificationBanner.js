@@ -15,8 +15,10 @@ export default class CardView extends Component {
         <View style={styles.cardContainerRead}>
           <View style={styles.cardHedear}>
             <View style={styles.profilePicArea}>
-
-              {/* <Video
+              {this.props.isImage == true ? (
+                <Image style={styles.userImage} source={this.props.image} />
+              ):(
+                <Video
                 ref={(ref) => {
                   this.player = ref
                 }}
@@ -27,11 +29,12 @@ export default class CardView extends Component {
                 resizeMode="cover"
                 playWhenInactive={false}
                 muted={true}
-                paused={true}
+                // paused={true}
                 style={styles.userImage}
 
-              /> */}
-              <Image style={styles.userImage} source={this.props.image} />
+              />
+              )}           
+              
             </View>
             <View style={styles.userDetailArea}>
               <View style={styles.meaasageRow}>

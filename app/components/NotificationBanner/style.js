@@ -56,34 +56,31 @@ export default StyleSheet.create({
         flexDirection: "row"
     },
     profilePicArea: {
-        flex: 0.25,
-        // width:deviceWidth * 0.2,
-        // backgroundColor:"red",
         alignItems: "center",
-        // justifyContent:"center"
+        alignSelf: "flex-start",
+        marginRight: 10,
+        marginLeft: -15,
+        overflow: "hidden",
+        width: 50,
+        height: 50,
+        borderRadius: 25,
     },
     userDetailArea: {
         flex: 0.75,
         paddingLeft: 8,
-        // width:deviceWidth * 0.8,
         flexDirection: "column",
-        // backgroundColor:"green"
     },
     userNameRow: {
         flex: 0.4,
-        // width:deviceWidth * 0.8,
-        // backgroundColor:"yellow",
         paddingTop: 10
     },
     meaasageRow: {
         flex: 0.6,
-        // width:deviceWidth * 0.8,
-        // backgroundColor:"blue"
     },
     userImage: {
-        width: 45,
-        height: 45,
-        borderRadius: 20,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
     },
     badgeCount: {
         backgroundColor: "#3d9bf9",
@@ -111,7 +108,6 @@ export default StyleSheet.create({
     thumbnailRow: {
         flex: 1,
         width: "100%",
-        // backgroundColor:"red",
         flexDirection: "row",
         justifyContent: "space-evenly",
         paddingTop: 30,
@@ -120,7 +116,6 @@ export default StyleSheet.create({
         paddingBottom: 30
     },
 
-    //Font styles
 
     nameText: {
         fontSize: 14,
@@ -129,7 +124,6 @@ export default StyleSheet.create({
     },
     meaasageText: {
         fontSize: 16,
-        // color:"#95a3ad"
     },
     paraText: {
         fontSize: 16,

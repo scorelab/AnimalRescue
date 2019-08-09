@@ -7,6 +7,7 @@ import Swipeout from "react-native-swipeout";
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import RNBottomActionSheet from "react-native-bottom-action-sheet";
 import { f, auth, storage, database } from "../../config/firebaseConfig";
+
 export default class NotificationScreen extends Component {
         constructor(props) {
                 super(props);
@@ -202,7 +203,9 @@ export default class NotificationScreen extends Component {
                 }
 
         }
-
+        isImageUrl = (url) => {
+                return url.includes("images");
+        }
         render() {
 
                 return (
@@ -270,6 +273,7 @@ export default class NotificationScreen extends Component {
                                                                                         posted={this.timeConvertor(item.posted)}
                                                                                         text={item.notification}
                                                                                         onPress={() => this.viewNotification(item.id, item.flag)}
+                                                                                        isImage = {this.isImageUrl(item.image)}
                                                                                 />
                                                                         </Swipeout>
                                                                 );

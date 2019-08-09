@@ -65,6 +65,8 @@ export default class HomePostComponent extends Component {
                     fullscreen={true}
                     controls={false}
                     resizeMode="cover"
+                    muted={true}
+                    // paused={true}
                     playWhenInactive={false}
                     style={style.postVideo}
 

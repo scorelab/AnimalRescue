@@ -442,7 +442,7 @@ export default class Home extends Component {
                         press={() => navigate("Post", { id: data.id })}
                         liked={data.like}
                         comment={() => navigate("Comment", { id: data.id })}
-                        like={() => this.setLike(data.like, data.id)}
+                        like={() => this.setLike(data.like, data.id, data.userId, data.image)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
                         type={data.type}
@@ -465,7 +465,7 @@ export default class Home extends Component {
                         press={() => navigate("Post", { id: data.id })}
                         liked={data.like}
                         comment={() => navigate("Comment")}
-                        like={() => this.setLike(data.like, data.id)}
+                        like={() => this.setLike(data.like, data.id, data.userId, data.image)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
                         type={data.type}
@@ -486,7 +486,7 @@ export default class Home extends Component {
                         press={() => navigate("Post", { id: data.id })}
                         liked={data.like}
                         comment={() => navigate("Comment")}
-                        like={() => this.setLike(data.like, data.id)}
+                        like={() => this.setLike(data.like, data.id, data.userId, data.image)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
                         type={data.type}

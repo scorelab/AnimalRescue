@@ -31,12 +31,12 @@ class Noti extends Component {
                 database.ref('notifications').child(userId).on('value', (function (snapshot) {
                     const exsists = (snapshot.val() != null);
                     if (exsists) {
-                        data = snapshot.val();
+                        var data = snapshot.val();
                         likes = data.likes;
                         comments = data.comments;
                         handles = data.handle;
                         finishes = data.finish;
-                        count = that.state.count
+                        var count = that.state.count
                         for (var like in likes) {
                             if (likes[like].status == 0) {
                                 count = count + 1;
