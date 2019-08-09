@@ -115,9 +115,16 @@ class Profile extends React.Component {
                     })
                 }
                 that.setState({
-                    postFinal: that.state.post,
-                    finishedFinal: that.state.finish,
-                    pendingFinal: that.state.pending
+                    postFinal:[],
+                    pendingFinal:[],
+                    finishedFinal:[],
+                    postFinal: postArray,
+                    finishedFinal: finishedFinal,
+                    pendingFinal: handleFinal,
+                    post:[],
+                    finish:[],
+                    pending:[]
+
                 })
                 // console.log(that.state.post);
             }

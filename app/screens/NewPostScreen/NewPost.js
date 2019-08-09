@@ -303,6 +303,7 @@ class NewPost extends React.Component {
     }
 
     setDatabse = async (imageURL, latitude, longitude) => {
+        alert("come")
         var date = Date.now();
         var postId = this.state.postId
         var userID = f.auth().currentUser.uid;
