@@ -7,7 +7,7 @@ export default StyleSheet.create({
     tabBarContainer: {
         flexDirection: "row",
         backgroundColor: "#192f6a",
-        width: "100%"
+        width: "100%",        
     },
     tabBarActive: {
         width: "25%",
@@ -16,11 +16,13 @@ export default StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#192f6a",
+        height:50
     },
     tabBar: {
         width: "25%",
         backgroundColor: "#192f6a",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        height:50
     },
 });
