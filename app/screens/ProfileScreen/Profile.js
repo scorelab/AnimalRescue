@@ -1,16 +1,16 @@
-import React from 'react';
-import { Text, View, Image, ScrollView, Linking, Dimensions, ImageBackground, ProgressBarAndroid } from 'react-native';
+import React from "react";
+import { Text, View, Image, ScrollView, Linking, Dimensions, ImageBackground, ProgressBarAndroid } from "react-native";
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import ProfileTabBar from "../../components/ProfileTabBar/ProfileBar";
 import styles from "./style";
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import ImagePicker from "react-native-image-picker";
-import { BallIndicator } from 'react-native-indicators';
+import { BallIndicator } from "react-native-indicators";
 import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_GRAY } from "../../config/styles";
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 import { f, auth, storage, database } from "../../config/firebaseConfig";
 import TouchableScale from "react-native-touchable-scale";
-import Video from 'react-native-video';
+import Video from "react-native-video";
 class Profile extends React.Component {
 
     constructor() {
@@ -39,19 +39,19 @@ class Profile extends React.Component {
             const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.CAMERA,
                 {
-                    title: 'Camera Permission',
+                    title: "Camera Permission",
                     message:
-                        'Animal Rescue App needs access to your camera ' +
-                        'so you can take awesome pictures.',
-                    buttonNeutral: 'Ask Me Later',
-                    buttonNegative: 'Cancel',
-                    buttonPositive: 'OK',
+                        "Animal Rescue App needs access to your camera " +
+                        "so you can take awesome pictures.",
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK",
                 },
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log('You can use the camera');
+                console.log("You can use the camera");
             } else {
-                console.log('Camera permission denied');
+                console.log("Camera permission denied");
             }
         } catch (err) {
             console.warn(err);
@@ -64,7 +64,7 @@ class Profile extends React.Component {
         })
         var that = this;
         let userId = f.auth().currentUser.uid;
-        database.ref('users').child(userId).on('value', (function (snapshot) {
+        database.ref("users").child(userId).on("value", (function (snapshot) {
             that.setState({
                 post: []
             })
@@ -115,9 +115,16 @@ class Profile extends React.Component {
                     })
                 }
                 that.setState({
-                    postFinal: that.state.post,
-                    finishedFinal: that.state.finish,
-                    pendingFinal: that.state.pending
+                    postFinal: [],
+                    pendingFinal: [],
+                    finishedFinal: [],
+                    postFinal: postArray,
+                    finishedFinal: finishedFinal,
+                    pendingFinal: handleFinal,
+                    post: [],
+                    finish: [],
+                    pending: []
+
                 })
                 // console.log(that.state.post);
             }
@@ -166,17 +173,17 @@ class Profile extends React.Component {
             };
             xhr.onerror = function (e) {
                 console.log(e);
-                reject(new TypeError('Network request failed'));
+                reject(new TypeError("Network request failed"));
             };
-            xhr.responseType = 'blob';
-            xhr.open('GET', uri, true);
+            xhr.responseType = "blob";
+            xhr.open("GET", uri, true);
             xhr.send(null);
         });
-        var filePath = userId + '.' + that.state.currentFileType;
+        var filePath = userId + "." + that.state.currentFileType;
 
-        var uploadTask = storage.ref('users/profilePictures/' + userId).child(filePath).put(blob);
+        var uploadTask = storage.ref("users/profilePictures/" + userId).child(filePath).put(blob);
 
-        uploadTask.on('state_changed', function (snapshot) {
+        uploadTask.on("state_changed", function (snapshot) {
             let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
             that.setState({
                 progress: progress
@@ -190,7 +197,7 @@ class Profile extends React.Component {
             });
             // alert("done");
             uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-                database.ref('users').child(userId).update({ dp: downloadURL });
+                database.ref("users").child(userId).update({ dp: downloadURL });
                 that.setState({
                     newProfileImage: null,
                     progress: 0,
@@ -236,17 +243,17 @@ class Profile extends React.Component {
             };
             xhr.onerror = function (e) {
                 console.log(e);
-                reject(new TypeError('Network request failed'));
+                reject(new TypeError("Network request failed"));
             };
-            xhr.responseType = 'blob';
-            xhr.open('GET', uri, true);
+            xhr.responseType = "blob";
+            xhr.open("GET", uri, true);
             xhr.send(null);
         });
-        var filePath = userId + '.' + that.state.currentFileType;
+        var filePath = userId + "." + that.state.currentFileType;
 
-        var uploadTask = storage.ref('users/coverPictures/' + userId).child(filePath).put(blob);
+        var uploadTask = storage.ref("users/coverPictures/" + userId).child(filePath).put(blob);
 
-        uploadTask.on('state_changed', function (snapshot) {
+        uploadTask.on("state_changed", function (snapshot) {
             let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
             that.setState({
                 progress: progress
@@ -259,7 +266,7 @@ class Profile extends React.Component {
                 progress: 100
             });
             uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-                database.ref('users').child(userId).update({ cover: downloadURL });
+                database.ref("users").child(userId).update({ cover: downloadURL });
                 that.setState({
                     newCoverPhoto: null,
                     progress: 0,
@@ -288,11 +295,11 @@ class Profile extends React.Component {
             return this.state.postFinal.map((data, index) => {
                 if (data.status <= 2) {
                     return (
-                        <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id })}>
+                        <TouchableScale onPress={() => this.props.navigation.navigate("Post", { id: data.id })}>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }, { backgroundColor: COLOR_GRAY }]}>
                                 {data.type == 0 ? (
                                     <ImageBackground source={{ uri: data.image }} style={styles.imageSquare}>
-                                        {/* <View style={[styles.imageLabel, { backgroundColor: 'red' }]}>
+                                        {/* <View style={[styles.imageLabel, { backgroundColor: "red" }]}>
                                             <Text style={styles.imageLabelText}>Active</Text>
                                         </View> */}
                                     </ImageBackground>
@@ -317,10 +324,10 @@ class Profile extends React.Component {
                     )
                 } else if (data.status == 1) {
                     return (
-                        <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id })}>
+                        <TouchableScale onPress={() => this.props.navigation.navigate("Post", { id: data.id })}>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
                                 <ImageBackground source={{ uri: data.image }} style={styles.imageSquare}>
-                                    {/* <View style={[styles.imageLabel, { backgroundColor: '#4885ed' }]}>
+                                    {/* <View style={[styles.imageLabel, { backgroundColor: "#4885ed" }]}>
                                         <Text style={styles.imageLabelText}>Ongoing</Text>
                                     </View> */}
                                 </ImageBackground>
@@ -329,10 +336,10 @@ class Profile extends React.Component {
                     )
                 } else {
                     return (
-                        <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id })}>
+                        <TouchableScale onPress={() => this.props.navigation.navigate("Post", { id: data.id })}>
                             <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
                                 <ImageBackground source={{ uri: data.image }} style={styles.imageSquare}>
-                                    {/* <View style={[styles.imageLabel, { backgroundColor: 'green' }]}>
+                                    {/* <View style={[styles.imageLabel, { backgroundColor: "green" }]}>
                                         <Text style={styles.imageLabelText}>Finished</Text>
                                     </View> */}
                                 </ImageBackground>
@@ -372,7 +379,7 @@ class Profile extends React.Component {
         } else if (this.state.active == 3) {
             return this.state.finishedFinal.map((data, index) => {
                 return (
-                    <TouchableScale onPress={() => this.props.navigation.navigate('Post', { id: data.id })}>
+                    <TouchableScale onPress={() => this.props.navigation.navigate("Post", { id: data.id })}>
                         <View key={index} style={[{ width: (width) / 3 }, { height: (width) / 3 }]}>
                             <Image source={{ uri: data.image }} style={styles.imageSquare} />
                         </View>
@@ -387,11 +394,11 @@ class Profile extends React.Component {
         var url = "https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=5.95492,80.554956"
         Linking.canOpenURL(url).then(supported => {
             if (!supported) {
-                console.log('Can\'t handle url: ' + url);
+                console.log("Can\"t handle url: " + url);
             } else {
                 return Linking.openURL(url);
             }
-        }).catch(err => console.error('An error occurred', err));
+        }).catch(err => console.error("An error occurred", err));
     }
 
 
@@ -403,21 +410,21 @@ class Profile extends React.Component {
                 <ScrollView style={{ marginBottom: 50 }} stickyHeaderIndices={[4]} showsVerticalScrollIndicator={false}>
                     {this.state.newCoverPhoto == null ? (
                         <View style={styles.header}>
-                            <Image style={{ width: '100%', height: '100%' }} source={{ uri: this.state.coverPicture }} />
+                            <Image style={{ width: "100%", height: "100%" }} source={{ uri: this.state.coverPicture }} />
                             <TouchableScale style={styles.editCover} onPress={() => this.editCoverPicture()}>
-                                <Ionicons name={'camera'} size={20} color={'#000'} />
+                                <Ionicons name={"camera"} size={20} color={"#000"} />
                                 <Text> EDIT</Text>
                             </TouchableScale >
                         </View>
                     ) : (
                             <View style={styles.header}>
-                                <Image style={{ width: '100%', height: '100%' }} source={{ uri: this.state.newCoverPhoto }} />
+                                <Image style={{ width: "100%", height: "100%" }} source={{ uri: this.state.newCoverPhoto }} />
                                 <TouchableScale style={styles.editCover} onPress={() => this.saveCoverPicture()}>
-                                    <Ionicons name={'check'} size={20} color={'#000'} />
+                                    <Ionicons name={"check"} size={20} color={"#000"} />
                                     <Text> Save</Text>
                                 </TouchableScale >
                                 <TouchableScale style={styles.cancleCover} onPress={() => this.setState({ newCoverPhoto: null })}>
-                                    <Ionicons name={'times'} size={20} color={'#000'} />
+                                    <Ionicons name={"times"} size={20} color={"#000"} />
                                     <Text> Cancel</Text>
                                 </TouchableScale >
                             </View>
@@ -430,15 +437,15 @@ class Profile extends React.Component {
                         )}
                     {this.state.newProfileImage == null ? (
                         <TouchableScale style={styles.editProfilePic} onPress={() => this.editProfilePicture()}>
-                            <Ionicons name={'camera'} size={15} color={'#000'} />
+                            <Ionicons name={"camera"} size={15} color={"#000"} />
                         </TouchableScale>
                     ) : (
                             <View style={styles.editActionView}>
                                 <TouchableScale style={styles.cancelProfilePicture} onPress={() => this.cancelProfilePicture()}>
-                                    <Ionicons name={'times'} size={15} color={'#000'} />
+                                    <Ionicons name={"times"} size={15} color={"#000"} />
                                 </TouchableScale>
                                 <TouchableScale style={styles.saveProfilePic} onPress={() => this.saveProfilePicture()}>
-                                    <Ionicons name={'check'} size={15} color={'#000'} />
+                                    <Ionicons name={"check"} size={15} color={"#000"} />
                                 </TouchableScale>
                             </View>
                         )}
@@ -459,8 +466,8 @@ class Profile extends React.Component {
                         onPress3={() => this.setState({ active: 3 })}
                     />
                     {this.state.active == 0 ? (
-                        <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
-                            <Image source={require('../../images/level10.png')} style={{ width: 120, height: 120 }} />
+                        <View style={{ justifyContent: "center", alignItems: "center", marginVertical: 10 }}>
+                            <Image source={require("../../images/level10.png")} style={{ width: 120, height: 120 }} />
                             <Text style={{ fontSize: 15 }}>Animal Helper Level 10</Text>
                         </View>
                     ) : (

@@ -17,39 +17,39 @@ export default StyleSheet.create({
         height: 200,
     },
     topView: {
-        alignItems: 'center',
+        alignItems: "center",
         marginTop: 10,
         marginHorizontal: 10,
-        justifyContent: 'center'
+        justifyContent: "center"
     },
     informationArea: {
-        alignItems: 'center',
+        alignItems: "center",
         marginTop: 10,
         marginHorizontal: 30,
-        justifyContent: 'center'
+        justifyContent: "center"
     },
     mapContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
         borderWidth: 0.8,
-        borderStyle: 'dashed',
-        width: '100%',
+        borderStyle: "dashed",
+        width: "100%",
         minHeight: 200,
     },
     name: {
         fontSize: 28,
         color: "#696969",
-        fontWeight: 'bold'
+        fontWeight: "bold"
     },
     price: {
         marginTop: 10,
         fontSize: 18,
         color: "green",
-        fontWeight: 'bold'
+        fontWeight: "bold"
     },
     description: {
-        textAlign: 'center',
+        textAlign: "center",
         marginTop: 10,
         color: "#696969",
     },
@@ -67,31 +67,31 @@ export default StyleSheet.create({
         height: 40,
         width: 40,
         borderRadius: 40,
-        borderColor: '#778899',
+        borderColor: "#778899",
         borderWidth: 1,
         marginHorizontal: 3,
-        backgroundColor: 'white',
+        backgroundColor: "white",
 
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
     },
     starContainer: {
-        justifyContent: 'center',
+        justifyContent: "center",
         marginHorizontal: 30,
-        flexDirection: 'row',
+        flexDirection: "row",
         marginTop: 20
     },
     contentColors: {
-        justifyContent: 'center',
+        justifyContent: "center",
         marginHorizontal: 30,
-        flexDirection: 'row',
+        flexDirection: "row",
         marginTop: 20
     },
     contentSize: {
-        justifyContent: 'center',
+        justifyContent: "center",
         marginHorizontal: 30,
-        flexDirection: 'row',
+        flexDirection: "row",
         marginTop: 20
     },
     separator: {
@@ -103,9 +103,9 @@ export default StyleSheet.create({
     shareButton: {
         marginTop: 10,
         height: 45,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
         borderRadius: 30,
         backgroundColor: "#00BFFF",
     },
@@ -124,23 +124,23 @@ export default StyleSheet.create({
         borderColor: "#192f6a",
     },
     profile: {
-        flexDirection: 'column',
+        flexDirection: "column",
         marginTop: 15,
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: "center",
+        justifyContent: "center"
     },
     profileName: {
         fontSize: 18,
         color: "#696969",
-        fontWeight: '600',
-        alignSelf: 'center',
+        fontWeight: "600",
+        alignSelf: "center",
         marginLeft: 10
     },
     image: {
         height: 250,
-        width: Dimensions.get('window').width,
-        alignSelf: 'stretch',
-        resizeMode: 'cover',
+        width: Dimensions.get("window").width,
+        alignSelf: "stretch",
+        resizeMode: "cover",
     },
     likeCommentArea: {
         width: "auto",
@@ -149,29 +149,29 @@ export default StyleSheet.create({
 
     },
     row: {
-        flexDirection: 'row',
-        width: '60%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center'
+        flexDirection: "row",
+        width: "60%",
+        justifyContent: "center",
+        alignItems: "center",
+        alignSelf: "center"
     },
     imageContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
         backgroundColor: COLOR_GRAY,
         borderWidth: 0.8,
-        borderStyle: 'dashed',
-        width: '90%',
+        borderStyle: "dashed",
+        width: "90%",
         height: deviceHeight * 0.45,
         marginVertical: 5
 
     },
     descriptiontStyle: {
-        alignSelf: 'flex-start',
-        flexWrap: 'wrap',
-        textAlignVertical: 'top',
-        textAlign: 'left',
+        alignSelf: "flex-start",
+        flexWrap: "wrap",
+        textAlignVertical: "top",
+        textAlign: "left",
         fontSize: 14,
         marginHorizontal: 5,
         marginTop: 10,
@@ -181,11 +181,11 @@ export default StyleSheet.create({
     overlay: {
         // 
         flex:1,
-        width:'100%',
+        width:"100%",
         height:deviceHeight,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        justifyContent: 'center',
-        alignItems: 'center'
+        backgroundColor: "rgba(0,0,0,0.5)",
+        justifyContent: "center",
+        alignItems: "center"
       },
 
 });

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
     StyleSheet,
     Text,
@@ -9,11 +9,11 @@ import {
     TextInput,
     KeyboardAvoidingView,
     ScrollView
-} from 'react-native';
+} from "react-native";
 import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";
 import styles from "./style";
 import Ionicons from "react-native-vector-icons/FontAwesome";
-import Swipeout from 'react-native-swipeout';
+import Swipeout from "react-native-swipeout";
 import { f, auth, storage, database } from "../../config/firebaseConfig";
 export default class Comment extends Component {
 
@@ -24,7 +24,7 @@ export default class Comment extends Component {
             comments: [],
             commentsFinal: [],
             loaded: false,
-            comment: '',
+            comment: "",
             rowIndex: null
         }
     }
@@ -33,7 +33,7 @@ export default class Comment extends Component {
         let params = this.props.navigation.state.params;
         // console.log(params)        
         if (params) {
-            database.ref('posts').child(this.state.postId).child('userId').once('value').then(function (snapshot) {
+            database.ref("posts").child(this.state.postId).child("userId").once("value").then(function (snapshot) {
                 const exist = (snapshot.val() != null);
                 if (exist) data = snapshot.val();
                 // console.log(data)
@@ -42,9 +42,18 @@ export default class Comment extends Component {
                 });
             });
 
+            database.ref("posts").child(this.state.postId).child("image").once("value").then(function (snapshot) {
+                const exist = (snapshot.val() != null);
+                if (exist) data = snapshot.val();
+                // console.log(data)
+                that.setState({
+                    image: data
+                });
+            });
+
             var that = this;
             let userId = f.auth().currentUser.uid;
-            database.ref('comments').child(this.state.postId).on('value', (function (snapshot) {
+            database.ref("comments").child(this.state.postId).on("value", (function (snapshot) {
                 const exist = (snapshot.val() != null);
                 console.log("comment " + exist)
                 if (exist) {
@@ -54,7 +63,7 @@ export default class Comment extends Component {
                     var commentArray = that.state.comments
                     for (var comments in commentData) {
                         let cmtOBJ = commentData[comments]
-                        database.ref('users').child(cmtOBJ.authorId).once('value').then(function (snapshot) {
+                        database.ref("users").child(cmtOBJ.authorId).once("value").then(function (snapshot) {
                             const exsists = (snapshot.val() != null);
                             if (exsists) {
                                 var data = snapshot.val();
@@ -100,7 +109,7 @@ export default class Comment extends Component {
     }
 
     uniqueId = () => {
-        return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4();
+        return this.s4() + this.s4() + "-" + this.s4() + "-" + this.s4() + "-" + this.s4() + "-" + this.s4() + "-" + this.s4() + "-" + this.s4();
     }
     timeConvertor = (timestamp) => {
         var a = new Date(timestamp * 1000);
@@ -108,36 +117,36 @@ export default class Comment extends Component {
 
         var interval = Math.floor(seconds / 31536000);
         if (interval >= 1) {
-            return interval + ' Year' + this.timePlural(interval);
+            return interval + " Year" + this.timePlural(interval);
         }
 
         var interval = Math.floor(seconds / 2592000);
         if (interval >= 1) {
-            return interval + ' Month' + this.timePlural(interval);
+            return interval + " Month" + this.timePlural(interval);
         }
 
         var interval = Math.floor(seconds / 86400);
         if (interval >= 1) {
-            return interval + ' Day' + this.timePlural(interval);
+            return interval + " Day" + this.timePlural(interval);
         }
 
         var interval = Math.floor(seconds / 3600);
         if (interval >= 1) {
-            return interval + ' Hour' + this.timePlural(interval);
+            return interval + " Hour" + this.timePlural(interval);
         }
 
         var interval = Math.floor(seconds / 60);
         if (interval >= 1) {
-            return interval + ' Minute' + this.timePlural(interval);
+            return interval + " Minute" + this.timePlural(interval);
         }
 
-        return Math.floor(seconds) + ' Second' + this.timePlural(seconds)
+        return Math.floor(seconds) + " Second" + this.timePlural(seconds)
     }
     timePlural = (s) => {
         if (s == 1) {
-            return ' ago'
+            return " ago"
         } else {
-            return 's ago'
+            return "s ago"
         }
     }
     onSwipeOpen(rowIndex) {
@@ -156,6 +165,7 @@ export default class Comment extends Component {
         var postId = this.state.postId;
         var newCommentId = this.uniqueId();
         var authorId = this.state.authorId;
+        var image = this.state.image;
         var date = Date.now();
         var posted = Math.floor(date / 1000)
 
@@ -165,16 +175,51 @@ export default class Comment extends Component {
             posted: posted,
             comment: comment
         }
-        database.ref('/comments/' + postId + '/' + newCommentId).set(newCommentObject);
+        database.ref("/comments/" + postId + "/" + newCommentId).set(newCommentObject);
         // alert(this.state.comment);
         this.setState({
-            comment: ''
+            comment: ""
         })
+        if (authorId != f.auth().currentUser.uid) {
+            database.ref("notifications").child(authorId).child("comments").child(postId).once("value").then(function (snapshot) {
+                const exsists = (snapshot.val() != null);
+                if (exsists) {
+                    var data = snapshot.val();
+                    var count = data.count
+                    var date = Date.now();
+                    var posted = Math.floor(date / 1000)
+                    notification = {
+                        id: postId,
+                        status: 0,
+                        posted: posted,
+                        notification: f.auth().currentUser.displayName + " and " + count + " others commented on your post",
+                        count: count + 1,
+                        image: image,
+                        flag: "c"
+                    }
+                    database.ref("notifications/" + authorId + "/comments/" + postId).set(notification);
+                } else {
+                    var date = Date.now();
+                    var posted = Math.floor(date / 1000)
+                    notification = {
+                        id: postId,
+                        status: 0,
+                        posted: posted,
+                        notification: f.auth().currentUser.displayName + " commented on your post",
+                        count: 1,
+                        image: image,
+                        flag: "c"
+                    }
+                    console.log(notification)
+                    database.ref("notifications/" + authorId + "/comments/" + postId).set(notification);
+                }
+            })
+        }
         this.textInput.clear()
     }
 
     deleteComment = (id, index) => {
-        database.ref('/comments/' + this.state.postId + '/' + id).remove();
+        database.ref("/comments/" + this.state.postId + "/" + id).remove();
         this.onSwipeClose(index);
     }
     render() {
@@ -201,13 +246,13 @@ export default class Comment extends Component {
                         const comments = item;
                         var swipeBtns = [
                             {
-                                component: <Ionicons name={"trash"} size={20} color={"#b00020"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
-                                backgroundColor: '#fff',
+                                component: <Ionicons name={"trash"} size={20} color={"#b00020"} style={{ alignSelf: "center", marginTop: "50%" }} />,
+                                backgroundColor: "#fff",
                                 authoClose: true,
                                 buttonWidth: 300,
                                 sensitivity: 100,
                                 stye: { width: 500 },
-                                underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+                                underlayColor: "rgba(0, 0, 0, 1, 0.6)",
                                 onPress: () => { this.deleteComment(comments.id, index) }
                             }
 
@@ -220,8 +265,8 @@ export default class Comment extends Component {
                                 onOpen={() => this.onSwipeOpen(index)}
                                 close={this.state.rowIndex !== index}
                                 onClose={() => this.onSwipeClose(index)}
-                                style={{ width: '100%', backgroundColor: 'transparent' }}
-                                right={this.state.authorId == f.auth().currentUser.uid || f.auth().currentUser.uid == comments.userId ? swipeBtns : ''}
+                                style={{ width: "100%", backgroundColor: "transparent" }}
+                                right={this.state.authorId == f.auth().currentUser.uid || f.auth().currentUser.uid == comments.userId ? swipeBtns : ""}
                             >
                                 <View style={styles.container}>
                                     <TouchableOpacity onPress={() => { }}>
@@ -234,7 +279,7 @@ export default class Comment extends Component {
                                                 {this.timeConvertor(comments.posted)}
                                             </Text>
                                         </View>
-                                        <Text rkType='primary3 mediumLine'>{comments.comment}</Text>
+                                        <Text rkType="primary3 mediumLine">{comments.comment}</Text>
                                     </View>
                                 </View>
                             </Swipeout>
@@ -245,7 +290,7 @@ export default class Comment extends Component {
                     <KeyboardAvoidingView style={styles.inputContainer} behavior="padding" enabled>
                         <TextInput style={styles.inputs}
                             placeholder="Write a Comment..."
-                            underlineColorAndroid='transparent'
+                            underlineColorAndroid="transparent"
                             multiline={true}
                             onChangeText={(text) => this.setState({ comment: text })}
                             ref={input => { this.textInput = input }} />

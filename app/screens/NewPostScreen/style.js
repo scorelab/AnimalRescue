@@ -7,70 +7,70 @@ let deviceHeight = Dimensions.get("window").height;
 export default StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: "center",
+        alignItems: "center"
     },
 
     stepContainer: {
         flex: 1,
-        height: '100%',
-        alignItems: 'center'
+        height: "100%",
+        alignItems: "center"
     },
     nextBtn: {
-        backgroundColor: '#192f6a',
+        backgroundColor: "#192f6a",
         borderRadius: 13,
         width: "80%",
-        marginHorizontal:10,
-        padding:10,
-        alignSelf:'center'
+        marginHorizontal: 10,
+        padding: 10,
+        alignSelf: "center"
     },
     preBtn: {
-        backgroundColor: '#192f6a',
+        backgroundColor: "#192f6a",
         borderRadius: 13,
         width: "80%",
-        padding:10,
-        marginHorizontal:10,
-        alignSelf:'center'
+        padding: 10,
+        marginHorizontal: 10,
+        alignSelf: "center"
     },
     nextBtnText: {
-        color: 'white',
+        color: "white",
         fontSize: 16,
-        textAlign: 'center'
+        textAlign: "center"
     },
     preBtnText: {
-        color: 'white',
+        color: "white",
         fontSize: 16,
-        textAlign: 'center'
+        textAlign: "center"
     },
     imageContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
         backgroundColor: COLOR_GRAY,
         borderWidth: 0.8,
-        borderStyle: 'dashed',
-        width: '90%',
+        borderStyle: "dashed",
+        width: "90%",
         height: deviceHeight * 0.45
 
     },
-    videoContainer: {        
-        width: '90%',
+    videoContainer: {
+        width: "90%",
         minHeight: deviceHeight * 0.45,
-        overflow: 'hidden'
+        overflow: "hidden"
 
     },
     textStyle: {
-        color: '#006381',
+        color: "#006381",
         marginTop: 20,
         fontSize: 20,
 
     },
 
     descriptiontStyle: {
-        alignSelf: 'flex-start',
-        flexWrap: 'wrap',
-        textAlignVertical: 'top',
-        textAlign: 'left',
+        alignSelf: "flex-start",
+        flexWrap: "wrap",
+        textAlignVertical: "top",
+        textAlign: "left",
         fontSize: 14,
         marginHorizontal: 12,
         marginVertical: 10,
@@ -79,12 +79,12 @@ export default StyleSheet.create({
     },
     mapContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
         backgroundColor: COLOR_GRAY,
         borderWidth: 0.8,
-        borderStyle: 'dashed',
-        width: '90%',
+        borderStyle: "dashed",
+        width: "90%",
         minHeight: deviceHeight * 0.47,
 
     },

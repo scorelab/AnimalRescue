@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import { ScrollView, View, ProgressBarAndroid, FlatList, StatusBar, Animated, RefreshControl } from 'react-native';
+import { ScrollView, View, ProgressBarAndroid, FlatList, StatusBar, Animated, RefreshControl, PermissionsAndroid } from "react-native";
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
 import Post from "../../components/HomePostComponent/HomePostComponent";
 import styles from "./style";
 import Ionicons from "react-native-vector-icons/FontAwesome";
 import { COLOR_PRIMARY, COLOR_GRAY } from "../../config/styles";
-import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+import GestureRecognizer, { swipeDirections } from "react-native-swipe-gestures";
 import HomeTabBar from "../../components/HomeTabBar/HomeTabBar";
 import { f, auth, storage, database } from "../../config/firebaseConfig";
-import { getDistance } from 'geolib';
+import { getDistance } from "geolib";
 const AnimatedHeader = Animated.createAnimatedComponent(Header);
 export default class Home extends Component {
     constructor() {
@@ -31,8 +31,8 @@ export default class Home extends Component {
             finishedPost: [],
             finishedPostFinal: [],
             finishedPostDistance: [],
-            latitude: '',
-            longitude: '',
+            latitude: "",
+            longitude: "",
             distancePress: false,
             timePress: true,
         }
@@ -44,6 +44,8 @@ export default class Home extends Component {
             { latitude: lat2, longitude: lon2 }
         );
     }
+
+
     componentDidMount = () => {
         this.watchID = navigator.geolocation.watchPosition((position) => {
             this.setState({
@@ -55,7 +57,7 @@ export default class Home extends Component {
         var that = this;
         const userId = f.auth().currentUser.uid;
 
-        database.ref('posts').orderByChild('posted').on('value', (function (snapshot) {
+        database.ref("posts").orderByChild("posted").on("value", (function (snapshot) {
             const exist = (snapshot.val() != null);
             if (exist) {
                 var data = snapshot.val();
@@ -67,7 +69,7 @@ export default class Home extends Component {
                     let postOBJ = postData[posts]
                     // console.log(postOBJ);
 
-                    database.ref('users').child(postOBJ.userId).once('value').then(function (snapshot) {
+                    database.ref("users").child(postOBJ.userId).once("value").then(function (snapshot) {
                         const exsists = (snapshot.val() != null);
                         if (exsists) {
                             var data = snapshot.val();
@@ -93,7 +95,7 @@ export default class Home extends Component {
                                     userId: postOBJ.userId,
                                     like: userLike > 0,
                                     likecount: count,
-                                    type:postOBJ.type,
+                                    type: postOBJ.type,
                                     distance: parseInt(that.distance(that.state.latitude, that.state.longitude, postOBJ.latitude, postOBJ.longitude))
                                 })
                             } else if (postOBJ.status == 1) {
@@ -107,7 +109,7 @@ export default class Home extends Component {
                                     userId: postOBJ.userId,
                                     like: userLike > 0,
                                     likecount: count,
-                                    type:postOBJ.type,
+                                    type: postOBJ.type,
                                     distance: that.distance(that.state.latitude, that.state.longitude, postOBJ.latitude, postOBJ.longitude)
 
                                 })
@@ -122,16 +124,17 @@ export default class Home extends Component {
                                     userId: postOBJ.userId,
                                     like: userLike > 0,
                                     likecount: count,
-                                    type:postOBJ.type,
+                                    type: postOBJ.type,
                                     distance: that.distance(that.state.latitude, that.state.longitude, postOBJ.latitude, postOBJ.longitude)
 
                                 })
                             }
                             // console.log(activePostArray);
+
                             that.setState({
-                                activePostFinal:[],
-                                pendingPostFinal:[],
-                                finishedPostFinal:[],
+                                activePostFinal: [],
+                                pendingPostFinal: [],
+                                finishedPostFinal: [],
                                 activePostFinal: activePostArray,
                                 pendingPostFinal: pendingPostArray,
                                 finishedPostFinal: finishedPostArray,
@@ -165,7 +168,20 @@ export default class Home extends Component {
         });
 
     }
+    handleScroll = (event) => {
+        this.scroll = event.nativeEvent.contentOffset.y
+        if (this.ready && this.scroll < SCROLL_TRIGGER) {
+            // load more stuff here
+        }
+    }
 
+    handleSize = (width, height) => {
+        if (this.scroll) {
+            const position = this.scroll + height - this.height
+            this.refs.sv.scrollTo({ x: 0, y: position, animated: true })
+        }
+        this.height = height
+    }
 
     timeConvertor = (timestamp) => {
         var a = new Date(timestamp * 1000);
@@ -173,40 +189,40 @@ export default class Home extends Component {
 
         var interval = Math.floor(seconds / 31536000);
         if (interval >= 1) {
-            return interval + ' Year' + this.timePlural(interval);
+            return interval + " Year" + this.timePlural(interval);
         }
 
         var interval = Math.floor(seconds / 2592000);
         if (interval >= 1) {
-            return interval + ' Month' + this.timePlural(interval);
+            return interval + " Month" + this.timePlural(interval);
         }
 
         var interval = Math.floor(seconds / 86400);
         if (interval >= 1) {
-            return interval + ' Day' + this.timePlural(interval);
+            return interval + " Day" + this.timePlural(interval);
         }
 
         var interval = Math.floor(seconds / 3600);
         if (interval >= 1) {
-            return interval + ' Hour' + this.timePlural(interval);
+            return interval + " Hour" + this.timePlural(interval);
         }
 
         var interval = Math.floor(seconds / 60);
         if (interval >= 1) {
-            return interval + ' Minute' + this.timePlural(interval);
+            return interval + " Minute" + this.timePlural(interval);
         }
 
-        return Math.floor(seconds) + ' Second' + this.timePlural(seconds)
+        return Math.floor(seconds) + " Second" + this.timePlural(seconds)
     }
     timePlural = (s) => {
         if (s == 1) {
-            return ' ago'
+            return " ago"
         } else {
-            return 's ago'
+            return "s ago"
         }
     }
 
-    setLike = (status, postID) => {
+    setLike = (status, postID, author, image) => {
         if (status == false) {
             var userId = f.auth().currentUser.uid;
             var set = 1;
@@ -214,11 +230,77 @@ export default class Home extends Component {
                 userId: userId,
                 status: 1
             }
-            database.ref("posts/" + postID + '/likes/' + userId).set(likeObj);
+            database.ref("posts/" + postID + "/likes/" + userId).set(likeObj);
+
+            //adding notifications
+            if (author != f.auth().currentUser.uid) {
+                database.ref("notifications").child(author).child("likes").child(postID).once("value").then(function (snapshot) {
+                    const exsists = (snapshot.val() != null);
+                    if (exsists) {
+                        var data = snapshot.val();
+                        var count = data.count
+                        var date = Date.now();
+                        var posted = Math.floor(date / 1000)
+                        notification = {
+                            id: postID,
+                            status: 0,
+                            posted: posted,
+                            notification: f.auth().currentUser.displayName + " and " + count + " others loved your post",
+                            count: count + 1,
+                            image: image,
+                            flag: "l"
+                        }
+                        database.ref("notifications/" + author + "/likes/" + postID).set(notification);
+                    } else {
+                        var date = Date.now();
+                        var posted = Math.floor(date / 1000)
+                        notification = {
+                            id: postID,
+                            status: 0,
+                            posted: posted,
+                            notification: f.auth().currentUser.displayName + " loved your post",
+                            count: 1,
+                            image: image,
+                            flag: "l"
+                        }
+                        console.log(notification)
+                        database.ref("notifications/" + author + "/likes/" + postID).set(notification);
+                    }
+                })
+            }
         } else {
             var userId = f.auth().currentUser.uid;
-            database.ref("posts/" + postID + '/likes/' + userId).remove();
+            database.ref("posts/" + postID + "/likes/" + userId).remove();
+
+            if (author != f.auth().currentUser.uid) {
+                database.ref("notifications").child(author).child("likes").child(postID).once("value").then(function (snapshot) {
+                    const exsists = (snapshot.val() != null);
+                    if (exsists) {
+                        var data = snapshot.val();
+                        var count = data.count
+                        var date = Date.now();
+                        var posted = Math.floor(date / 1000)
+                        if (count > 1) {
+                            notification = {
+                                id: postID,
+                                status: 0,
+                                posted: posted,
+                                notification: count - 1 + " users loved your post",
+                                count: count - 1,
+                                image: image,
+                                flag: "l"
+                            }
+                            database.ref("notifications/" + author + "/likes/" + postID).set(notification);
+                        } else {
+                            database.ref("notifications/" + author + "/likes/" + postID).remove();
+                        }
+
+                    }
+                })
+            }
         }
+
+
     }
     // setAnimation = () => {
     //     Animated.timing(this.state.height, {
@@ -229,8 +311,8 @@ export default class Home extends Component {
     // };
     // handleScroll = (event) => {
     //     var currentOffset = event.nativeEvent.contentOffset.y;
-    //     var direction = currentOffset > this.offset ? 'down' : 'up';
-    //     if (direction == 'down') {
+    //     var direction = currentOffset > this.offset ? "down" : "up";
+    //     if (direction == "down") {
     //         this.setState({
     //             visible: false
     //         })
@@ -261,7 +343,7 @@ export default class Home extends Component {
 
     commentCount = (id) => {
 
-        database.ref('comments').child(id).once('value').then(function (snapshot) {
+        database.ref("comments").child(id).once("value").then(function (snapshot) {
             return snapshot.numChildren()
         });
     }
@@ -287,10 +369,10 @@ export default class Home extends Component {
                         image={data.image}
                         description={data.description}
                         posted={this.timeConvertor(data.posted)}
-                        press={() => navigate('Post', { id: data.id })}
+                        press={() => navigate("Post", { id: data.id })}
                         liked={data.like}
-                        comment={() => navigate('Comment', { id: data.id })}
-                        like={() => this.setLike(data.like, data.id)}
+                        comment={() => navigate("Comment", { id: data.id })}
+                        like={() => this.setLike(data.like, data.id, data.userId, data.image)}
                         numberOfLikes={data.likecount}
                         numberOfComments={this.commentCount(data.id)}
                         type={data.type}
@@ -309,10 +391,10 @@ export default class Home extends Component {
                         image={data.image}
                         description={data.description}
                         posted={this.timeConvertor(data.posted)}
-                        press={() => navigate('Post', { id: data.id })}
+                        press={() => navigate("Post", { id: data.id })}
                         liked={data.like}
-                        comment={() => navigate('Comment', { id: data.id })}
-                        like={() => this.setLike(data.like, data.id)}
+                        comment={() => navigate("Comment", { id: data.id })}
+                        like={() => this.setLike(data.like, data.id, data.userId, data.image)}
                         numberOfLikes={data.likecount}
                         numberOfComments={this.commentCount(data.id)}
                         type={data.type}
@@ -329,12 +411,12 @@ export default class Home extends Component {
                         image={data.image}
                         description={data.description}
                         posted={this.timeConvertor(data.posted)}
-                        press={() => navigate('Post', { id: data.id })}
+                        press={() => navigate("Post", { id: data.id })}
                         liked={data.like}
-                        comment={() => navigate('Comment', { id: data.id })}
-                        like={() => this.setLike(data.like, data.id)}
+                        comment={() => navigate("Comment", { id: data.id })}
+                        like={() => this.setLike(data.like, data.id, data.userId, data.image)}
                         numberOfLikes={data.likecount}
-                        numberOfComments={1}
+                        numberOfComments={this.commentCount(data.id)}
                         type={data.type}
                     />
                 )
@@ -357,10 +439,10 @@ export default class Home extends Component {
                         image={data.image}
                         description={data.description}
                         posted={this.timeConvertor(data.posted)}
-                        press={() => navigate('Post', { id: data.id })}
+                        press={() => navigate("Post", { id: data.id })}
                         liked={data.like}
-                        comment={() => navigate('Comment', { id: data.id })}
-                        like={() => this.setLike(data.like, data.id)}
+                        comment={() => navigate("Comment", { id: data.id })}
+                        like={() => this.setLike(data.like, data.id, data.userId, data.image)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
                         type={data.type}
@@ -380,10 +462,10 @@ export default class Home extends Component {
                         image={data.image}
                         description={data.description}
                         posted={this.timeConvertor(data.posted)}
-                        press={() => navigate('Post', { id: data.id })}
+                        press={() => navigate("Post", { id: data.id })}
                         liked={data.like}
-                        comment={() => navigate('Comment')}
-                        like={() => this.setLike(data.like, data.id)}
+                        comment={() => navigate("Comment")}
+                        like={() => this.setLike(data.like, data.id, data.userId, data.image)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
                         type={data.type}
@@ -401,10 +483,10 @@ export default class Home extends Component {
                         image={data.image}
                         description={data.description}
                         posted={this.timeConvertor(data.posted)}
-                        press={() => navigate('Post', { id: data.id })}
+                        press={() => navigate("Post", { id: data.id })}
                         liked={data.like}
-                        comment={() => navigate('Comment')}
-                        like={() => this.setLike(data.like, data.id)}
+                        comment={() => navigate("Comment")}
+                        like={() => this.setLike(data.like, data.id, data.userId, data.image)}
                         numberOfLikes={data.likecount}
                         numberOfComments={1}
                         type={data.type}
@@ -435,15 +517,13 @@ export default class Home extends Component {
             <View style={styles.container}>
                 <StatusBar backgroundColor="#00063f" barStyle="light-content" />
                 <ScrollView
-                    style={{ backgroundColor: 'transparent', alignSelf: 'center' }}
-                    contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+                    style={{ backgroundColor: "transparent", alignSelf: "center" }}
+                    contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
                     stickyHeaderIndices={[1]}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.refreshing}
-                            onRefresh={this._onRefresh}
-                        />
-                    }
+                    ref="sv"
+                    scrollEventThrottle={60}
+                    onScroll={this.handleScroll}
+                    onContentSizeChange={this.handleSize}
                 // showsVerticalScrollIndicator={false}
                 // onScroll={this.handleScroll}
                 // scrollEventThrottle={60}

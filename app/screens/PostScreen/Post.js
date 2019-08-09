@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
     StyleSheet,
     Text,
@@ -11,17 +11,17 @@ import {
     KeyboardAvoidingView,
     TextInput,
     ProgressBarAndroid
-} from 'react-native';
+} from "react-native";
 import ModalHeader from "../../components/ModalHeaderNavigationBar/modalHeaderNavigationBar";
 import styles from "./style";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import HeaderImageScrollView, { TriggeringView } from 'react-native-image-header-scroll-view';
+import HeaderImageScrollView, { TriggeringView } from "react-native-image-header-scroll-view";
 import Icon from "react-native-vector-icons/FontAwesome";
-import * as Animatable from 'react-native-animatable';
+import * as Animatable from "react-native-animatable";
 import TouchableScale from "react-native-touchable-scale";
 import { f, auth, storage, database } from "../../config/firebaseConfig";
-import { COLOR_PRIMARY } from '../../config/styles';
-import Video from 'react-native-video';
+import { COLOR_PRIMARY } from "../../config/styles";
+import Video from "react-native-video";
 import ImagePicker from "react-native-image-picker";
 export default class Post extends Component {
 
@@ -40,7 +40,7 @@ export default class Post extends Component {
             control: false,
             proof: false,
             pickedImage: null,
-            proofDescription: '',
+            proofDescription: "",
             progress: 0,
             uploading: false
         }
@@ -55,7 +55,7 @@ export default class Post extends Component {
             var that = this;
 
             var userId = f.auth().currentUser.uid
-            database.ref('posts').child(params.id).on('value', (function (snapshot) {
+            database.ref("posts").child(params.id).on("value", (function (snapshot) {
                 const exist = (snapshot.val() != null);
                 // console.log(exist)
                 if (exist) {
@@ -100,11 +100,11 @@ export default class Post extends Component {
                     })
 
                     if (data.status == 1) {
-                        database.ref('ongoing').child(params.id).child('handlerId').once('value').then(function (snapshot) {
+                        database.ref("ongoing").child(params.id).child("handlerId").once("value").then(function (snapshot) {
                             const exist = (snapshot.val() != null);
                             if (exist) {
                                 hData = snapshot.val();
-                                database.ref('users').child(hData).once('value').then(function (snapshot) {
+                                database.ref("users").child(hData).once("value").then(function (snapshot) {
                                     const exsists = (snapshot.val() != null);
                                     if (exsists) {
                                         var data = snapshot.val();
@@ -122,7 +122,7 @@ export default class Post extends Component {
                                 });
                             }
                         }).catch((error) => console.log(error))
-                        database.ref('ongoing').child(params.id).child('posted').once('value').then(function (snapshot) {
+                        database.ref("ongoing").child(params.id).child("posted").once("value").then(function (snapshot) {
                             const exist = (snapshot.val() != null);
                             if (exist) {
                                 hData = snapshot.val();
@@ -134,11 +134,11 @@ export default class Post extends Component {
                     }
 
                     if (data.status == 2) {
-                        database.ref('finshed').child(params.id).once('value').then(function (snapshot) {
+                        database.ref("finshed").child(params.id).once("value").then(function (snapshot) {
                             const exist = (snapshot.val() != null);
                             if (exist) {
                                 hData = snapshot.val();
-                                database.ref('users').child(hData.handlerId).once('value').then(function (snapshot) {
+                                database.ref("users").child(hData.handlerId).once("value").then(function (snapshot) {
                                     const exsists = (snapshot.val() != null);
                                     if (exsists) {
                                         var data = snapshot.val();
@@ -159,7 +159,7 @@ export default class Post extends Component {
                                 });
                             }
                         }).catch((error) => console.log(error))
-                        // database.ref('finshed').child(params.id).child('posted').once('value').then(function (snapshot) {
+                        // database.ref("finshed").child(params.id).child("posted").once("value").then(function (snapshot) {
                         //     const exist = (snapshot.val() != null);
                         //     if (exist) {
                         //         hData = snapshot.val();
@@ -168,7 +168,7 @@ export default class Post extends Component {
                         //         });
                         //     }
                         // }).catch((error) => console.log(error))
-                        // database.ref('finshed').child(params.id).child('image').once('value').then(function (snapshot) {
+                        // database.ref("finshed").child(params.id).child("image").once("value").then(function (snapshot) {
                         //     const exist = (snapshot.val() != null);
                         //     if (exist) {
                         //         hData = snapshot.val();
@@ -180,7 +180,7 @@ export default class Post extends Component {
                     }
                     //that.mapView.animateToRegion(region, 1000);
                     var postArray = that.state.post
-                    database.ref('users').child(data.userId).once('value').then(function (snapshot) {
+                    database.ref("users").child(data.userId).once("value").then(function (snapshot) {
                         const exsists = (snapshot.val() != null);
                         if (exsists) {
                             var data = snapshot.val();
@@ -207,17 +207,17 @@ export default class Post extends Component {
     clickEventListener() {
         // Alert.alert("Success", "Product has beed added to cart")
         const { navigate } = this.props.navigation;
-        navigate('Comment')
+        navigate("Comment")
     }
     openMap = () => {
         var url = "https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=" + this.state.latitude + "," + this.state.longitude;
         Linking.canOpenURL(url).then(supported => {
             if (!supported) {
-                console.log('Can\'t handle url: ' + url);
+                console.log("Can\"t handle url: " + url);
             } else {
                 return Linking.openURL(url);
             }
-        }).catch(err => console.error('An error occurred', err));
+        }).catch(err => console.error("An error occurred", err));
     }
     navBar = () => {
         this.navTitleView.fadeInUp(200)
@@ -232,36 +232,36 @@ export default class Post extends Component {
 
         var interval = Math.floor(seconds / 31536000);
         if (interval >= 1) {
-            return interval + ' Year' + this.timePlural(interval);
+            return interval + " Year" + this.timePlural(interval);
         }
 
         var interval = Math.floor(seconds / 2592000);
         if (interval >= 1) {
-            return interval + ' Month' + this.timePlural(interval);
+            return interval + " Month" + this.timePlural(interval);
         }
 
         var interval = Math.floor(seconds / 86400);
         if (interval >= 1) {
-            return interval + ' Day' + this.timePlural(interval);
+            return interval + " Day" + this.timePlural(interval);
         }
 
         var interval = Math.floor(seconds / 3600);
         if (interval >= 1) {
-            return interval + ' Hour' + this.timePlural(interval);
+            return interval + " Hour" + this.timePlural(interval);
         }
 
         var interval = Math.floor(seconds / 60);
         if (interval >= 1) {
-            return interval + ' Minute' + this.timePlural(interval);
+            return interval + " Minute" + this.timePlural(interval);
         }
 
-        return Math.floor(seconds) + ' Second' + this.timePlural(seconds)
+        return Math.floor(seconds) + " Second" + this.timePlural(seconds)
     }
     timePlural = (s) => {
         if (s == 1) {
-            return ' ago'
+            return " ago"
         } else {
-            return 's ago'
+            return "s ago"
         }
     }
     setLike = (postID) => {
@@ -272,10 +272,74 @@ export default class Post extends Component {
                 userId: userId,
                 status: 1
             }
-            database.ref("posts/" + postID + '/likes/' + userId).set(likeObj);
+            database.ref("posts/" + postID + "/likes/" + userId).set(likeObj);
+            //adding notifications
+            var that = this
+            if (that.state.userId != f.auth().currentUser.uid) {
+                database.ref("notifications").child(that.state.userId).child("likes").child(postID).once("value").then(function (snapshot) {
+                    const exsists = (snapshot.val() != null);
+                    if (exsists) {
+                        var data = snapshot.val();
+                        var count = data.count
+                        var date = Date.now();
+                        var posted = Math.floor(date / 1000)
+                        notification = {
+                            id: postID,
+                            status: 0,
+                            posted: posted,
+                            notification: f.auth().currentUser.displayName + " and " + count + " others loved your post",
+                            count: count + 1,
+                            image: that.state.image,
+                            flag: "l"
+                        }
+                        database.ref("notifications/" + that.state.userId + "/likes/" + postID).set(notification);
+                    } else {
+                        var date = Date.now();
+                        var posted = Math.floor(date / 1000)
+                        notification = {
+                            id: postID,
+                            status: 0,
+                            posted: posted,
+                            notification: f.auth().currentUser.displayName + " loved your post",
+                            count: 1,
+                            image: that.state.image,
+                            flag: "l"
+                        }
+                        console.log(notification)
+                        database.ref("notifications/" + that.state.userId + "/likes/" + postID).set(notification);
+                    }
+                })
+            }
         } else {
             var userId = f.auth().currentUser.uid;
-            database.ref("posts/" + postID + '/likes/' + userId).remove();
+            database.ref("posts/" + postID + "/likes/" + userId).remove();
+            var that = this
+            if (that.state.userId != f.auth().currentUser.uid) {
+                database.ref("notifications").child(that.state.userId).child("likes").child(postID).once("value").then(function (snapshot) {
+                    const exsists = (snapshot.val() != null);
+                    if (exsists) {
+                        var data = snapshot.val();
+                        var count = data.count
+                        var date = Date.now();
+                        var posted = Math.floor(date / 1000)
+                        if (count > 1) {
+                            notification = {
+                                id: postID,
+                                status: 0,
+                                posted: posted,
+                                notification: count - 1 + " users loved your post",
+                                count: count - 1,
+                                image: that.state.image,
+                                flag: "l"
+                            }
+                            database.ref("notifications/" + that.state.userId + "/likes/" + postID).set(notification);
+                        } else {
+                            database.ref("notifications/" + that.state.userId + "/likes/" + postID).remove();
+                        }
+
+                    }
+                })
+            }
         }
     }
     s4 = () => {
@@ -283,7 +347,7 @@ export default class Post extends Component {
     }
 
     uniqueId = () => {
-        return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4();
+        return this.s4() + this.s4() + "-" + this.s4() + "-" + this.s4() + "-" + this.s4() + "-" + this.s4() + "-" + this.s4() + "-" + this.s4();
     }
 
     uploadImage = async () => {
@@ -303,17 +367,17 @@ export default class Post extends Component {
             };
             xhr.onerror = function (e) {
                 console.log(e);
-                reject(new TypeError('Network request failed'));
+                reject(new TypeError("Network request failed"));
             };
-            xhr.responseType = 'blob';
-            xhr.open('GET', uri, true);
+            xhr.responseType = "blob";
+            xhr.open("GET", uri, true);
             xhr.send(null);
         });
-        var filePath = postId + '.' + that.state.currentFileType;
+        var filePath = postId + "finished." + that.state.currentFileType;
 
-        var uploadTask = storage.ref('posts/images/' + this.state.animal).child(filePath).put(blob);
+        var uploadTask = storage.ref("posts/images/" + this.state.animal).child(filePath).put(blob);
 
-        uploadTask.on('state_changed', function (snapshot) {
+        uploadTask.on("state_changed", function (snapshot) {
             let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
             that.setState({
                 progress: progress
@@ -351,12 +415,25 @@ export default class Post extends Component {
             image: this.state.image,
             status: 1,
             id: id,
-            type:this.state.type
+            type: this.state.type
         }
-        database.ref('/posts/' + id).update({ status: 1 });
-        database.ref('users/' + ownerId + '/post/' + id).update({ status: 1 });
-        database.ref('/ongoing/' + id).set(accept);
-        database.ref('users/' + userId + '/handle/' + id).set(mentor);
+
+        var date = Date.now();
+        var posted = Math.floor(date / 1000)
+        notification = {
+            id: id,
+            status: 0,
+            posted: posted,
+            notification: f.auth().currentUser.displayName + " started to work on your post",
+            image: this.state.image,
+            flag: "h"
+        }
+        database.ref("notifications/" + ownerId + "/handle/" + id).set(notification);
+
+        database.ref("/posts/" + id).update({ status: 1 });
+        database.ref("users/" + ownerId + "/post/" + id).update({ status: 1 });
+        database.ref("/ongoing/" + id).set(accept);
+        database.ref("users/" + userId + "/handle/" + id).set(mentor);
 
     }
 
@@ -375,7 +452,7 @@ export default class Post extends Component {
         })
     }
     selectPhoto = () => {
-        ImagePicker.showImagePicker({ title: "Pick an Image", maxWidth: 800, maxHeight: 600, mediaType: 'photo' }, res => {
+        ImagePicker.showImagePicker({ title: "Pick an Image", maxWidth: 800, maxHeight: 600, mediaType: "photo" }, res => {
             if (res.didCancel) {
                 console.log("User cancelled!");
             } else if (res.error) {
@@ -409,12 +486,27 @@ export default class Post extends Component {
             id: id,
             description: this.state.proofDescription,
         }
-        database.ref('/posts/' + id).update({ status: 2 });
-        database.ref('users/' + ownerId + '/post/' + id).update({ status: 2 });
-        database.ref('users/' + userId + '/handle/' + id).remove();
-        database.ref('/ongoing/' + id).remove();
-        database.ref('/finshed/' + id).set(done);
-        database.ref('users/' + userId + '/finished/' + id).set(finished);
+
+        //notification start
+        var date = Date.now();
+        var posted = Math.floor(date / 1000)
+        notification = {
+            id: id,
+            status: 0,
+            posted: posted,
+            notification: f.auth().currentUser.displayName + " rescued the animal.",
+            image: this.state.image,
+            flag: "f"
+        }
+        database.ref("notifications/" + ownerId + "/finish/" + id).set(notification);
+        //notification ends 
+
+        database.ref("/posts/" + id).update({ status: 2 });
+        database.ref("users/" + ownerId + "/post/" + id).update({ status: 2 });
+        database.ref("users/" + userId + "/handle/" + id).remove();
+        database.ref("/ongoing/" + id).remove();
+        database.ref("/finshed/" + id).set(done);
+        database.ref("users/" + userId + "/finished/" + id).set(finished);
         this.setState({
             uploading: false,
             proof: false
@@ -457,7 +549,7 @@ export default class Post extends Component {
                                 )
                             } else {
                                 return (
-                                    // <View style={{alignItems:'center', justifyContent:'center', width:'100%', backgroundColor:COLOR_GRAY}}>
+                                    // <View style={{alignItems:"center", justifyContent:"center", width:"100%", backgroundColor:COLOR_GRAY}}>
                                     <Video
                                         ref={(ref) => {
                                             this.player = ref
@@ -469,13 +561,13 @@ export default class Post extends Component {
                                         fullscreen={true}
                                         controls={false}
                                         style={{
-                                            position: 'absolute',
+                                            position: "absolute",
                                             top: 0,
                                             left: 0,
                                             bottom: 0,
                                             right: 0,
-                                            width: '100%',
-                                            alignSelf: 'center'
+                                            width: "100%",
+                                            alignSelf: "center"
                                         }} />
                                     // </View>
 
@@ -489,7 +581,7 @@ export default class Post extends Component {
 
                         renderFixedForeground={() => (
                             <Animatable.View
-                                style={{ height: 'auto', width: "100%" }}
+                                style={{ height: "auto", width: "100%" }}
                                 ref={navTitleView => {
                                     this.navTitleView = navTitleView;
                                 }}
@@ -561,22 +653,22 @@ export default class Post extends Component {
 
                             <TouchableScale onPress={() => this.openMap()}
                                 style={{
-                                    position: 'absolute',//use absolute position to show button on top of the map
-                                    top: '70%', //for center align
+                                    position: "absolute",//use absolute position to show button on top of the map
+                                    top: "70%", //for center align
                                     right: 5,
-                                    alignSelf: 'flex-end', //for align to right                                                               
-                                    width: 'auto',
+                                    alignSelf: "flex-end", //for align to right                                                               
+                                    width: "auto",
                                     borderRadius: 15,
                                     paddingHorizontal: 10,
                                     paddingVertical: 10,
-                                    backgroundColor: '#192f6a',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    flexDirection: 'row'
+                                    backgroundColor: "#192f6a",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    flexDirection: "row"
                                 }}
                             >
-                                <Icon name="compass" size={24} color={'#fff'} style={{ alignSelf: 'center' }} />
-                                <Text style={{ color: '#fff', fontSize: 14, marginLeft: 2 }}> Get Direction</Text>
+                                <Icon name="compass" size={24} color={"#fff"} style={{ alignSelf: "center" }} />
+                                <Text style={{ color: "#fff", fontSize: 14, marginLeft: 2 }}> Get Direction</Text>
                             </TouchableScale>
 
 
@@ -599,12 +691,12 @@ export default class Post extends Component {
                             >
 
                                 {this.state.liked == false ? (
-                                    <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={() => this.setLike(this.state.id)} >
+                                    <TouchableOpacity style={[styles.row, { alignItems: "flex-end" }]} onPress={() => this.setLike(this.state.id)} >
                                         <Icon name="heart" size={24} />
                                     </TouchableOpacity>
                                 ) : (
-                                        <TouchableOpacity style={[styles.row, { alignItems: 'flex-end' }]} onPress={() => this.setLike(this.state.id)}>
-                                            <Icon name="heart" size={24} color={'#a83f39'} />
+                                        <TouchableOpacity style={[styles.row, { alignItems: "flex-end" }]} onPress={() => this.setLike(this.state.id)}>
+                                            <Icon name="heart" size={24} color={"#a83f39"} />
                                         </TouchableOpacity>
                                     )}
 
@@ -614,7 +706,7 @@ export default class Post extends Component {
                             <View
                                 style={styles.likeCommentArea}
                             >
-                                <TouchableOpacity style={[styles.row, { alignItems: 'flex-start' }]} onPress={() => navigate('Comment', { id: this.state.id })}>
+                                <TouchableOpacity style={[styles.row, { alignItems: "flex-start" }]} onPress={() => navigate("Comment", { id: this.state.id })}>
                                     <Icon name="comment" size={24} />
                                 </TouchableOpacity>
                             </View>
@@ -643,36 +735,73 @@ export default class Post extends Component {
                         <View style={styles.separator}></View>
                         <View style={styles.addToCarContainer}>
                             {this.state.userId == this.state.authorId ? (
-                                <TouchableOpacity style={styles.shareButton} onPress={() =>
-                                    Alert.alert(
-                                        'Delete Post',
-                                        'Are you sure you want to Delete This post',
-                                        [
-                                            {
-                                                text: 'Cancel',
-                                                onPress: () => console.log("Canceled"),
-                                                style: 'cancel',
-                                            },
-                                            { text: 'OK', onPress: () => this.deletePost(this.state.id) },
-                                        ],
-                                        { cancelable: false },
+                                this.state.status == 0 ? (
+                                    <TouchableOpacity style={styles.shareButton} onPress={() =>
+                                        Alert.alert(
+                                            "Delete Post",
+                                            "Are you sure you want to Delete This post",
+                                            [
+                                                {
+                                                    text: "Cancel",
+                                                    onPress: () => console.log("Canceled"),
+                                                    style: "cancel",
+                                                },
+                                                { text: "OK", onPress: () => this.deletePost(this.state.id) },
+                                            ],
+                                            { cancelable: false },
+                                        )
+                                    }>
+                                        <Text style={styles.shareButtonText}>Delete</Text>
+                                    </TouchableOpacity>
+                                ) : (
+                                        this.state.status == 1 ? (
+                                            <View style={styles.profile}>
+                                                <Text style={{ fontSize: 18, marginHorizontal: 10 }}>Rescuer</Text>
+                                                <Image style={styles.avatar}
+                                                    source={{ uri: this.state.handlerAvatar }} />
+
+                                                <Text style={styles.profileName}>
+                                                    {this.state.handlerName}
+                                                </Text>
+                                                <Text style={{ marginLeft: 20 }}>
+                                                    Started to work on  {this.timeConvertor(this.state.handlerPosted)}
+                                                </Text>
+                                            </View>
+                                        ) : (
+                                                <View style={styles.profile}>
+                                                    <Text style={{ fontSize: 18, marginHorizontal: 10 }}>Rescuer</Text>
+                                                    <Image style={styles.avatar}
+                                                        source={{ uri: this.state.handlerAvatar }} />
+
+                                                    <Text style={styles.profileName}>
+                                                        {this.state.handlerName}
+                                                    </Text>
+                                                    <Text style={{ marginLeft: 20 }}>
+                                                        Finished  {this.timeConvertor(this.state.handlerPosted)}
+                                                    </Text>
+                                                    <Text style={styles.description}>
+                                                        {this.state.handlerDescription}
+                                                    </Text>
+                                                    <Image source={{ uri: this.state.handlerImages }} style={{ width: "100%", height: 200, marginTop: 10 }} />
+                                                </View>
+                                            )
                                     )
-                                }>
-                                    <Text style={styles.shareButtonText}>Delete</Text>
-                                </TouchableOpacity>
+
+
+
                             ) : (
                                     this.state.status == 0 ? (
                                         <TouchableOpacity style={styles.shareButton} onPress={() =>
                                             Alert.alert(
-                                                'Confirming the Handling',
-                                                'Are you sure you want to handle this',
+                                                "Confirming the Handling",
+                                                "Are you sure you want to handle this",
                                                 [
                                                     {
-                                                        text: 'Cancel',
+                                                        text: "Cancel",
                                                         onPress: () => console.log("canceled"),
-                                                        style: 'cancel',
+                                                        style: "cancel",
                                                     },
-                                                    { text: 'OK', onPress: () => this.handlePost(this.state.id) },
+                                                    { text: "OK", onPress: () => this.handlePost(this.state.id) },
                                                 ],
                                                 { cancelable: false },
                                             )
@@ -717,7 +846,7 @@ export default class Post extends Component {
                                                         <Text style={styles.description}>
                                                             {this.state.handlerDescription}
                                                         </Text>
-                                                        <Image source={{ uri: this.state.handlerImages }} style={{ width: '100%', height: 200, marginTop: 10 }} />
+                                                        <Image source={{ uri: this.state.handlerImages }} style={{ width: "100%", height: 200, marginTop: 10 }} />
                                                     </View>
                                                 )
 
@@ -725,14 +854,14 @@ export default class Post extends Component {
 
                                 )}
                             {this.state.proof == true ? (
-                                <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 5 }}>
+                                <View style={{ justifyContent: "center", alignItems: "center", marginVertical: 5 }}>
                                     {this.state.pickedImage == null ? (
                                         <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
                                             <Text>Select an Image</Text>
                                         </TouchableOpacity>
                                     ) : (
                                             <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
-                                                <Image source={{ uri: this.state.pickedImage }} style={{ width: '100%', height: '100%' }} />
+                                                <Image source={{ uri: this.state.pickedImage }} style={{ width: "100%", height: "100%" }} />
                                             </TouchableOpacity>
                                         )}
 
@@ -740,7 +869,7 @@ export default class Post extends Component {
                                         {this.state.proofDescription.length.toString() <= 50 ? (
                                             <TextInput
                                                 style={[styles.descriptiontStyle, { fontSize: 28 }]}
-                                                placeholder={'Enter Description Here'}
+                                                placeholder={"Enter Description Here"}
                                                 editable={true}
                                                 multiline={true}
                                                 numberOfLines={5}

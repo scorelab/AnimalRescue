@@ -1,13 +1,13 @@
-import React from 'react';
-import { Text, View, TouchableOpacity, Dimensions, ImageBackground, Alert, Image, StatusBar } from 'react-native';
-import Carousel from 'react-native-looped-carousel';
-import { SocialIcon } from 'react-native-elements';
-const { width, height } = Dimensions.get('window');
+import React from "react";
+import { Text, View, TouchableOpacity, Dimensions, Alert, Image, StatusBar, PermissionsAndroid } from "react-native";
+import Carousel from "react-native-looped-carousel";
+import { SocialIcon } from "react-native-elements";
+const { width, height } = Dimensions.get("window");
 import styles from "./style";
 import PreLoader from "../../components/PreLoader/PreLoader"
 import { AccessToken, LoginManager } from "react-native-fbsdk";
 import { f, auth, webClinetID } from "../../config/firebaseConfig.js";
-import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from "react-native-google-signin";
 class Auth extends React.Component {
 
     constructor(props) {
@@ -19,7 +19,31 @@ class Auth extends React.Component {
         };
     }
 
+    requestLocationPermision = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+                {
+                    title: "Camera Permission",
+                    message:
+                        "Animal Rescue App needs access to your Location " +
+                        "so you can find animals near you.",
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK",
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log("You can use the camera");
+            } else {
+                console.log("Camera permission denied");
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
     componentDidMount() {
+        this.requestLocationPermision();
         GoogleSignin.configure({
             webClientId: webClinetID,
             offlineAccess: true
@@ -27,7 +51,7 @@ class Auth extends React.Component {
         var that = this;
         f.auth().onAuthStateChanged(function (user) {
             if (user) {
-                that.props.navigation.navigate('App')
+                that.props.navigation.navigate("App")
             } else {
                 that.setState({
                     loggedin: false
@@ -88,7 +112,7 @@ class Auth extends React.Component {
             uid,
             token,
             dp,
-            cover: 'https://firebasestorage.googleapis.com/v0/b/animal-res-app.appspot.com/o/Cover%2Fdog.jpg?alt=media&token=1ad5a80a-b436-4288-8f7c-a5b8c80edda0'
+            cover: "https://firebasestorage.googleapis.com/v0/b/animal-res-app.appspot.com/o/Cover%2Fdog.jpg?alt=media&token=1ad5a80a-b436-4288-8f7c-a5b8c80edda0"
 
         };
         f.database()
@@ -96,7 +120,7 @@ class Auth extends React.Component {
             .child(uid)
             .update({ ...userData, ...defaults });
 
-        this.props.navigation.navigate('App')
+        this.props.navigation.navigate("App")
 
     };
 
@@ -122,10 +146,10 @@ class Auth extends React.Component {
 
                             that.createGoogleUser(user.uid, newUser, user.photoURL);
                         });
-                })               
+                })
                 .catch(error => {
-                    console.log(error);                                        
-                  });
+                    console.log(error);
+                });
         } catch (error) {
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
                 console.log(error);
@@ -141,19 +165,20 @@ class Auth extends React.Component {
 
     createGoogleUser = (uid, userData, dp) => {
         const defaults = {
-          uid,
-          dp,
-          ageRange: [20, 30],
-          ratings: 5,
-          numOfChcances: 1
+            uid,
+            dp,
+            ageRange: [20, 30],
+            ratings: 5,
+            numOfChcances: 1,
+            cover: "https://firebasestorage.googleapis.com/v0/b/animal-res-app.appspot.com/o/Cover%2Fdog.jpg?alt=media&token=1ad5a80a-b436-4288-8f7c-a5b8c80edda0"
         };
         f.database()
-          .ref("users")
-          .child(uid)
-          .update({ ...userData, ...defaults });
+            .ref("users")
+            .child(uid)
+            .update({ ...userData, ...defaults });
 
-          this.props.navigation.navigate("App");
-      };
+        this.props.navigation.navigate("App");
+    };
 
     render() {
         const { navigate } = this.props.navigation;
@@ -177,7 +202,7 @@ class Auth extends React.Component {
                         </Text>
                         </View>
                         <TouchableOpacity onPress={() => this.onPressLogin()} style={[styles.buttonContainer]}>
-                            <SocialIcon style={{ width: 200, alignSelf: 'center' }} title='Continue With Facebook' button type='facebook' />
+                            <SocialIcon style={{ width: 200, alignSelf: "center" }} title="Continue With Facebook" button type="facebook" />
                         </TouchableOpacity>
                         <GoogleSigninButton
                             style={{ width: 200, height: 48, borderRadius: 50 }}

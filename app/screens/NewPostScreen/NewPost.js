@@ -1,21 +1,21 @@
-import React from 'react';
-import { Text, View, Image, TouchableOpacity, PermissionsAndroid, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native';
+import React from "react";
+import { Text, View, Image, TouchableOpacity, PermissionsAndroid, TextInput, KeyboardAvoidingView, ScrollView } from "react-native";
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
-import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
+import { ProgressSteps, ProgressStep } from "react-native-progress-steps";
 import ImagePicker from "react-native-image-picker";
 import Search from "../../components/SearchAndFixLocation/searchView.js";
 import { ButtonGroup } from "react-native-elements";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { COLOR_PRIMARY, COLOR_BLACK, COLOR_SECONDARY } from "../../config/styles";
 import styles from "./style";
-import DropdownAlert from 'react-native-dropdownalert';
-import ActionSheet from 'react-native-actionsheet'
+import DropdownAlert from "react-native-dropdownalert";
+import ActionSheet from "react-native-actionsheet"
 import { f, auth, storage, database } from "../../config/firebaseConfig";
 import Progress from "../../components/Progress/Progress"
-import Video from 'react-native-video';
+import Video from "react-native-video";
 // Labels is optional
-const labels = ['Cat', 'Dog', 'Monkey'];
-const options = ['Cancel', 'Cat', 'Dog', 'Monkey', 'Bird', 'Fish', 'Pig', 'Cow', 'Goat'];
+const labels = ["Cat", "Dog", "Monkey"];
+const options = ["Cancel", "Cat", "Dog", "Monkey", "Bird", "Fish", "Pig", "Cow", "Goat"];
 class NewPost extends React.Component {
 
     constructor() {
@@ -34,11 +34,11 @@ class NewPost extends React.Component {
             longitude: null,
             latitudeDelta: 0.00922 * 1.5,
             longitudeDelta: 0.00421 * 1.5,
-            selectedAnimal: '',
-            description: '',
+            selectedAnimal: "",
+            description: "",
             progress: 0,
             uploading: false,
-            animationState: 'rest',
+            animationState: "rest",
             postId: this.uniqueId(),
             selectedIndex: 0
         }
@@ -83,19 +83,19 @@ class NewPost extends React.Component {
             const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.CAMERA,
                 {
-                    title: 'Camera Permission',
+                    title: "Camera Permission",
                     message:
-                        'Animal Rescue App needs access to your camera ' +
-                        'so you can take awesome pictures.',
-                    buttonNeutral: 'Ask Me Later',
-                    buttonNegative: 'Cancel',
-                    buttonPositive: 'OK',
+                        "Animal Rescue App needs access to your camera " +
+                        "so you can take awesome pictures.",
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK",
                 },
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log('You can use the camera');
+                console.log("You can use the camera");
             } else {
-                console.log('Camera permission denied');
+                console.log("Camera permission denied");
             }
         } catch (err) {
             console.warn(err);
@@ -104,19 +104,19 @@ class NewPost extends React.Component {
             const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
                 {
-                    title: 'Location Permission',
+                    title: "Location Permission",
                     message:
-                        'Animal Rescue App needs access to your Location ' +
-                        'so you can filter animals easily.',
-                    buttonNeutral: 'Ask Me Later',
-                    buttonNegative: 'Cancel',
-                    buttonPositive: 'OK',
+                        "Animal Rescue App needs access to your Location " +
+                        "so you can filter animals easily.",
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK",
                 },
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log('You can use the camera');
+                console.log("You can use the camera");
             } else {
-                console.log('Camera permission denied');
+                console.log("Camera permission denied");
             }
         } catch (err) {
             console.warn(err);
@@ -124,7 +124,7 @@ class NewPost extends React.Component {
     }
 
     selectPhoto = () => {
-        ImagePicker.showImagePicker({ title: "Pick an Image", maxWidth: 800, maxHeight: 600, mediaType: 'photo' }, res => {
+        ImagePicker.showImagePicker({ title: "Pick an Image", maxWidth: 800, maxHeight: 600, mediaType: "photo" }, res => {
             if (res.didCancel) {
                 console.log("User cancelled!");
             } else if (res.error) {
@@ -141,7 +141,7 @@ class NewPost extends React.Component {
     };
 
     selectVideo = () => {
-        ImagePicker.showImagePicker({ title: "Pick a Video", minWidth: 1920, minHeight: 1080, mediaType: 'video' }, res => {
+        ImagePicker.showImagePicker({ title: "Pick a Video", minWidth: 1920, minHeight: 1080, mediaType: "video" }, res => {
             if (res.didCancel) {
                 console.log("User cancelled!");
             } else if (res.error) {
@@ -180,14 +180,14 @@ class NewPost extends React.Component {
 
     checkPhoto = () => {
         if (this.state.photoError == true) {
-            this.dropdown.alertWithType('error', 'Error', 'Please Select An Image');
+            this.dropdown.alertWithType("error", "Error", "Please Select An Image");
 
         }
     }
 
     checkLocation = () => {
         if (this.state.longitude == null && this.state.latitude == null) {
-            this.dropdown.alertWithType('error', 'Error', 'Please Select The Location');
+            this.dropdown.alertWithType("error", "Error", "Please Select The Location");
 
         }
     }
@@ -197,7 +197,7 @@ class NewPost extends React.Component {
     }
 
     uniqueId = () => {
-        return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4();
+        return this.s4() + this.s4() + "-" + this.s4() + "-" + this.s4() + "-" + this.s4() + "-" + this.s4() + "-" + this.s4() + "-" + this.s4();
     }
 
     uploadImage = async () => {
@@ -220,17 +220,17 @@ class NewPost extends React.Component {
                 };
                 xhr.onerror = function (e) {
                     console.log(e);
-                    reject(new TypeError('Network request failed'));
+                    reject(new TypeError("Network request failed"));
                 };
-                xhr.responseType = 'blob';
-                xhr.open('GET', uri, true);
+                xhr.responseType = "blob";
+                xhr.open("GET", uri, true);
                 xhr.send(null);
             });
-            var filePath = postId + '.' + that.state.currentFileType;
+            var filePath = postId + "." + that.state.currentFileType;
 
-            var uploadTask = storage.ref('posts/images/' + this.state.selectedAnimal).child(filePath).put(blob);
+            var uploadTask = storage.ref("posts/images/" + this.state.selectedAnimal).child(filePath).put(blob);
 
-            uploadTask.on('state_changed', function (snapshot) {
+            uploadTask.on("state_changed", function (snapshot) {
                 let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
                 that.setState({
                     progress: progress
@@ -269,17 +269,17 @@ class NewPost extends React.Component {
                 };
                 xhr.onerror = function (e) {
                     console.log(e);
-                    reject(new TypeError('Network request failed'));
+                    reject(new TypeError("Network request failed"));
                 };
-                xhr.responseType = 'blob';
-                xhr.open('GET', uri, true);
+                xhr.responseType = "blob";
+                xhr.open("GET", uri, true);
                 xhr.send(null);
             });
-            var filePath = postId + '.' + that.state.currentFileType;
+            var filePath = postId + "." + that.state.currentFileType;
 
-            var uploadTask = storage.ref('posts/videos/' + this.state.selectedAnimal).child(filePath).put(blob);
+            var uploadTask = storage.ref("posts/videos/" + this.state.selectedAnimal).child(filePath).put(blob);
 
-            uploadTask.on('state_changed', function (snapshot) {
+            uploadTask.on("state_changed", function (snapshot) {
                 let progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0);
                 that.setState({
                     progress: progress
@@ -303,6 +303,7 @@ class NewPost extends React.Component {
     }
 
     setDatabse = async (imageURL, latitude, longitude) => {
+        alert("come")
         var date = Date.now();
         var postId = this.state.postId
         var userID = f.auth().currentUser.uid;
@@ -328,28 +329,28 @@ class NewPost extends React.Component {
             type: this.state.selectedIndex
         }
 
-        database.ref('/posts/' + postId).set(postObj);
-        database.ref('users/' + userID + '/post/' + postId).set(myPostOBJ);
+        database.ref("/posts/" + postId).set(postObj);
+        database.ref("users/" + userID + "/post/" + postId).set(myPostOBJ);
         this.setState({
             imageSelected: false,
             uploading: false,
             progress: 0,
-            description: '',
-            selectedAnimal: '',
+            description: "",
+            selectedAnimal: "",
             photoError: true,
             pickedImage: null,
             pickedVideo: null,
             postId: this.uniqueId()
         });
-        this.props.navigation.navigate('Post', { id: postId })
+        this.props.navigation.navigate("Post", { id: postId })
 
     }
 
     submit = () => {
-        if (this.state.selectedAnimal == '') {
-            this.dropdown.alertWithType('error', 'Error', 'Please Select An Animal');
-        } else if (this.state.description == '') {
-            this.dropdown.alertWithType('error', 'Error', 'Please Add The Description');
+        if (this.state.selectedAnimal == "") {
+            this.dropdown.alertWithType("error", "Error", "Please Select An Animal");
+        } else if (this.state.description == "") {
+            this.dropdown.alertWithType("error", "Error", "Please Add The Description");
         } else {
             this.uploadImage();
 
@@ -364,7 +365,7 @@ class NewPost extends React.Component {
             )
 
         } else {
-            const buttons = ['photo', 'Video']
+            const buttons = ["photo", "Video"]
             const { selectedIndex } = this.state
             return (
                 <ScrollView style={{ flex: 1 }}>
@@ -394,11 +395,11 @@ class NewPost extends React.Component {
                                         : (
                                             this.state.selectedIndex == 0 ? (
                                                 <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
-                                                    <Image source={{ uri: this.state.pickedImage }} style={{ width: '100%', height: '100%' }} />
+                                                    <Image source={{ uri: this.state.pickedImage }} style={{ width: "100%", height: "100%" }} />
                                                 </TouchableOpacity>
                                             ) : (
                                                     <TouchableOpacity style={styles.imageContainer} onPress={() => this.selectPhoto()}>
-                                                        <Image source={{ uri: this.state.pickedVideo }} style={{ width: '100%', height: '100%' }} />
+                                                        <Image source={{ uri: this.state.pickedVideo }} style={{ width: "100%", height: "100%" }} />
                                                     </TouchableOpacity>
                                                 )
 
@@ -445,7 +446,7 @@ class NewPost extends React.Component {
                             </ProgressStep>
                             <ProgressStep label="Information" onSubmit={() => this.submit()} previousBtnStyle={styles.nextBtn} previousBtnTextStyle={styles.preBtnText} nextBtnStyle={styles.nextBtn} nextBtnTextStyle={styles.nextBtnText}>
                                 <View style={styles.stepContainer}>
-                                    {this.state.selectedAnimal == '' ? (
+                                    {this.state.selectedAnimal == "" ? (
                                         <Text
                                             style={styles.textStyle}
                                             onPress={() => {
@@ -468,7 +469,7 @@ class NewPost extends React.Component {
                                         {this.state.description.length.toString() <= 70 ? (
                                             <TextInput
                                                 style={[styles.descriptiontStyle, { fontSize: 32 }]}
-                                                placeholder={'Enter Description Here'}
+                                                placeholder={"Enter Description Here"}
                                                 editable={true}
                                                 multiline={true}
                                                 numberOfLines={5}
@@ -479,7 +480,7 @@ class NewPost extends React.Component {
                                         ) : (
                                                 <TextInput
                                                     style={[styles.descriptiontStyle, { fontSize: 20 }]}
-                                                    placeholder={'Enter Description Here'}
+                                                    placeholder={"Enter Description Here"}
                                                     editable={true}
                                                     multiline={true}
                                                     numberOfLines={5}
@@ -498,7 +499,7 @@ class NewPost extends React.Component {
                     </View>
                     <ActionSheet
                         ref={o => this.ActionSheet = o}
-                        title={'Select The Animal Type ?'}
+                        title={"Select The Animal Type ?"}
                         options={options}
                         cancelButtonIndex={0}
                         destructiveButtonIndex={0}
