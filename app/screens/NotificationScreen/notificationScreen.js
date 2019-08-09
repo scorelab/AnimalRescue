@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, FlatList, ScrollView } from "react-native";
 import Header from "../../components/HeaderNavigationBar/HeaderNavigationBar";
-import NotificationBanner from '../../components/NotificationBanner/notificationBanner';
-import styles from './style';
-import Swipeout from 'react-native-swipeout';
+import NotificationBanner from "../../components/NotificationBanner/notificationBanner";
+import styles from "./style";
+import Swipeout from "react-native-swipeout";
 import Ionicons from "react-native-vector-icons/FontAwesome";
-import RNBottomActionSheet from 'react-native-bottom-action-sheet';
+import RNBottomActionSheet from "react-native-bottom-action-sheet";
 import { f, auth, storage, database } from "../../config/firebaseConfig";
 export default class NotificationScreen extends Component {
         constructor(props) {
@@ -20,7 +20,7 @@ export default class NotificationScreen extends Component {
                                 { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name: "Clark June Boom!", text: "Lorem ipsum dolor sit amet.", posted: "2 hours Ago", read: 1 },
                                 { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name: "The googler", text: "Lorem ipsum dolor sit amet.", posted: "2 hours Ago", read: 0 },
                         ],
-                        comment: '',
+                        comment: "",
                         rowIndex: null,
                         alterView: false,
                         notifications: [],
@@ -42,8 +42,8 @@ export default class NotificationScreen extends Component {
 
         componentDidMount = () => {
                 var userId = f.auth().currentUser.uid;
-                var that = this;                
-                database.ref('notifications').child(userId).on('value', (function (snapshot) {
+                var that = this;
+                database.ref("notifications").child(userId).on("value", (function (snapshot) {
                         const exsists = (snapshot.val() != null);
                         if (exsists) {
                                 data = snapshot.val();
@@ -54,7 +54,7 @@ export default class NotificationScreen extends Component {
                                 handles = data.handle;
                                 finishes = data.finish;
                                 notificationArray = that.state.notifications
-                                for (var like in likes) {                                        
+                                for (var like in likes) {
                                         // console.log(like)
                                         notificationArray.push({
                                                 id: likes[like].id,
@@ -66,7 +66,7 @@ export default class NotificationScreen extends Component {
                                         })
                                 }
                                 console.log(notificationArray)
-                                for (var comment in comments) {                                        
+                                for (var comment in comments) {
                                         notificationArray.push({
                                                 id: comments[comment].id,
                                                 flag: comments[comment].flag,
@@ -77,7 +77,7 @@ export default class NotificationScreen extends Component {
                                         })
                                 }
 
-                                for (var handle in handles) {                                       
+                                for (var handle in handles) {
                                         notificationArray.push({
                                                 id: handles[handle].id,
                                                 flag: handles[handle].flag,
@@ -88,7 +88,7 @@ export default class NotificationScreen extends Component {
                                         })
                                 }
                                 // console.log(notificationArray)
-                                for (var finish in finishes) {                                       
+                                for (var finish in finishes) {
                                         notificationArray.push({
                                                 id: finishes[finish].id,
                                                 flag: finishes[finish].flag,
@@ -112,7 +112,7 @@ export default class NotificationScreen extends Component {
                                 that.state.notificationFinal.reverse();
                         }
 
-                       
+
                 }), function (errorObject) {
                         console.log("The read failed: " + errorObject.code);
                 });
@@ -123,92 +123,92 @@ export default class NotificationScreen extends Component {
 
                 var interval = Math.floor(seconds / 31536000);
                 if (interval >= 1) {
-                        return interval + ' Year' + this.timePlural(interval);
+                        return interval + " Year" + this.timePlural(interval);
                 }
 
                 var interval = Math.floor(seconds / 2592000);
                 if (interval >= 1) {
-                        return interval + ' Month' + this.timePlural(interval);
+                        return interval + " Month" + this.timePlural(interval);
                 }
 
                 var interval = Math.floor(seconds / 86400);
                 if (interval >= 1) {
-                        return interval + ' Day' + this.timePlural(interval);
+                        return interval + " Day" + this.timePlural(interval);
                 }
 
                 var interval = Math.floor(seconds / 3600);
                 if (interval >= 1) {
-                        return interval + ' Hour' + this.timePlural(interval);
+                        return interval + " Hour" + this.timePlural(interval);
                 }
 
                 var interval = Math.floor(seconds / 60);
                 if (interval >= 1) {
-                        return interval + ' Minute' + this.timePlural(interval);
+                        return interval + " Minute" + this.timePlural(interval);
                 }
 
-                return Math.floor(seconds) + ' Second' + this.timePlural(seconds)
+                return Math.floor(seconds) + " Second" + this.timePlural(seconds)
         }
         timePlural = (s) => {
                 if (s == 1) {
-                        return ' ago'
+                        return " ago"
                 } else {
-                        return 's ago'
+                        return "s ago"
                 }
         }
 
-        markRead = (id,flag) => {
+        markRead = (id, flag) => {
                 var userId = f.auth().currentUser.uid;
-                if(flag == "l"){
-                        database.ref('notifications/'+userId+"/likes/"+id).update({status:1})
-                }else if (flag == "c"){
-                        database.ref('notifications/'+userId+"/comments/"+id).update({status:1})
-                }else if(flag == "h"){
-                        database.ref('notifications/'+userId+"/handle/"+id).update({status:1})
-                }else if(flag == "f"){
-                        database.ref('notifications/'+userId+"/finish/"+id).update({status:1})
-                }               
+                if (flag == "l") {
+                        database.ref("notifications/" + userId + "/likes/" + id).update({ status: 1 })
+                } else if (flag == "c") {
+                        database.ref("notifications/" + userId + "/comments/" + id).update({ status: 1 })
+                } else if (flag == "h") {
+                        database.ref("notifications/" + userId + "/handle/" + id).update({ status: 1 })
+                } else if (flag == "f") {
+                        database.ref("notifications/" + userId + "/finish/" + id).update({ status: 1 })
+                }
 
         }
 
-        deleteNotification = (id,flag) => {
+        deleteNotification = (id, flag) => {
                 var userId = f.auth().currentUser.uid;
-                if(flag == "l"){
-                        database.ref('notifications/'+userId+"/likes/"+id).update({status:2})
-                }else if (flag == "c"){
-                        database.ref('notifications/'+userId+"/comments/"+id).update({status:2})
-                }else if(flag == "h"){
-                        database.ref('notifications/'+userId+"/handle/"+id).update({status:2})
-                }else if(flag == "f"){
-                        database.ref('notifications/'+userId+"/finish/"+id).update({status:2})
-                }               
+                if (flag == "l") {
+                        database.ref("notifications/" + userId + "/likes/" + id).update({ status: 2 })
+                } else if (flag == "c") {
+                        database.ref("notifications/" + userId + "/comments/" + id).update({ status: 2 })
+                } else if (flag == "h") {
+                        database.ref("notifications/" + userId + "/handle/" + id).update({ status: 2 })
+                } else if (flag == "f") {
+                        database.ref("notifications/" + userId + "/finish/" + id).update({ status: 2 })
+                }
 
         }
 
-        viewNotification = (id,flag) => {
+        viewNotification = (id, flag) => {
                 var userId = f.auth().currentUser.uid;
                 const { navigate } = this.props.navigation;
-                if(flag == "l"){
-                        database.ref('notifications/'+userId+"/likes/"+id).update({status:1})
-                        navigate('Post', { id: id });
-                }else if (flag == "c"){
-                        database.ref('notifications/'+userId+"/comments/"+id).update({status:1})
-                        navigate('Comment', { id: id })
-                }else if(flag == "h"){
-                        database.ref('notifications/'+userId+"/handle/"+id).update({status:1})
-                        navigate('Post', { id: id })
-                }else if(flag == "f"){
-                        database.ref('notifications/'+userId+"/finish/"+id).update({status:1})
-                        navigate('Post', { id: id })
-                }               
+                if (flag == "l") {
+                        database.ref("notifications/" + userId + "/likes/" + id).update({ status: 1 })
+                        navigate("Post", { id: id });
+                } else if (flag == "c") {
+                        database.ref("notifications/" + userId + "/comments/" + id).update({ status: 1 })
+                        navigate("Comment", { id: id })
+                } else if (flag == "h") {
+                        database.ref("notifications/" + userId + "/handle/" + id).update({ status: 1 })
+                        navigate("Post", { id: id })
+                } else if (flag == "f") {
+                        database.ref("notifications/" + userId + "/finish/" + id).update({ status: 1 })
+                        navigate("Post", { id: id })
+                }
 
         }
 
         render() {
 
                 return (
-                        <View style={{ flex: 1, flexDirection: 'column', }}>
+                        <View style={{ flex: 1, flexDirection: "column", }}>
                                 <Header title={"Notifications"} height={50} drawer={() => this.props.navigation.openDrawer()} />
-                                {/* <TouchableOpacity onPress={() => this.setState({ alterView: true })} style={{ justifyContent: 'flex-end', marginVertical: 10, flexDirection: 'row', marginRight: 10 }}>
+                                {/* <TouchableOpacity onPress={() => this.setState({ alterView: true })} style={{ justifyContent: "flex-end", marginVertical: 10, flexDirection: "row", marginRight: 10 }}>
                                         <Text style={{ color: "#007bff" }}>Mark All As Read</Text>
                                         <Ionicons name={"check-double"} size={12} color={"#007bff"} />
                                         <Ionicons name={"check"} size={12} color={"#007bff"} />
@@ -228,16 +228,16 @@ export default class NotificationScreen extends Component {
                                                         const Notification = item.item;
                                                         var unRead = [
                                                                 {
-                                                                        component: <Ionicons name={"trash"} size={20} color={"#b00020"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
-                                                                        backgroundColor: '#fff',
-                                                                        underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+                                                                        component: <Ionicons name={"trash"} size={20} color={"#b00020"} style={{ alignSelf: "center", marginTop: "50%" }} />,
+                                                                        backgroundColor: "#fff",
+                                                                        underlayColor: "rgba(0, 0, 0, 1, 0.6)",
                                                                         onPress: () => { this.deleteNotification(item.id, item.flag) }
                                                                 },
                                                                 {
-                                                                        text: 'Mark As Read',
-                                                                        component: <Ionicons name={"check"} size={20} color={"#0D47A1"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
-                                                                        backgroundColor: '#fff',
-                                                                        underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+                                                                        text: "Mark As Read",
+                                                                        component: <Ionicons name={"check"} size={20} color={"#0D47A1"} style={{ alignSelf: "center", marginTop: "50%" }} />,
+                                                                        backgroundColor: "#fff",
+                                                                        underlayColor: "rgba(0, 0, 0, 1, 0.6)",
                                                                         onPress: () => { this.markRead(item.id, item.flag) }
                                                                 }
 
@@ -245,14 +245,14 @@ export default class NotificationScreen extends Component {
 
                                                         var read = [
                                                                 {
-                                                                        component: <Ionicons name={"trash"} size={20} color={"#b00020"} style={{ alignSelf: 'center', marginTop: '50%' }} />,
-                                                                        backgroundColor: '#fff',
-                                                                        underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+                                                                        component: <Ionicons name={"trash"} size={20} color={"#b00020"} style={{ alignSelf: "center", marginTop: "50%" }} />,
+                                                                        backgroundColor: "#fff",
+                                                                        underlayColor: "rgba(0, 0, 0, 1, 0.6)",
                                                                         onPress: () => { this.deleteNotification(item.id, item.flag) }
                                                                 }
                                                         ];
 
-                                                        if (item.status == 1) {                                                                
+                                                        if (item.status == 1) {
                                                                 return (
                                                                         <Swipeout
                                                                                 rowIndex={index}
@@ -262,18 +262,18 @@ export default class NotificationScreen extends Component {
                                                                                 onClose={() => this.onSwipeClose(index)}
                                                                                 sensitivity={50}
                                                                                 autoClose={true}
-                                                                                style={{ width: '100%', backgroundColor: 'transparent' }}
+                                                                                style={{ width: "100%", backgroundColor: "transparent" }}
                                                                                 right={read}>
                                                                                 <NotificationBanner
                                                                                         read={item.status}
                                                                                         image={{ uri: item.image }}
                                                                                         posted={this.timeConvertor(item.posted)}
                                                                                         text={item.notification}
-                                                                                        onPress={()=> this.viewNotification(item.id, item.flag)}
+                                                                                        onPress={() => this.viewNotification(item.id, item.flag)}
                                                                                 />
                                                                         </Swipeout>
                                                                 );
-                                                        } else if(item.status == 0) {
+                                                        } else if (item.status == 0) {
                                                                 return (
                                                                         <Swipeout
                                                                                 rowIndex={index}
@@ -283,14 +283,14 @@ export default class NotificationScreen extends Component {
                                                                                 onClose={() => this.onSwipeClose(index)}
                                                                                 sensitivity={50}
                                                                                 autoClose={true}
-                                                                                style={{ width: '100%', backgroundColor: 'transparent' }}
+                                                                                style={{ width: "100%", backgroundColor: "transparent" }}
                                                                                 right={unRead}>
                                                                                 <NotificationBanner
                                                                                         read={item.status}
                                                                                         image={{ uri: item.image }}
                                                                                         posted={this.timeConvertor(item.posted)}
                                                                                         text={item.notification}
-                                                                                        onPress={()=> this.viewNotification(item.id, item.flag)}
+                                                                                        onPress={() => this.viewNotification(item.id, item.flag)}
                                                                                 />
                                                                         </Swipeout>
                                                                 );

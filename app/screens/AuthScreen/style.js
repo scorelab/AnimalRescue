@@ -10,25 +10,25 @@ export default StyleSheet.create({
     },
     container: {
         flex: 1,
-        alignItems: 'center',
+        alignItems: "center",
         backgroundColor: COLOR_PRIMARY,
     },
     logo: {
         width: 120,
         height: 150,
-        justifyContent: 'center',
+        justifyContent: "center",
         marginBottom: 10,
         marginTop: 30,
     },
     companyName: {
         fontSize: 32,
-        fontWeight: '600',
-        color: '#FFFFFF',
+        fontWeight: "600",
+        color: "#FFFFFF",
     },
     slogan: {
         fontSize: 18,
-        fontWeight: '600',
-        color: '#228B22',
+        fontWeight: "600",
+        color: "#228B22",
         marginTop: 10,
     },
     descriptionContent: {
@@ -36,21 +36,21 @@ export default StyleSheet.create({
     },
     description: {
         fontSize: 18,
-        textAlign: 'center',
+        textAlign: "center",
         marginTop: 10,
-        color: '#FFFFFF',
+        color: "#FFFFFF",
     },
     buttonContainer: {
         height: 45,
-        position:'absolute',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        bottom: 20,        
+        position: "absolute",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        bottom: 20,
         borderRadius: 30,
-    },    
+    },
     buttonText: {
-        color: '#EE82EE',
+        color: "#EE82EE",
     }
 
 });

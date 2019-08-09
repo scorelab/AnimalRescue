@@ -8,23 +8,23 @@ export default StyleSheet.create({
     root: {
         backgroundColor: "#ffffff",
         marginTop: 3,
-        
-        
+
+
     },
     container: {
         paddingLeft: 19,
         paddingRight: 16,
         paddingVertical: 12,
-        flexDirection: 'row',
-        alignItems: 'flex-start'
+        flexDirection: "row",
+        alignItems: "flex-start"
     },
     content: {
         marginLeft: 16,
         // flex: 1,
     },
     contentHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        justifyContent: "space-between",
         marginBottom: 6
     },
     separator: {
@@ -46,10 +46,10 @@ export default StyleSheet.create({
         fontWeight: "bold",
     },
     footer: {
-        flexDirection: 'row',
+        flexDirection: "row",
         minHeight: 60,
         maxHeight: 130,
-        backgroundColor: '#eeeeee',
+        backgroundColor: "#eeeeee",
         paddingHorizontal: 10,
         padding: 5,
     },
@@ -58,32 +58,32 @@ export default StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 360,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
     },
     iconSend: {
         width: 30,
         height: 30,
-        alignSelf: 'center',
+        alignSelf: "center",
     },
     inputContainer: {
-        borderBottomColor: '#F5FCFF',
-        backgroundColor: '#FFFFFF',
+        borderBottomColor: "#F5FCFF",
+        backgroundColor: "#FFFFFF",
         borderRadius: 30,
         borderBottomWidth: 1,
         minHeight: 40,
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
         flex: 1,
         marginRight: 10,
-        
+
     },
     inputs: {
         height: "auto",
         marginLeft: 16,
-        borderBottomColor: '#FFFFFF',
+        borderBottomColor: "#FFFFFF",
         flex: 1,
-        flexWrap:'wrap'
+        flexWrap: "wrap"
     },
-   
+
 });
