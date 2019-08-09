@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { View, Text, Image, TouchableOpacity , ImageBackground} from "react-native";
+import { View, Text, Image, TouchableOpacity, ImageBackground } from "react-native";
 import styles from "./style";
-import Video from 'react-native-video';
+import Video from "react-native-video";
 
 export default class CardView extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ export default class CardView extends Component {
         <View style={styles.cardContainerRead}>
           <View style={styles.cardHedear}>
             <View style={styles.profilePicArea}>
-              
+
               {/* <Video
                 ref={(ref) => {
                   this.player = ref
@@ -24,7 +24,7 @@ export default class CardView extends Component {
                 repeat={true}
                 fullscreen={true}
                 controls={false}
-                resizeMode='cover'
+                resizeMode="cover"
                 playWhenInactive={false}
                 muted={true}
                 paused={true}
@@ -35,7 +35,7 @@ export default class CardView extends Component {
             </View>
             <View style={styles.userDetailArea}>
               <View style={styles.meaasageRow}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 5 }}>
                   {/* <Text style={styles.name}>{this.props.name}</Text> */}
                   <Text style={styles.time}>{this.props.posted}</Text>
                 </View>
@@ -56,7 +56,7 @@ export default class CardView extends Component {
             </View>
             <View style={styles.userDetailArea}>
               <View style={styles.meaasageRow}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 5 }}>
                   {/* <Text style={styles.name}>{this.props.name}</Text> */}
                   <Text style={styles.time}>{this.props.posted}</Text>
                 </View>

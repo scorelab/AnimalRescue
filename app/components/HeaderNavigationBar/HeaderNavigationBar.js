@@ -17,7 +17,7 @@ export default class HeaderNavigationBar extends Component {
             <View style={[styles.navigationBar, { height: this.props.height }]}>
                 <View style={styles.goBackArea}>
                     <TouchableOpacity
-                        onPress={this.props.drawer}                    
+                        onPress={this.props.drawer}
                     >
                         <Ionicons name={"bars"} size={25} color={"white"} />
                     </TouchableOpacity>
@@ -28,7 +28,7 @@ export default class HeaderNavigationBar extends Component {
                 </View>
                 <View style={styles.goBottomkArea}>
                     {this.props.sort == true ? (
-                        <TouchableOpacity                            
+                        <TouchableOpacity
                             onPress={() => {
                                 this.RBSheet.open();
                             }}
@@ -52,7 +52,7 @@ export default class HeaderNavigationBar extends Component {
                         container: {
                             // justifyContent: "center",
                             alignItems: "center",
-                            width: '100%',
+                            width: "100%",
                             backgroundColor: "#000",
                         }
                     }}

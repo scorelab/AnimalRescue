@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity, ActivityIndicator, Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { Image } from 'react-native-elements';
+import { Image } from "react-native-elements";
 import style from "./styles";
-import { BallIndicator } from 'react-native-indicators';
+import { BallIndicator } from "react-native-indicators";
 import { COLOR_PRIMARY } from "../../config/styles";
 import TouchableScale from "react-native-touchable-scale";
-import Video from 'react-native-video';
+import Video from "react-native-video";
 export default class HomePostComponent extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +42,7 @@ export default class HomePostComponent extends Component {
 
         <View style={style.cardViewBody}>
           <TouchableScale style={style.cardViewBody} onPress={this.props.press}>
-            <Text style={style.postContentFont} numberOfLines={3} ellipsizeMode={'tail'}>
+            <Text style={style.postContentFont} numberOfLines={3} ellipsizeMode={"tail"}>
               {this.props.description}
             </Text>
 
@@ -64,7 +64,7 @@ export default class HomePostComponent extends Component {
                     repeat={true}
                     fullscreen={true}
                     controls={false}
-                    resizeMode='cover'
+                    resizeMode="cover"
                     playWhenInactive={false}
                     style={style.postVideo}
 
@@ -82,7 +82,7 @@ export default class HomePostComponent extends Component {
           <View style={style.likeCommentDisplayArea}>
             {this.props.numberOfLikes >= 1 ? (
               <View style={style.row}>
-                <Icon name="heart" size={14} color={'#a83f39'} />
+                <Icon name="heart" size={14} color={"#a83f39"} />
                 <Text style={style.fontColorLove}> {this.props.numberOfLikes}</Text>
               </View>
             ) : (
@@ -117,8 +117,8 @@ export default class HomePostComponent extends Component {
                 </TouchableOpacity>
               ) : (
                   <TouchableOpacity style={style.row} onPress={this.props.like}>
-                    <Icon name="heart" size={18} color={'#a83f39'} />
-                    <Text style={{ fontSize: 18, color: '#a83f39' }}> Love</Text>
+                    <Icon name="heart" size={18} color={"#a83f39"} />
+                    <Text style={{ fontSize: 18, color: "#a83f39" }}> Love</Text>
                   </TouchableOpacity>
                 )}
 

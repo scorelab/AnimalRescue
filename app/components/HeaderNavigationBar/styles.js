@@ -24,47 +24,39 @@ export default StyleSheet.create({
         borderRadius: 5
     },
     titleArea: {
-        justifyContent: 'center',
+        justifyContent: "center",
         alignItems: "center",
-        width: '40%'
+        width: "40%"
     },
-    goBackArea: {
-        // alignSelf:'flex-end',
-        justifyContent: 'flex-start',
+    goBackArea: {        
+        justifyContent: "flex-start",
         alignItems: "flex-start",
         paddingLeft: 15,
-        width: '30%'
+        width: "30%"
     },
-    goBottomkArea: {
-        // alignSelf:'flex-end',
-        justifyContent: 'flex-end',
+    goBottomkArea: {        
+        justifyContent: "flex-end",
         alignItems: "flex-end",
         paddingRight: 15,
-        width: '30%'
-    },
-    
-    //Text
-
+        width: "30%"
+    }, 
     titleFont: {
         fontSize: 18,
         color: "white"
     },
-
     container: {
-        width: '100%',
-        overflow: 'scroll',
+        width: "100%",
+        overflow: "scroll",
         backgroundColor: "#000"
     },
-
-    body: {
-        // 
-        height:'100%',
+    body: {         
+        height: "100%",
         backgroundColor: COLOR_GRAY,
     },
     username: {
         color: "#20B2AA",
         fontSize: 22,
-        alignSelf: 'center',
+        alignSelf: "center",
         marginLeft: 10
     },
     image: {
@@ -74,13 +66,13 @@ export default StyleSheet.create({
     },
     box: {
         padding: 20,
-        backgroundColor: 'white',
-        flexDirection: 'row',
+        backgroundColor: "white",
+        flexDirection: "row",
     },
     boxContent: {
         flex: 1,
-        flexDirection: 'column',
-        alignItems: 'flex-start',
+        flexDirection: "column",
+        alignItems: "flex-start",
         marginLeft: 10,
     },
     title: {
@@ -93,13 +85,13 @@ export default StyleSheet.create({
         color: "#646464",
     },
     buttons: {
-        flexDirection: 'row',
+        flexDirection: "row",
     },
     button: {
         height: 35,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
         borderRadius: 10,
         width: 50,
         marginRight: 5,
@@ -115,7 +107,7 @@ export default StyleSheet.create({
         backgroundColor: "#228B22",
     },
     card: {
-        shadowColor: '#00000021',
+        shadowColor: "#00000021",
         shadowOffset: {
             width: 0,
             height: 6,
@@ -123,15 +115,10 @@ export default StyleSheet.create({
         shadowOpacity: 0.37,
         shadowRadius: 7.49,
         elevation: 12,
-
-        // marginLeft: 20,
-        // marginRight: 20,
-        // marginTop: 20,
         backgroundColor: "white",
         padding: 10,
-        flexDirection: 'row',
-        borderBottomWidth:1
-        // borderRadius: 30,
+        flexDirection: "row",
+        borderBottomWidth: 1
     },
     cardContent: {
         marginLeft: 20,
@@ -140,9 +127,8 @@ export default StyleSheet.create({
     name: {
         fontSize: 18,
         flex: 1,
-        alignSelf: 'center',
+        alignSelf: "center",
         color: "#3399ff",
-        // fontWeight: 'bold'
     },
 
 

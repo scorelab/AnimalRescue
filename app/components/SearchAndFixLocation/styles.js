@@ -3,9 +3,9 @@ import { StyleSheet, Platform } from "react-native";
 export default StyleSheet.create({
   container: {
     position: "absolute",
-    top: Platform.select({ ios: 10, android: 10 }),    
+    top: Platform.select({ ios: 10, android: 10 }),
     width: "90%",
-    borderRadius:15
+    borderRadius: 15
   },
   textInputContainer: {
     flex: 1,
@@ -14,7 +14,7 @@ export default StyleSheet.create({
     marginHorizontal: 20,
     borderTopWidth: 0,
     borderBottomWidth: 0,
-    borderRadius:15
+    borderRadius: 15
   },
   textInput: {
     height: 45,
@@ -36,7 +36,7 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: "#DDD",
     fontSize: 14,
-    borderRadius:15
+    borderRadius: 15
   },
   listView: {
     borderWidth: 1,
