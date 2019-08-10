@@ -1,5 +1,7 @@
 # AnimalRescue
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0e80c3817c6640f6a4704da3eca21092)](https://www.codacy.com/app/Wathsara/AnimalRescue_2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scorelab/AnimalRescue&amp;utm_campaign=Badge_Grade) [![Node version](https://img.shields.io/node/v/react-native.svg?style=flat)](http://nodejs.org/download/) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 ## About
 
 A common sight on today’s streets is the number of abandoned animals languishing on the streets suffering with injuries and disease and live without any shelter. The silent suffering of these souls caught the attention of dynamic, animal lover, so Animal Rescue App initiative to develop a mobile app to track animals that are in need of help. Animal Rescue App Connect animal lovers, vets, and other NGOs in real time. They Can Track the Animals That Actually Need the Help.
