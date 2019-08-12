@@ -30,6 +30,16 @@ class Profile extends React.Component {
             finishedFinal: [],
             uploading: false,
             progress: 0,
+            likePoints: 0,
+            photoPoints: 0,
+            videoPoints: 0,
+            finishPoints: 0,
+            postPoints: 0,
+            likePointsFinal: 0,
+            photoPointsFinal: 0,
+            videoPointsFinal: 0,
+            finishPointsFinal: 0,
+            postPointsFinal: 0
         }
         this.video = Video;
 
@@ -132,6 +142,73 @@ class Profile extends React.Component {
         }), function (errorObject) {
             console.log("The read failed: " + errorObject.code);
         });
+
+        database.ref("users").child(userId).on("value", (function (snapshot) {
+            that.setState({
+                likePoints: 0,
+                postPoints: 0,
+                finishPoints: 0,
+                photoPoints: 0,
+                videoPoints: 0
+            })
+            const exist = (snapshot.val() != null);
+            var data = snapshot.val();
+            if (exist) {
+                var photoPoints = that.state.photoPoints;
+                var finishPoints = that.state.finishPoints;
+                var postPoints = that.state.postPoints;
+                var videoPoints = that.state.videoPoints;
+                var likePoints = that.state.likePoints;
+
+                var postData = data.post
+                var finishedData = data.finished
+                for (var posts in postData) {
+                    postPoints += 5;
+                    let postOBJ = postData[posts]
+                    if (postOBJ.type == 0) {
+                        photoPoints += 10;
+                    } else {
+                        videoPoints += 10;
+                    }
+                    database.ref("posts").child(postOBJ.id).on("value", (function (snapshot) {
+                        const exsists = (snapshot.val() != null);
+                        if (exsists) {
+                            var data = snapshot.val();
+                            var likes = data.likes  
+                            // alert(JSON.stringify(likes))                          
+                            for (var liker in likes) {
+                                likePoints += 1
+                            }                            
+                        }
+
+                    }), function (errorObject) {
+                        console.log("The read failed: " + errorObject.code);
+                    });
+                }
+
+                for (var finish in finishedData) {
+                    finishPoints += 15;
+                }
+
+                that.setState({
+                    photoPointsFinal: photoPoints,
+                    finishPointsFinal: finishPoints,
+                    postPointsFinal: postPoints,
+                    videoPointsFinal: videoPoints,
+                    likePointsFinal:likePoints,
+                    photoPoints: 0,
+                    finishPoints: 0,
+                    photoPoints: 0,
+                    videoPoints: 0,
+                    likePoints:0
+                })
+            }
+
+        }), function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+
+
 
 
     }
@@ -469,6 +546,12 @@ class Profile extends React.Component {
                         <View style={{ justifyContent: "center", alignItems: "center", marginVertical: 10 }}>
                             <Image source={require("../../images/level10.png")} style={{ width: 120, height: 120 }} />
                             <Text style={{ fontSize: 15 }}>Animal Helper Level 10</Text>
+                            <Text style={{ fontSize: 15 }}>Post Points +{this.state.postPointsFinal}</Text>
+                            <Text style={{ fontSize: 15 }}>Finish Points +{this.state.finishPointsFinal}</Text>
+                            <Text style={{ fontSize: 15 }}>Photo Points +{this.state.photoPointsFinal}</Text>
+                            <Text style={{ fontSize: 15 }}>video Points +{this.state.videoPointsFinal}</Text>
+                            <Text style={{ fontSize: 15 }}>Like Points +{this.state.likePointsFinal}</Text>
+
                         </View>
                     ) : (
                             <View style={styles.photoArea}>
