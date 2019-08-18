@@ -1,0 +1,207 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#192f6a",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <Image
+    source={
+      Object {
+        "testUri": "../../../app/images/ara.png",
+      }
+    }
+    style={
+      Object {
+        "alignSelf": "center",
+        "height": 150,
+        "marginTop": "40%",
+        "width": 120,
+      }
+    }
+  />
+  <Text
+    style={
+      Object {
+        "color": "#FFFFFF",
+        "fontSize": 32,
+        "fontWeight": "600",
+      }
+    }
+  >
+    Animal Rescue App
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#228B22",
+        "fontSize": 18,
+        "fontWeight": "600",
+        "marginTop": 10,
+      }
+    }
+  >
+    All life is important, no matter how small.
+  </Text>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      animating={true}
+      animationDuration={1600}
+      animationEasing={[Function]}
+      color="#fff"
+      interaction={true}
+      renderComponent={[Function]}
+      style={
+        Object {
+          "height": 100,
+          "width": 100,
+        }
+      }
+      waveFactor={0.54}
+      waveMode="fill"
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "bottom": 0,
+            "justifyContent": "center",
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "#fff",
+              "borderRadius": 50,
+              "borderWidth": 0,
+              "height": 100,
+              "opacity": 1,
+              "transform": Array [
+                Object {
+                  "scale": 0,
+                },
+              ],
+              "width": 100,
+            }
+          }
+        />
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "bottom": 0,
+            "justifyContent": "center",
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "#fff",
+              "borderRadius": 50,
+              "borderWidth": 0,
+              "height": 100,
+              "opacity": 1,
+              "transform": Array [
+                Object {
+                  "scale": 0,
+                },
+              ],
+              "width": 100,
+            }
+          }
+        />
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "bottom": 0,
+            "justifyContent": "center",
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "#fff",
+              "borderRadius": 50,
+              "borderWidth": 0,
+              "height": 100,
+              "opacity": 1,
+              "transform": Array [
+                Object {
+                  "scale": 0,
+                },
+              ],
+              "width": 100,
+            }
+          }
+        />
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "bottom": 0,
+            "justifyContent": "center",
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "#fff",
+              "borderRadius": 50,
+              "borderWidth": 0,
+              "height": 100,
+              "opacity": 1,
+              "transform": Array [
+                Object {
+                  "scale": 0,
+                },
+              ],
+              "width": 100,
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+</View>
+`;

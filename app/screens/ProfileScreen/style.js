@@ -161,7 +161,7 @@ export default StyleSheet.create({
   imageLabel: {
     overflow: "hidden",
     alignSelf: "center",
-    rotation: -45,
+    // rotation: -45,
     // backgroundColor: "green",
     width: "100%",
     marginVertical: "20%",

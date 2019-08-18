@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#e8f6fa",
+      "borderBottomWidth": 0.7,
+      "borderColor": "#192f6a",
+      "borderRadius": 5,
+      "flex": 1,
+      "justifyContent": "flex-start",
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+        "height": "auto",
+        "marginLeft": 20,
+        "marginRight": 20,
+        "marginVertical": 20,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "alignSelf": "flex-start",
+          "borderRadius": 25,
+          "height": 50,
+          "marginLeft": -15,
+          "marginRight": 10,
+          "overflow": "hidden",
+          "width": 50,
+        }
+      }
+    >
+      <Image
+        style={
+          Object {
+            "borderRadius": 25,
+            "height": 50,
+            "width": 50,
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "flex": 0.75,
+          "flexDirection": "column",
+          "paddingLeft": 8,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 0.6,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginBottom": 5,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#808080",
+                "fontSize": 11,
+              }
+            }
+          />
+        </View>
+        <View
+          accessible={true}
+          isTVSelectable={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "fontSize": 16,
+              }
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
