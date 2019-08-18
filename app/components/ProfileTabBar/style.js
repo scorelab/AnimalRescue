@@ -10,7 +10,7 @@ export default StyleSheet.create({
         width: "100%",        
     },
     tabBarActive: {
-        width: "25%",
+        width: "33%",
         borderColor: "#fff",
         borderBottomWidth: 4.5,
         justifyContent: "center",
@@ -19,7 +19,7 @@ export default StyleSheet.create({
         height:50
     },
     tabBar: {
-        width: "25%",
+        width: "33%",
         backgroundColor: "#192f6a",
         justifyContent: "center",
         alignItems: "center",

@@ -21,7 +21,7 @@ class Profile extends React.Component {
             profilePicture: null,
             coverPicture: null,
             name: null,
-            active: 0,
+            active: 1,
             post: [],
             postFinal: [],
             pending: [],
@@ -537,7 +537,7 @@ class Profile extends React.Component {
                     </View>
                     <ProfileTabBar
                         active={this.state.active}
-                        onPress0={() => this.setState({ active: 0 })}
+                        // onPress0={() => this.setState({ active: 0 })}
                         onPress1={() => this.setState({ active: 1 })}
                         onPress2={() => this.setState({ active: 2 })}
                         onPress3={() => this.setState({ active: 3 })}
