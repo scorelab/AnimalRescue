@@ -10,17 +10,17 @@ export default class ProfileBar extends Component {
     render() {
         return (
             <View style={styles.tabBarContainer}>
-                {this.props.active == 0 ? (
+                {/* {this.props.active == 0 ? (
                     <TouchableOpacity onPress={this.props.onPress0} style={styles.tabBarActive}>
-                        {/* <Ionicons name={"camera"} size={15} color={"#fff"} /> */}
+                        <Ionicons name={"camera"} size={15} color={"#fff"} />
                         <Text style={{ color: "#fff" }}>Badges</Text>
                     </TouchableOpacity>
                 ) : (
                         <TouchableOpacity onPress={this.props.onPress0} style={styles.tabBar}>
-                            {/* <Ionicons name={"camera"} size={15} color={"#a0a0a0"} /> */}
+                            <Ionicons name={"camera"} size={15} color={"#a0a0a0"} />
                             <Text style={{ color: "#a0a0a0" }}>Badges</Text>
                         </TouchableOpacity>
-                    )}
+                    )} */}
 
 
                 {this.props.active == 1 ? (

@@ -180,8 +180,7 @@ class Auth extends React.Component {
         this.props.navigation.navigate("App");
     };
 
-    render() {
-        const { navigate } = this.props.navigation;
+    render() {        
         if (this.state.loggedin == "checking") {
             return (
                 <PreLoader />
