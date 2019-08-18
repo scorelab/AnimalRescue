@@ -54,7 +54,7 @@ class DrawerPanel extends Component {
                 </View>
 
                 <ScrollView style={styles.body}>
-                    <TouchableOpacity style={styles.card}>
+                    {/* <TouchableOpacity style={styles.card}>
                         <Ionicons name={"edit"} size={30} color={"#192f6a"} style={{ marginLeft: 20 }} />
                         <View style={styles.cardContent}>
                             <Text style={styles.name}>Edit Profile</Text>
@@ -71,7 +71,7 @@ class DrawerPanel extends Component {
                         <View style={styles.cardContent}>
                             <Text style={styles.name}>Help Center</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity style={styles.card} onPress={() => this.logout()}>
                         <Ionicons name={"sign-out"} size={30} color={"#192f6a"} style={{ marginLeft: 20 }} />
                         <View style={styles.cardContent}>
