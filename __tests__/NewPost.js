@@ -10,3 +10,8 @@ test('renders correctly', () => {
     expect(tree).toMatchSnapshot();
 });
 
+test('uploading renders correctly', () => {
+    const tree = renderer.create(<NewPost uploading={true} />).toJSON();
+    expect(tree).toMatchSnapshot();
+});
+
